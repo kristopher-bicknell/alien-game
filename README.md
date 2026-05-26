@@ -4,7 +4,7 @@ This game does not have an official title yet, but it has the working title Alie
 As of now, all that it is, is a world generation simulator. You can generate terrain, save it, load it from a file, and, of course, walk around on it.
 # Controls
 
-> [!NOTE] Note about the controls
+> [!NOTE]
 > The controls currently suck. I do not like them, and they will be changing.
 >  *If you want to help me make them suck less, feel free to provide feedback!*
 
