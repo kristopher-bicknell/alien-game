@@ -28,7 +28,7 @@ func _input(event: InputEvent):
 		$Character.position = $SpawnPoint.position
 		_debug_notif("generating new world...")
 	if event.is_action_pressed("debug_playerreset"):
-		$Character.position = $SpawnPoint.position
+		$Character.position = $SpawnPoint.position  
 
 func _on_death_plane_body_entered(body: Node3D) -> void:
 	if body is CharacterBody3D:
