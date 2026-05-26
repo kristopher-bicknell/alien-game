@@ -73,7 +73,6 @@ func load_data_tostring():
 		return
 	if file.file_exists("user://world.dat"):
 		print("File exists")
-		print(file.get_as_text())
 	var world_data = file.get_as_text()
 	var map_local_coords = {}
 	var settings = Map.world_settings
@@ -84,9 +83,10 @@ func load_data_tostring():
 	var save_string_offset = 0
 	#split up into chunks of 2 characters
 	while save_string_offset * 2 < world_data.length():
-		save_arr.push_back(world_data.substr(save_string_offset * 2, 2))
+		var append_string = world_data.substr(save_string_offset * 2, 2)
+		print(append_string)
+		save_arr.append(append_string)
 		save_string_offset += 1
-	
 	#traverse array and use it to load data
 	var array_offset = 0
 	#array with keys of local coords and values of hexel type as integer
@@ -119,7 +119,7 @@ func load_data_tostring():
 		array_offset += 1
 		#store chunk data with chunk ID
 		map_chunk_id_big_dict_energy[chunk_id] = map_dict_local
-		print(str(chunk_id) + ": \n" + str(map_dict_local))
+		#print(str(chunk_id) + ": \n" + str(map_dict_local))
 	#pass this dict off to the world gen class
 	
 	return map_chunk_id_big_dict_energy

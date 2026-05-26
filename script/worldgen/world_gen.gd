@@ -11,7 +11,7 @@ var chunks: ChunkManager
 
 #UI
 @onready var label: RichTextLabel = $"../CanvasLayer/Info"
-var threads: Array[Thread]
+var threads: Array[Thread] = [Thread.new(), Thread.new(), Thread.new(), Thread.new()]
 
 
 ## Starting point: Generate a random seed, create the tiles, place POI's
@@ -55,19 +55,37 @@ func init_seed():
 func load_world(chunks_dict: Dictionary[Vector2, Dictionary]):
 	clear_chunks()
 	make_chunkmanager()
+	#get multiple threads running
+	
 	var hexels: Dictionary[Vector2i, Array] = {}
-	var mapper = GridMapper.new()
-	for chunk_id in chunks_dict.keys():
-		hexels[Vector2i(chunk_id.x, chunk_id.y)] = mapper.generate_map_from_save(chunks_dict[chunk_id], chunk_id)
+	var keys_as_array = chunks_dict.keys()
+	for i in range(keys_as_array.size()):
+		#$"../CanvasLayer/debug_noteforme".text = "Generating chunk " + str(chunk_id) + "..."
+		##chunk map data can be generated in thread?
+		var id = keys_as_array[i]
+		threads[i % threads.size()].start(GridMapper.generate_map_from_save.bind(chunks_dict[id], id, settings))
+		#mapper_thread.start(GridMapper.generate_map_from_save.bind(chunks_dict[chunk_id], chunk_id, settings))
+		hexels[Vector2i(id.x, id.y)] = threads[i % threads.size()].wait_to_finish() 
 	#make terrain geometry
 	var hg = HexelGenerator.new()
 	#create terrain gen threads
 	var interval = {"Start of Generation!" : Time.get_ticks_msec()}
-	for chunk_id in hexels.keys():
+	var hexels_keys_as_array = hexels.keys()
+	for i in range(hexels_keys_as_array.size()):
+	#for chunk_id in hexels.keys():
+		##See if this can be threaded too
 		var new_chunk = hg.load_chunk(hexels[chunk_id], interval)
 		chunks.add_chunk(new_chunk, chunk_id)
 		new_chunk.add_to_group("chunks")
 		new_chunk.init_chunk(chunk_id)
+		$"../CanvasLayer/debug_noteforme".text = "created chunk " + str(chunk_id)
+
+##handle threads
+func threaded_mapping(function: Callable, data: Array[Dictionary], thread_index: int):
+	var return_data = {}
+	#data array contains dictionaries of type [chunk_id, chunks_dict[chunk_id], or just one entry in chunks_dict
+	for chunk_dict in data:
+		pass
 
 ## Start of world_generation, time each step
 func generate_world():
@@ -82,7 +100,7 @@ func generate_world():
 	var hexels: Dictionary[Vector2i, Array]
 	for x in range(floor(-settings.radius / settings.chunk_size), floor(settings.radius / settings.chunk_size)):
 		for z in range(floor(-settings.radius / settings.chunk_size), floor(settings.radius / settings.chunk_size)):
-			hexels[Vector2i(x,z)] = mapper.calculate_map_positions(Vector2i(x,z))
+			hexels[Vector2i(x,z)] = mapper.calculate_map_positions(Vector2i(x,z), settings)
 	interval["Calculate Map Positions -- "] = Time.get_ticks_msec()
 	
 	#generate cave
