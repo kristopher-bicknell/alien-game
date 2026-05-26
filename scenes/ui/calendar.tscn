@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2k5wcyow1v0p"]
+
+[ext_resource type="LabelSettings" uid="uid://jo35jjb1aulc" path="res://assets/res/menu_heading.tres" id="1_ssx6j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_80rfg"]
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
+[node name="Calendar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -471.0
+offset_top = -285.0
+offset_right = 471.0
+offset_bottom = 285.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "evil calendar"
+label_settings = ExtResource("1_ssx6j")
+
+[node name="GridContainer" type="GridContainer" parent="Background"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -414.0
+offset_top = -206.0
+offset_right = 414.0
+offset_bottom = 265.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 7
+
+[node name="DayBox1" type="ColorRect" parent="Background/GridContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+color = Color(0.787759, 0.787759, 0.787759, 1)
+
+[node name="Number" type="Label" parent="Background/GridContainer/DayBox1"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "1"
+label_settings = SubResource("LabelSettings_80rfg")
+horizontal_alignment = 1
+vertical_alignment = 1

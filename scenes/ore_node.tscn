@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://b800nw08ay6un"]
+
+[ext_resource type="ArrayMesh" uid="uid://cm05r61q830nj" path="res://assets/environment/ore_gem.obj" id="1_s7nq5"]
+[ext_resource type="ArrayMesh" uid="uid://bo0oeydrl5elg" path="res://assets/environment/ore_stone.obj" id="2_oulc6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s7nq5"]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+blend_mode = 1
+albedo_color = Color(0.27451, 1, 0.47451, 1)
+albedo_texture_force_srgb = true
+
+[sub_resource type="Gradient" id="Gradient_oulc6"]
+colors = PackedColorArray(0, 0, 0, 1, 0.694118, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7nk3x"]
+noise_type = 3
+seed = 69
+frequency = 0.0034
+fractal_type = 2
+fractal_octaves = 3
+fractal_gain = 3.0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 5.0
+domain_warp_fractal_octaves = 3
+domain_warp_fractal_lacunarity = 1.17
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gehiq"]
+color_ramp = SubResource("Gradient_oulc6")
+noise = SubResource("FastNoiseLite_7nk3x")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_f6dha"]
+noise_type = 3
+seed = 69
+frequency = 0.0034
+fractal_type = 2
+fractal_octaves = 3
+fractal_gain = 3.0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 5.0
+domain_warp_fractal_octaves = 3
+domain_warp_fractal_lacunarity = 1.17
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hpmn8"]
+as_normal_map = true
+bump_strength = 16.5
+noise = SubResource("FastNoiseLite_f6dha")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6dha"]
+albedo_color = Color(0.52574, 0.589191, 0.694464, 1)
+albedo_texture = SubResource("NoiseTexture2D_gehiq")
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_hpmn8")
+heightmap_scale = -0.935
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s7nq5"]
+radius = 2.88048
+height = 8.76142
+
+[node name="OreNode" type="StaticBody3D"]
+
+[node name="OreGem" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_s7nq5")
+surface_material_override/0 = SubResource("StandardMaterial3D_s7nq5")
+
+[node name="OreStone" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_oulc6")
+surface_material_override/0 = SubResource("StandardMaterial3D_f6dha")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.31147, 0)
+shape = SubResource("CapsuleShape3D_s7nq5")

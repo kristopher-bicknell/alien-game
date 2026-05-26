@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://ck1yfqbbeslen"]
+
+[ext_resource type="Texture2D" uid="uid://dap7k10ia6j0w" path="res://assets/environment/terrain/dirt_albedotexture.tres" id="1_akcr4"]
+[ext_resource type="Texture2D" uid="uid://crv558vcydi5q" path="res://assets/environment/terrain/dirt_normalmaptexture.tres" id="2_4x4xw"]
+
+[resource]
+albedo_texture = ExtResource("1_akcr4")
+normal_enabled = true
+normal_texture = ExtResource("2_4x4xw")
+anisotropy = -0.4
+heightmap_enabled = true
+backlight = Color(1, 1, 1, 1)

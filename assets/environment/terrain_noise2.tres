@@ -1,0 +1,7 @@
+[gd_resource type="NoiseTexture3D" load_steps=2 format=3 uid="uid://bb3hq83lhxwwk"]
+
+[ext_resource type="FastNoiseLite" uid="uid://b2cn8ba6rls7n" path="res://assets/res/terrainnoise.tres" id="1_jsjvn"]
+
+[resource]
+invert = true
+noise = ExtResource("1_jsjvn")

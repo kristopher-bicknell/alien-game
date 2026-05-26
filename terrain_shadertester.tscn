@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://bj5owfhujlc6"]
+
+[ext_resource type="ArrayMesh" uid="uid://ci6hpxgtg3hur" path="res://assets/environment/landtile.obj" id="1_gkqc4"]
+
+[sub_resource type="Gradient" id="Gradient_wf8bk"]
+offsets = PackedFloat32Array(0.291391, 0.463576, 0.562914, 0.827815)
+colors = PackedColorArray(0, 0, 0, 1, 0.779093, 0.507384, 3.85046e-07, 1, 0.189527, 0.129249, 2.40654e-08, 1, 0.82029, 0.500928, 5.77569e-07, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6irpm"]
+noise_type = 3
+seed = 107
+frequency = 0.0779
+offset = Vector3(0, 142.86, 0)
+domain_warp_type = 2
+domain_warp_fractal_type = 2
+domain_warp_fractal_octaves = 3
+domain_warp_fractal_lacunarity = 2.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gxg2t"]
+normalize = false
+color_ramp = SubResource("Gradient_wf8bk")
+noise = SubResource("FastNoiseLite_6irpm")
+
+[sub_resource type="Gradient" id="Gradient_x8s8n"]
+colors = PackedColorArray(0.548963, 0.548963, 0.548962, 1, 0.699654, 0.699653, 0.699653, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xt1jq"]
+noise_type = 2
+frequency = 0.0741
+fractal_type = 0
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7i48s"]
+as_normal_map = true
+bump_strength = 4.0
+color_ramp = SubResource("Gradient_x8s8n")
+noise = SubResource("FastNoiseLite_xt1jq")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k4raa"]
+albedo_texture = SubResource("NoiseTexture2D_gxg2t")
+roughness = 0.85
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_7i48s")
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = ExtResource("1_gkqc4")
+surface_material_override/0 = SubResource("StandardMaterial3D_k4raa")

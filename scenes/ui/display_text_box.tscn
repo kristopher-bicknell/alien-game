@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsk4yjhp2dll3"]
+
+[ext_resource type="Script" uid="uid://bnp3r71a7qr5x" path="res://script/text_box.gd" id="1_re8cp"]
+
+[sub_resource type="SystemFont" id="SystemFont_re8cp"]
+subpixel_positioning = 0
+
+[sub_resource type="Theme" id="Theme_myfa5"]
+default_font = SubResource("SystemFont_re8cp")
+default_font_size = 16
+
+[node name="DisplayTextBox" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("1_re8cp")
+metadata/_custom_type_script = "uid://b1yf7826qeucp"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.5)
+
+[node name="Text" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.0
+offset_top = -36.0
+offset_right = 147.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_myfa5")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "null"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 131

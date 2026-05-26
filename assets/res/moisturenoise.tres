@@ -1,0 +1,9 @@
+[gd_resource type="FastNoiseLite" format=3 uid="uid://djaovascf4pdo"]
+
+[resource]
+noise_type = 2
+seed = -1005
+frequency = 0.0141
+offset = Vector3(0, 0, -1000)
+fractal_weighted_strength = 0.5
+cellular_return_type = 3

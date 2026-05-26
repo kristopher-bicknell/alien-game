@@ -1,0 +1,43 @@
+[gd_scene load_steps=11 format=3 uid="uid://b6ywvudfk64ki"]
+
+[ext_resource type="ArrayMesh" uid="uid://ci6hpxgtg3hur" path="res://assets/environment/landtile.obj" id="1_fanay"]
+[ext_resource type="Shader" uid="uid://13l3wksi5nmc" path="res://assets/environment/dirt.gdshader" id="2_4x4mx"]
+[ext_resource type="Script" uid="uid://d0up0elny6t1r" path="res://script/landtile.gd" id="2_fanay"]
+[ext_resource type="Texture2D" uid="uid://dap7k10ia6j0w" path="res://assets/environment/terrain/dirt_albedotexture.tres" id="3_ji13m"]
+[ext_resource type="Texture2D" uid="uid://crv558vcydi5q" path="res://assets/environment/terrain/dirt_normalmaptexture.tres" id="4_bciwv"]
+[ext_resource type="Texture2D" uid="uid://dnynw3gmk25th" path="res://assets/environment/terrain/stone_albedotexture.tres" id="4_ih5vc"]
+[ext_resource type="Texture2D" uid="uid://dson808wt8h60" path="res://assets/environment/terrain/stone_heightmap_texture.tres" id="5_i6g84"]
+[ext_resource type="Texture2D" uid="uid://bibafi1leknt3" path="res://assets/environment/terrain/stone_normaltexture.tres" id="7_32lvo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jnl7x"]
+render_priority = 0
+shader = ExtResource("2_4x4mx")
+shader_parameter/texture_albedo_dirt = ExtResource("3_ji13m")
+shader_parameter/texture_albedo_stone = ExtResource("4_ih5vc")
+shader_parameter/albedo_texture_size = Vector2i(512, 512)
+shader_parameter/point_size = 0.1
+shader_parameter/texture_normal_dirt = ExtResource("4_bciwv")
+shader_parameter/texture_normal_stone = ExtResource("7_32lvo")
+shader_parameter/texture_heightmap_stone = ExtResource("5_i6g84")
+shader_parameter/heightmap_scale = 0.0
+shader_parameter/heightmap_min_layers = 0
+shader_parameter/heightmap_max_layers = 0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+
+[sub_resource type="Environment" id="Environment_6r6tj"]
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 5.0
+glow_enabled = true
+glow_blend_mode = 1
+
+[node name="landtile" type="CSGMesh3D"]
+mesh = ExtResource("1_fanay")
+material = SubResource("ShaderMaterial_jnl7x")
+script = ExtResource("2_fanay")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6r6tj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 23, 0)
+shadow_enabled = true

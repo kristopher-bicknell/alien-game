@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://h888eoobfh20"]
+
+[node name="CaveMesh" type="CSGPolygon3D"]
+polygon = PackedVector2Array(0, 0, 0, 30, 30, 30, 30, 0)
+mode = 2
+path_node = NodePath("")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false

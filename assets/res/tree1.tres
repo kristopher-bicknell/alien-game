@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://ms5hrlf4di1q"]
+
+[ext_resource type="Shader" uid="uid://duxtdu2rd6a4i" path="res://assets/environment/treeleafs1.gdshader" id="1_mpgfw"]
+[ext_resource type="Texture2D" uid="uid://bv1wk1wnv6oiu" path="res://assets/environment/leafs.png" id="2_03cbb"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mpgfw")
+shader_parameter/alphaTexture = ExtResource("2_03cbb")
+shader_parameter/leavesColor = Color(0.601893, 0.255375, 0.866115, 1)
+shader_parameter/alphaThreshold = 0.1
+shader_parameter/offsetScale = 0.3951
+shader_parameter/fresnelStrength = 1.975
+shader_parameter/fresnelBlend = 0.551
+shader_parameter/fresnelColor = Color(0.570334, 0.540574, 0.999817, 1)
+shader_parameter/deactiveGlobalVariation = false
+shader_parameter/clampTop = 0.5
+shader_parameter/clampBottom = 0.0

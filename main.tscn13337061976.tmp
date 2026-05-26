@@ -1,0 +1,110 @@
+[gd_scene load_steps=16 format=3 uid="uid://cxknqhnxe0l78"]
+
+[ext_resource type="PackedScene" uid="uid://72fwnbvoiw71" path="res://scenes/character/character.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
+[ext_resource type="Script" uid="uid://ci6r5r3hlrwjq" path="res://script/worldgen/world_gen.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://bf7oc7st1txej" path="res://script/worldgen/generation_settings.gd" id="3_1bvp3"]
+[ext_resource type="FastNoiseLite" uid="uid://c2igtwsp81xmn" path="res://assets/res/climatenoise.tres" id="3_272bh"]
+[ext_resource type="FastNoiseLite" uid="uid://bgc7ugo4i8pq7" path="res://assets/res/mainnoise.tres" id="4_5vw27"]
+[ext_resource type="Texture2D" uid="uid://donh8kaip6kwi" path="res://assets/environment/terrainatlas.png" id="4_kek77"]
+[ext_resource type="FastNoiseLite" uid="uid://b2cn8ba6rls7n" path="res://assets/res/terrainnoise.tres" id="6_kek77"]
+[ext_resource type="Script" uid="uid://dnkrw85nu2aq4" path="res://script/worldgen/chunk_manager.gd" id="8_kek77"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
+albedo_texture = ExtResource("4_kek77")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kek77"]
+frequency = 0.0066
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5vw27"]
+noise_type = 3
+frequency = 0.0029
+
+[sub_resource type="Resource" id="Resource_lquwl"]
+script = ExtResource("3_1bvp3")
+map_seed = 0
+radius = 8
+max_height = 8
+ground_to_air_ratio = 0.5
+num_caves = 3
+chunk_size = 4
+large_plant_freq = 0.01
+small_plant_freq = 0.01
+noise = ExtResource("4_5vw27")
+terrain_noise = ExtResource("6_kek77")
+climate_noise = ExtResource("3_272bh")
+wet_noise = SubResource("FastNoiseLite_5vw27")
+stone_noise = SubResource("FastNoiseLite_kek77")
+hexel_size = 5.0
+hexel_height = 2.0
+shading = -1
+material = SubResource("StandardMaterial3D_4c57u")
+draw_bottom = true
+solid_first_layer = true
+metadata/_custom_type_script = "uid://bf7oc7st1txej"
+
+[sub_resource type="Environment" id="Environment_lquwl"]
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 5.0
+glow_enabled = true
+glow_intensity = 0.3
+glow_strength = 0.5
+glow_blend_mode = 1
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.444823, 0.541372, 0.791449, 1)
+fog_density = 1.0
+fog_sky_affect = 0.5
+fog_depth_begin = 100.0
+fog_depth_end = 300.0
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lquwl"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_lquwl")
+
+[node name="WorldGen" type="Node" parent="."]
+script = ExtResource("2_h2yge")
+settings = SubResource("Resource_lquwl")
+metadata/_custom_type_script = "uid://ci6r5r3hlrwjq"
+
+[node name="Chunks" type="Node3D" parent="WorldGen"]
+script = ExtResource("8_kek77")
+
+[node name="Objects" type="Node3D" parent="WorldGen"]
+
+[node name="Character" parent="." instance=ExtResource("1_ig7tw")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Info" type="RichTextLabel" parent="CanvasLayer"]
+offset_left = 8.0
+offset_top = 10.0
+offset_right = 427.0
+offset_bottom = 273.0
+bbcode_enabled = true
+text = "test!!!"
+
+[node name="position" type="Label" parent="CanvasLayer"]
+offset_left = 522.0
+offset_top = 10.0
+offset_right = 562.0
+offset_bottom = 33.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lquwl")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 23, 0)
+shadow_enabled = true
+
+[node name="DeathPlane" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DeathPlane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -344, 0)
+shape = SubResource("WorldBoundaryShape3D_lquwl")
+
+[node name="SpawnPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 500, 0)
+
+[connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]

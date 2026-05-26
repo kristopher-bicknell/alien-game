@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://cq2ayidlq8pnc"]
+
+[ext_resource type="Script" uid="uid://2ekngidht1x" path="res://script/tree.gd" id="1_fcxxm"]
+[ext_resource type="ArrayMesh" uid="uid://mglh08o7btk5" path="res://assets/environment/tree2_base.obj" id="1_xi3w1"]
+[ext_resource type="ArrayMesh" uid="uid://cvkhbnbqugmba" path="res://assets/environment/tree2_leafs.obj" id="2_fcxxm"]
+
+[node name="tree2" type="StaticBody3D"]
+script = ExtResource("1_fcxxm")
+
+[node name="Tree2Base" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_xi3w1")
+
+[node name="Tree2Leafs" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_fcxxm")
