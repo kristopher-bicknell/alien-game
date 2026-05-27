@@ -84,7 +84,6 @@ func load_data_tostring():
 	#split up into chunks of 2 characters
 	while save_string_offset * 2 < world_data.length():
 		var append_string = world_data.substr(save_string_offset * 2, 2)
-		print(append_string)
 		save_arr.append(append_string)
 		save_string_offset += 1
 	#traverse array and use it to load data

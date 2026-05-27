@@ -11,9 +11,11 @@ var chunks = {}
 func set_map(all_hexels, top_hexels):
 	#map_as_dict.clear()
 	for hexel : Hexel in all_hexels:
-		map_as_dict[Vector3i(hexel.grid_position_xyz)] = hexel
+		if hexel != null:
+			map_as_dict[Vector3i(hexel.grid_position_xyz)] = hexel
 	for t_hexel in top_hexels:
-		surface_layer[Vector3i(t_hexel.grid_position_xyz)] = t_hexel
+		if t_hexel != null:
+			surface_layer[Vector3i(t_hexel.grid_position_xyz)] = t_hexel
 
 
 func clear_map():

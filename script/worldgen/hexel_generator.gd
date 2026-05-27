@@ -1,33 +1,33 @@
 class_name HexelGenerator
 
-var map : Array[Hexel]
-var map_dict : Dictionary[Vector3i, Hexel]
-var settings : GenerationSettings
-var surface_hexels : Array[Hexel]
+#var map : Array[Hexel] = []
+#var map_dict : Dictionary[Vector3i, Hexel]
+#var settings : GenerationSettings
+#var surface_hexels : Array[Hexel]
 
 
-func load_chunk(_map: Array[Hexel], interval) -> Chunk:
-	map = _map
-	settings = Map.world_settings
+static func load_chunk(map: Array[Hexel], interval, chunk_id):
+	var map_dict : Dictionary[Vector3i, Hexel] = {}
 	for hexel in map:
 		map_dict[hexel.grid_position_xyz] = hexel
-	return build_chunkdata(map, interval)
+	return build_chunkdata(map, interval, chunk_id, map_dict)
 	
 
-func generate_chunk(_map : Array[Hexel], interval) -> Chunk:
-	map = _map
-	settings = Map.world_settings
+static func generate_chunk(map : Array[Hexel], interval, chunk_id) -> Chunk:
+	var map_dict : Dictionary[Vector3i, Hexel] = {}
+	for hexel in map:
+		map_dict[hexel.grid_position_xyz] = hexel
 	
-	var process_vector = process_hexels()
+	var process_vector = process_hexels(map, map_dict)
 	print("Correction passes: ", process_vector.x, ". Total hexels removed: ", process_vector.y)
 	interval["Processing Hexels total -- "] = Time.get_ticks_msec()
 
 	interval["Build hexels -- "] = Time.get_ticks_msec()
-	return build_chunkdata(map, interval)
+	return build_chunkdata(map, interval, chunk_id, map_dict)
 
-func build_chunkdata(map, interval) -> Chunk:
-	var mesh = MeshAlgorithm.remesh(map_dict, settings)
-	var chunk = prepared_chunk(mesh, map, settings)
+static func build_chunkdata(map, interval, chunk_id, map_dict) -> Chunk:
+	var mesh = MeshAlgorithm.remesh(map_dict)
+	var chunk = prepared_chunk(mesh, map, chunk_id)
 	Map.set_map(map, get_surface_hexels(map_dict))
 	return chunk
 
@@ -51,15 +51,16 @@ static func get_surface_hexels(map_dictionary: Dictionary[Vector3i, Hexel]) -> A
 					surface_hexels[new_surface] = map_dictionary[index]
 	return surface_hexels.values()
 
-static func prepared_chunk(surface, map, settings) -> Chunk:
+static func prepared_chunk(surface, map, chunk_id) -> Chunk:
 	var chunk = Chunk.new()
 	chunk.mesh = surface.commit()
 	chunk.hexels = map
-	chunk.material_override = settings.material
+	chunk.material_override = Map.world_settings.material
+	chunk.chunk_id = chunk_id
 	return chunk
 
 
-func process_hexels() -> Vector2i:
+static func process_hexels(map, map_dict) -> Vector2i:
 	# Prepare counters
 	var passes = 0
 	var total_removed = 0
@@ -70,7 +71,7 @@ func process_hexels() -> Vector2i:
 	
 	#shape terrain
 	for hexel in map:
-		assign_type(hexel)
+		assign_type(hexel, map_dict)
 		if hexel.grid_position_xyz.y >= get_height(Vector2(hexel.world_position.x, hexel.world_position.z)):
 			hexel.type = HexelData.hexel_type.AIR
 			total_removed += 1
@@ -79,75 +80,75 @@ func process_hexels() -> Vector2i:
 		for i in range(map.size()):
 			var hexel = map[i]
 			if hexel.type != 0:
-				if shape_geometry(hexel):
+				if shape_geometry(hexel, map_dict):
 					removed += 1
 		if removed < 1:
 			break
 		total_removed += removed
 		passes += 1
 	
-	create_ore()
+	create_ore(map_dict)
 	return Vector2i(passes, total_removed)
 
-func get_height(location:Vector2) -> int:
-	var noise_height = (sqrt(settings.noise.get_noise_2dv(location) + 1.0) - 1.0) + (pow((clampf(settings.terrain_noise.get_noise_2dv(location), 0.25, 1.0)), 2.0))
-	var max_height = settings.max_height
-	var min_height = settings.max_height / 2.0
+static func get_height(location:Vector2) -> int:
+	var noise_height = (sqrt(Map.world_settings.noise.get_noise_2dv(location) + 1.0) - 1.0) + (pow((clampf(Map.world_settings.terrain_noise.get_noise_2dv(location), 0.25, 1.0)), 2.0))
+	var max_height = Map.world_settings.max_height
+	var min_height = Map.world_settings.max_height / 2.0
 	#noise will be in a range of approx. 0 to 1.5
 	return clampf(min_height + (noise_height / 1.5) * min_height, min_height, max_height)
 
 
-func assign_air_probability(hexel: Hexel) -> void:
+static func assign_air_probability(hexel: Hexel) -> void:
 	var noise_contribution : float = hexel.noise
 	var y : float = hexel.grid_position_xyz.y
-	var normalized_height : float = clampf(y / settings.max_height, 0.0, 1.0)
+	var normalized_height : float = clampf(y / Map.world_settings.max_height, 0.0, 1.0)
 
-	var combined_probability : float = (1.0 - settings.noise_height_bias) * noise_contribution \
-									 + settings.noise_height_bias * normalized_height
+	var combined_probability : float = (1.0 - Map.world_settings.noise_height_bias) * noise_contribution \
+									 + Map.world_settings.noise_height_bias * normalized_height
 	hexel.air_probability = clampf(combined_probability, 0.0, 1.0)
 
 
-func shape_geometry(prism) -> bool:
+static func shape_geometry(prism, map_dict) -> bool:
 	# Ensure solid first layer
-	if settings.solid_first_layer and prism.grid_position_xyz.y == 0:
+	if Map.world_settings.solid_first_layer and prism.grid_position_xyz.y == 0:
 		prism.type = HexelData.hexel_type.BEDROCK
 		return false
 
 	# Remove overhang
 	var below = prism.grid_position_xyz
 	below.y -= 1
-	if below.y >= 1 and air_at_pos(below):
+	if below.y >= 1 and air_at_pos(below, map_dict):
 		prism.type = HexelData.hexel_type.AIR
 		return true
 	
 	return false
 
-func get_type(pos: Vector3) -> int:
+static func get_type(pos: Vector3) -> int:
 	#make this stupid math easier, since terrain height doesn't count hexel height
-	var normalized_y = float(pos.y) / settings.hexel_height
+	var normalized_y = float(pos.y) / Map.world_settings.hexel_height
 	#get climate noise (hot vs cold) and wet noise (dry vs wet)
-	var noise_temp = settings.climate_noise.get_noise_3dv(pos)
-	var noise_wet = settings.wet_noise.get_noise_3dv(pos)
+	var noise_temp = Map.world_settings.climate_noise.get_noise_3dv(pos)
+	var noise_wet = Map.world_settings.wet_noise.get_noise_3dv(pos)
 
-	if settings.terrain_noise.get_noise_2d(pos.x, pos.z) >= 0.25: #terrain is in the mountains
+	if Map.world_settings.terrain_noise.get_noise_2d(pos.x, pos.z) >= 0.25: #terrain is in the mountains
 		#divide mountainous terrain into 4 regions based on height
-		if normalized_y >= settings.max_height * 0.85:
+		if normalized_y >= Map.world_settings.max_height * 0.85:
 			return 4 #just make it fuckin stone, man
 		#prepare noise_temp for being in a range of 0.0-1.0, approximately
 		noise_temp = (noise_temp + 1.0) / 2.0
-		if normalized_y >= settings.max_height * 0.75: #upper 3/4
-			var stone_probability = 0.8 + ((normalized_y / float(settings.max_height)) * 0.2) #80-100% stone
-			var gravel_probability = (normalized_y / float(settings.max_height)) * 0.15 #0-15% gravel
-			var dirt_probability = (normalized_y / float(settings.max_height)) * 0.05 #0-5% dirt
+		if normalized_y >= Map.world_settings.max_height * 0.75: #upper 3/4
+			var stone_probability = 0.8 + ((normalized_y / float(Map.world_settings.max_height)) * 0.2) #80-100% stone
+			var gravel_probability = (normalized_y / float(Map.world_settings.max_height)) * 0.15 #0-15% gravel
+			var dirt_probability = (normalized_y / float(Map.world_settings.max_height)) * 0.05 #0-5% dirt
 			if noise_temp <= stone_probability:
 				return get_stone(pos)
 			elif noise_temp <= gravel_probability:
 				return 7
 			else: #dirt
 				return 3
-		elif normalized_y >= settings.max_height * 0.5:
-			var stone_probability = 0.2 + ((normalized_y / float(settings.max_height)) * 0.6) #20-80% stone
-			var gravel_probability = 0.15 + ((normalized_y / float(settings.max_height)) * 0.25) #15-40% gravel
+		elif normalized_y >= Map.world_settings.max_height * 0.5:
+			var stone_probability = 0.2 + ((normalized_y / float(Map.world_settings.max_height)) * 0.6) #20-80% stone
+			var gravel_probability = 0.15 + ((normalized_y / float(Map.world_settings.max_height)) * 0.25) #15-40% gravel
 			if noise_temp <= stone_probability:
 				return get_stone(pos)
 			elif noise_temp <= gravel_probability:
@@ -166,12 +167,12 @@ func get_type(pos: Vector3) -> int:
 		else: #wet
 			return 2 #grass
 
-func assign_type(hexel: Hexel):
+static func assign_type(hexel: Hexel, map_dict):
 	if hexel.type == HexelData.hexel_type.AIR or hexel.type == HexelData.hexel_type.BEDROCK:
 		return
 
 	var tiles = HexelData.tile_map.size()
-	var n = settings.climate_noise.get_noise_3dv(hexel.world_position)
+	var n = Map.world_settings.climate_noise.get_noise_3dv(hexel.world_position)
 	
 	var enum_index = get_type(hexel.world_position)
 	# surface replacement
@@ -192,14 +193,14 @@ func assign_type(hexel: Hexel):
 	hexel.type = enum_index as HexelData.hexel_type
 
 
-func air_at_pos(pos) -> bool:
+static func air_at_pos(pos, map_dict) -> bool:
 	var neighbor : Hexel = map_dict.get(pos)
 	if neighbor and neighbor.type == 0:
 		return true
 	return false
 
-func get_stone(pos: Vector3) -> int:
-	var noise = settings.stone_noise.get_noise_3dv(pos)
+static func get_stone(pos: Vector3) -> int:
+	var noise = Map.world_settings.stone_noise.get_noise_3dv(pos)
 	if noise <= -0.5:
 		return 9
 	elif noise >= 0.5:
@@ -207,7 +208,7 @@ func get_stone(pos: Vector3) -> int:
 	return 4
 
 ##Ideally, creates a random walk to place ore
-func create_ore():
+static func create_ore(map_dict):
 	return
 	for i in randi_range(0,4): #creates i ore veins in chunk
 		var start_point = null
@@ -215,9 +216,9 @@ func create_ore():
 			if start_point == null:
 				#TODO: is this the correct range?
 				var point = Vector3i(
-					randi_range(0,settings.radius),
-					randi_range(0,settings.max_height),
-					randi_range(0,settings.radius))
+					randi_range(0,Map.world_settings.radius),
+					randi_range(0,Map.world_settings.max_height),
+					randi_range(0,Map.world_settings.radius))
 				#check that point exists in map and is not on surface
 				if map_dict.has(point):
 					#TODO: replace

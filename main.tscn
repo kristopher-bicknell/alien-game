@@ -22,11 +22,11 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 64
-max_height = 128
+radius = 32
+max_height = 64
 ground_to_air_ratio = 0.5
 num_caves = 3
-chunk_size = 16
+chunk_size = 8
 large_plant_freq = 0.01
 small_plant_freq = 0.01
 noise = ExtResource("4_5vw27")

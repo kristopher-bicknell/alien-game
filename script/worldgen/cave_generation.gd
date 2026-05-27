@@ -3,7 +3,7 @@ extends Node3D
 
 const MAIN_CAVE_POINTS = Vector2(15,30)
 const BRANCH_CAVE_POINTS = Vector2(2,5)
-const CAVE_RADIUS_RANGE = Vector2(10.0,25.0)
+const CAVE_RADIUS_RANGE = Vector2(7.0,15.0)
 const BRANCH_CAVE_CHANCE: float = 0.01
 const BRANCH_LENGTH = Vector2(10.0,30.0)
 

@@ -55,30 +55,51 @@ func init_seed():
 func load_world(chunks_dict: Dictionary[Vector2, Dictionary]):
 	clear_chunks()
 	make_chunkmanager()
-	#get multiple threads running
+	print("Finished loading from file")
 	
-	var hexels: Dictionary[Vector2i, Array] = {}
+	var hexels: Dictionary[Vector2, Array] = {}
 	var keys_as_array = chunks_dict.keys()
 	for i in range(keys_as_array.size()):
 		#$"../CanvasLayer/debug_noteforme".text = "Generating chunk " + str(chunk_id) + "..."
 		##chunk map data can be generated in thread?
 		var id = keys_as_array[i]
-		threads[i % threads.size()].start(GridMapper.generate_map_from_save.bind(chunks_dict[id], id, settings))
+		hexels[Vector2(id.x, id.y)] = GridMapper.generate_map_from_save(chunks_dict[id], id, settings)
 		#mapper_thread.start(GridMapper.generate_map_from_save.bind(chunks_dict[chunk_id], chunk_id, settings))
-		hexels[Vector2i(id.x, id.y)] = threads[i % threads.size()].wait_to_finish() 
 	#make terrain geometry
+	print("finished mapping")
 	var hg = HexelGenerator.new()
 	#create terrain gen threads
 	var interval = {"Start of Generation!" : Time.get_ticks_msec()}
 	var hexels_keys_as_array = hexels.keys()
-	for i in range(hexels_keys_as_array.size()):
 	#for chunk_id in hexels.keys():
-		##See if this can be threaded too
-		var new_chunk = hg.load_chunk(hexels[chunk_id], interval)
-		chunks.add_chunk(new_chunk, chunk_id)
-		new_chunk.add_to_group("chunks")
-		new_chunk.init_chunk(chunk_id)
-		$"../CanvasLayer/debug_noteforme".text = "created chunk " + str(chunk_id)
+	for i in range(hexels_keys_as_array.size()):
+		if threads[i % threads.size()].is_started():
+			threads[i % threads.size()].wait_to_finish()
+		threads[i % threads.size()].start(threaded_chunkloading.bind(hexels[hexels_keys_as_array[i]], hexels_keys_as_array[i], hg, interval))
+	for thread in threads:
+		thread.wait_to_finish()
+	#threaded_chunkloading(0, hexels, hexels_keys_as_array, range(0, hexels_keys_as_array.size() / 4), hg, interval)
+	#threaded_chunkloading(1, hexels, hexels_keys_as_array, range((hexels_keys_as_array.size() / 4) + 1, (hexels_keys_as_array.size() / 4) * 2), hg, interval)
+	#threaded_chunkloading(2, hexels, hexels_keys_as_array, range(((hexels_keys_as_array.size() / 4) * 2) + 1, (hexels_keys_as_array.size() / 4) * 3), hg, interval)
+	#threaded_chunkloading(3, hexels, hexels_keys_as_array, range(((hexels_keys_as_array.size() / 4) * 3) + 1, hexels_keys_as_array.size() - 1), hg, interval)
+	print("finished loading chunks")
+	for new_chunk in loaded_chunks:
+	##See if this can be threaded too
+	#var new_chunk = hg.load_chunk(hexels[chunk_id], interval)
+		if new_chunk is Chunk:
+			chunks.add_chunk(new_chunk, new_chunk.chunk_id)
+			new_chunk.add_to_group("chunks")
+			new_chunk.init_chunk()
+	loaded_chunks.clear()
+	print("finished creating chunks")
+	#$"../CanvasLayer/debug_noteforme".text = "created chunk " + str(chunk_id)
+
+var loaded_chunks = []
+
+func threaded_chunkloading(hexels: Array[Hexel], chunk_id, hg: HexelGenerator, interval):
+	var chunk = hg.load_chunk(hexels, interval, chunk_id)
+	loaded_chunks.append(chunk)
+	#return chunks
 
 ##handle threads
 func threaded_mapping(function: Callable, data: Array[Dictionary], thread_index: int):
@@ -89,6 +110,7 @@ func threaded_mapping(function: Callable, data: Array[Dictionary], thread_index:
 
 ## Start of world_generation, time each step
 func generate_world():
+	init_seed()
 	var starttime = Time.get_ticks_msec()
 	var interval = {"Start of Generation!" : starttime}
 	#handle chunk manager
@@ -96,11 +118,10 @@ func generate_world():
 	make_chunkmanager()
 	
 	## Get all positions through the gridmapper
-	var mapper = GridMapper.new()
 	var hexels: Dictionary[Vector2i, Array]
 	for x in range(floor(-settings.radius / settings.chunk_size), floor(settings.radius / settings.chunk_size)):
 		for z in range(floor(-settings.radius / settings.chunk_size), floor(settings.radius / settings.chunk_size)):
-			hexels[Vector2i(x,z)] = mapper.calculate_map_positions(Vector2i(x,z), settings)
+			hexels[Vector2i(x,z)] = GridMapper.calculate_map_positions(Vector2i(x,z), settings)
 	interval["Calculate Map Positions -- "] = Time.get_ticks_msec()
 	
 	#generate cave
@@ -122,10 +143,10 @@ func generate_world():
 	#make terrain geometry
 	var hg = HexelGenerator.new()
 	for chunk_id in hexels.keys():
-		var new_chunk = hg.generate_chunk(hexels[chunk_id], interval)
+		var new_chunk = hg.generate_chunk(hexels[chunk_id], interval, chunk_id)
 		chunks.add_chunk(new_chunk, chunk_id)
 		new_chunk.add_to_group("chunks")
-		new_chunk.init_chunk(chunk_id)
+		new_chunk.init_chunk()
 	interval["Create Hexel Mesh -- "] = Time.get_ticks_msec()
 
 	## Place trees, spaceship, buildings, so on

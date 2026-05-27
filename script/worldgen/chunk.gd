@@ -7,8 +7,14 @@ var hexels_dict: Dictionary[Vector3i, Hexel]
 var hexel_layers: Dictionary[int, Array] = {}
 @onready var collider = CollisionShape3D.new()
 
-func init_chunk(id: Vector2i):
-	chunk_id = id
+func init_chunk():
+	#why the FUCK does this keep happening dude
+	var temp_hexels: Array[Hexel] = []
+	for hexel in hexels:
+		if hexel != null:
+			temp_hexels.append(hexel)
+	hexels.clear()
+	hexels = temp_hexels
 	create_dict()
 	generate_collider()
 	add_to_group("hexels")
@@ -20,7 +26,7 @@ func create_dict():
 		hexels_dict[hexel.grid_position_xyz] =  hexel
 
 func reset_geometry():
-	var new_mesh = MeshAlgorithm.remesh(hexels_dict, $WorldGen.settings)
+	var new_mesh = MeshAlgorithm.remesh(hexels_dict)
 	mesh = new_mesh.commit()
 	_reset_collider()
 

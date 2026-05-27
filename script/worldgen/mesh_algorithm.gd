@@ -16,12 +16,12 @@ const base_vertices = [
 	Vector3(-0.5, 0.0, -0.866)  # Top-left
 	]
 
-static func remesh(map: Dictionary[Vector3i, Hexel], settings):
+static func remesh(map: Dictionary[Vector3i, Hexel]):
 	var verts = PackedVector3Array()
 	var indices = PackedInt32Array()
 	var uvs = PackedVector2Array()
 	for hexel in map.values():
-		var prism = build_hex_prism(hexel, map, settings)
+		var prism = build_hex_prism(hexel, map)
 		var v_offset = verts.size() # start at last indice to not overwrite old ones
 		verts.append_array(prism.verts)
 		uvs.append_array(prism.uvs)
@@ -32,7 +32,7 @@ static func remesh(map: Dictionary[Vector3i, Hexel], settings):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for v_index in range(verts.size()):
 		surface.set_uv(uvs[v_index])
-		surface.set_smooth_group(settings.shading)
+		surface.set_smooth_group(Map.world_settings.shading)
 		surface.add_vertex(verts[v_index])
 
 	for i in indices:
@@ -44,7 +44,7 @@ static func remesh(map: Dictionary[Vector3i, Hexel], settings):
 	return surface
 
 ## Returns verts indices and uvs for a hexel
-static func build_hex_prism(hexel: Hexel, map: Dictionary[Vector3i, Hexel], settings) -> Dictionary:
+static func build_hex_prism(hexel: Hexel, map: Dictionary[Vector3i, Hexel]) -> Dictionary:
 	var verts = PackedVector3Array()
 	var uvs   = PackedVector2Array()
 	var indices = PackedInt32Array()
@@ -52,8 +52,8 @@ static func build_hex_prism(hexel: Hexel, map: Dictionary[Vector3i, Hexel], sett
 		return {"verts": verts, "uvs": uvs, "indices": indices}
 
 	var top_start = verts.size()
-	var size = settings.hexel_size
-	var height = settings.hexel_height
+	var size = Map.world_settings.hexel_size
+	var height = Map.world_settings.hexel_height
 	var pos = hexel.world_position
 	var top_offset = Vector3(0, height, 0)
 	var tiles : Dictionary = HexelData.tile_map.get(hexel.type)
@@ -90,7 +90,7 @@ static func build_hex_prism(hexel: Hexel, map: Dictionary[Vector3i, Hexel], sett
 	## BOTTOM
 	neighbor = hexel.grid_position_xyz
 	neighbor.y -= 1
-	if draw_face_towards(neighbor, map) and settings.draw_bottom:
+	if draw_face_towards(neighbor, map) and Map.world_settings.draw_bottom:
 		var bottom_start = verts.size()
 		for i in range(sides):
 			var angle = TAU * float(i) / float(sides)
