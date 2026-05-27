@@ -19,7 +19,7 @@ uniform float clampBottom : hint_range(-1.0, 0.0) = 0.0;
 
 
 void fragment() {
-	
+
 	//Fresnel Effect.
 	float rate_col = clamp(COLOR.r,0.0,1.0);
 	float fresnel = pow(1.0 - clamp(dot(NORMAL,VIEW),0.0,1.0),3.0);
@@ -30,7 +30,7 @@ void fragment() {
 	fres_col *= fresnel;
 	fres_col *= fresnel_rate;
 	fres_col *= fresnelBlend;
-	
+
 	ALBEDO = vec3(leavesColor.xyz);
 	ALPHA = texture(alphaTexture,UV).x;
 	ALPHA_SCISSOR_THRESHOLD = alphaThreshold;
@@ -38,12 +38,12 @@ void fragment() {
 }
 
 void vertex(){
-	
+
 	vec2 uvOffset = vec2(UV.x * 2.0 - 1.0, -(UV.y * 2.0 - 1.0));
 	uvOffset /= 2.0;
 	vec4 off = inverse(MODELVIEW_MATRIX) * vec4(uvOffset,1.0,0.0);
 	off = vec4(normalize(off.xyz),0.0) * offsetScale;
-	
+
 	//Wind
 	vec3 world_pos = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	float contribution = 1.0 * (1.0 - float(deactiveGlobalVariation));
@@ -52,14 +52,14 @@ void vertex(){
 	float offset = fract(positional_influence);
 	offset = min(1.0 - offset, offset);
 	offset = (1.0 - offset) * offset * 2.0;
-	
+
 	float t = TIME + sin(TIME + offset + cos(TIME + offset * 2.0));
 	float mask = clamp(VERTEX.y,0.0, 1.0) * (clampTop - clampBottom) + clampBottom;
-	
+
 	float si = sin(t) / 20.0 * offset;
 	float csi = cos(t) / 20.0 * offset;
-	
+
 	vec3 wind_offset = vec3(VERTEX.x * si * mask, VERTEX.y * si * mask, VERTEX.z * csi * mask);
-	
+
 	VERTEX += off.xyz + wind_offset;
 }
