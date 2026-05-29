@@ -73,8 +73,8 @@ void fragment() {
 	else {
 		//cry harder
 	}
-	
-	ALBEDO = albedo.rgb * albedo_tex.rgb;	
+
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
 	ROUGHNESS = roughness_tex * roughness;
 
 }

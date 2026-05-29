@@ -23,9 +23,11 @@ var _gravity := -30.0
 @onready var anim_tree: AnimationTree = %AnimationTree
 @onready var ray_cast: BlockRay = %RayCast3D
 @onready var display_text_box: DisplayTextBox = %DisplayTextBox
+@onready var skin_material: ShaderMaterial = ShaderMaterial.new()
 
 func _ready():
 	display_text_box.set_text("Player")
+	update_skin(GlobalInfo.player_info["skin_modulate"])
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("middle_click"):
@@ -110,3 +112,9 @@ func _on_display_text(text: String):
 
 func _on_clear_text():
 	display_text_box.visible = false
+
+func update_skin(color: Color):
+	if skin_material.shader == null:
+		skin_material.shader = load("res://assets/res/player_skin_shader.gdshader")
+	skin_material.set_shader_parameter("skin_modulate", GlobalInfo.player_info["skin_modulate"])
+	$metarig/Skeleton3D/skin.set_surface_override_material(0, skin_material)

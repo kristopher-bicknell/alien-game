@@ -1,0 +1,205 @@
+[gd_scene load_steps=30 format=3 uid="uid://72fwnbvoiw71"]
+
+[ext_resource type="Script" uid="uid://b3ftd0snvj06i" path="res://script/character.gd" id="2_cuyo6"]
+[ext_resource type="PackedScene" uid="uid://d3gnrdn4o5y75" path="res://assets/you.glb" id="2_jhcf0"]
+[ext_resource type="Script" uid="uid://rjdn43n4gspd" path="res://script/block_ray.gd" id="3_mutn8"]
+[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://scenes/ui/display_text_box.tscn" id="4_fgi2k"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgi2k"]
+shading_mode = 0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pjt0s"]
+animation = &"Idle_Loop RT"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cuyo6"]
+animation = &"Jump_Land RT"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mutn8"]
+animation = &"Jump_Loop RT"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fgi2k"]
+animation = &"Jump_Start RT"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wfnr8"]
+animation = &"Sprint_Loop RT"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wa5vi"]
+animation = &"Walk_Loop RT"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wfnr8"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0qfo5"]
+xfade_time = 0.3
+advance_mode = 2
+advance_condition = &"is_running"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yxww1"]
+xfade_time = 0.3
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wdpcj"]
+xfade_time = 0.3
+advance_mode = 2
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cuyo6"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mutn8"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f8hpl"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7ex5l"]
+advance_mode = 2
+advance_condition = &"landed"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bix7t"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"is_jump"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bblvu"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"is_jump"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fgi2k"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q52vl"]
+xfade_time = 0.2
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l884r"]
+xfade_time = 0.3
+advance_mode = 2
+advance_condition = &"is_running"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0rlhq"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"is_jump"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_oe6dy"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"is_running"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_6nn2t"]
+"states/Idle_Loop RT/node" = SubResource("AnimationNodeAnimation_pjt0s")
+"states/Idle_Loop RT/position" = Vector2(234, 107)
+"states/Jump_Land RT/node" = SubResource("AnimationNodeAnimation_cuyo6")
+"states/Jump_Land RT/position" = Vector2(564, -13)
+"states/Jump_Loop RT/node" = SubResource("AnimationNodeAnimation_mutn8")
+"states/Jump_Loop RT/position" = Vector2(394, -55)
+"states/Jump_Start RT/node" = SubResource("AnimationNodeAnimation_fgi2k")
+"states/Jump_Start RT/position" = Vector2(234, -27)
+"states/Sprint_Loop RT/node" = SubResource("AnimationNodeAnimation_wfnr8")
+"states/Sprint_Loop RT/position" = Vector2(609, 243)
+states/Start/position = Vector2(102, 107)
+"states/Walk_Loop RT/node" = SubResource("AnimationNodeAnimation_wa5vi")
+"states/Walk_Loop RT/position" = Vector2(558, 100)
+transitions = ["Start", "Idle_Loop RT", SubResource("AnimationNodeStateMachineTransition_wfnr8"), "Walk_Loop RT", "Sprint_Loop RT", SubResource("AnimationNodeStateMachineTransition_0qfo5"), "Sprint_Loop RT", "Walk_Loop RT", SubResource("AnimationNodeStateMachineTransition_yxww1"), "Sprint_Loop RT", "Idle_Loop RT", SubResource("AnimationNodeStateMachineTransition_wdpcj"), "Walk_Loop RT", "Idle_Loop RT", SubResource("AnimationNodeStateMachineTransition_cuyo6"), "Idle_Loop RT", "Walk_Loop RT", SubResource("AnimationNodeStateMachineTransition_mutn8"), "Jump_Start RT", "Jump_Loop RT", SubResource("AnimationNodeStateMachineTransition_f8hpl"), "Jump_Loop RT", "Jump_Land RT", SubResource("AnimationNodeStateMachineTransition_7ex5l"), "Idle_Loop RT", "Jump_Start RT", SubResource("AnimationNodeStateMachineTransition_bix7t"), "Walk_Loop RT", "Jump_Start RT", SubResource("AnimationNodeStateMachineTransition_bblvu"), "Jump_Land RT", "Walk_Loop RT", SubResource("AnimationNodeStateMachineTransition_fgi2k"), "Jump_Land RT", "Idle_Loop RT", SubResource("AnimationNodeStateMachineTransition_q52vl"), "Idle_Loop RT", "Sprint_Loop RT", SubResource("AnimationNodeStateMachineTransition_l884r"), "Sprint_Loop RT", "Jump_Start RT", SubResource("AnimationNodeStateMachineTransition_0rlhq"), "Jump_Land RT", "Sprint_Loop RT", SubResource("AnimationNodeStateMachineTransition_oe6dy")]
+graph_offset = Vector2(-72, -55)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuyo6"]
+radius = 2.70864
+height = 15.8607
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cuyo6"]
+
+[node name="Character" instance=ExtResource("2_jhcf0")]
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("2_cuyo6")
+
+[node name="metarig" parent="Scene" index="0"]
+unique_name_in_owner = true
+
+[node name="Skeleton3D" parent="Scene/metarig" index="1"]
+bones/1/rotation = Quaternion(0.0253188, -0.116, 0.0018536, 0.992925)
+bones/2/rotation = Quaternion(0.0283602, 1.02185e-05, 0.000240706, 0.999598)
+bones/4/rotation = Quaternion(0.349038, 0.000330399, -0.00011361, 0.937108)
+bones/5/rotation = Quaternion(-0.337775, 1.63168e-06, -6.35162e-07, 0.941227)
+bones/8/rotation = Quaternion(-0.342986, 0.689186, -0.371903, 0.518722)
+bones/9/rotation = Quaternion(0.230085, -0.0998196, 0.0268919, 0.967664)
+bones/10/rotation = Quaternion(0.12298, 0.0520415, -0.0649146, 0.988915)
+bones/12/rotation = Quaternion(0.433958, 0.641864, -0.282062, -0.565801)
+bones/13/rotation = Quaternion(0.347264, -0.0342943, 0.0353057, 0.936475)
+bones/14/rotation = Quaternion(0.132839, -0.0425147, 0.084308, 0.98663)
+bones/17/rotation = Quaternion(-0.209578, -0.779878, -0.359223, 0.467788)
+bones/19/rotation = Quaternion(0.969021, 0.110906, 0.106512, 0.193269)
+bones/20/rotation = Quaternion(0.174265, -0.104675, 0.0265111, 0.97876)
+bones/21/rotation = Quaternion(-0.320129, 0.0408224, 0.0788232, 0.943206)
+bones/24/rotation = Quaternion(0.979698, -0.146969, 0.118281, -0.0678328)
+bones/25/rotation = Quaternion(0.134134, 0.348213, -0.0577052, 0.925973)
+bones/26/rotation = Quaternion(-0.430016, -0.0769543, -0.139563, 0.888643)
+
+[node name="RayCast3D" type="RayCast3D" parent="Scene/metarig" index="2"]
+unique_name_in_owner = true
+transform = Transform3D(0.375434, 0, 0, 0, 0.187717, -0.325136, 0, 0.325136, 0.187717, 0, 4.13723, 0.590148)
+target_position = Vector3(0, 0, 20)
+script = ExtResource("3_mutn8")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Scene/metarig/RayCast3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.96046e-07, 12.9108)
+size = Vector3(0.5, 0.5, 0.5)
+material = SubResource("StandardMaterial3D_fgi2k")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Scene/metarig" index="3"]
+transform = Transform3D(-1, -6.18172e-08, 6.18172e-08, 0, 0.707107, 0.707107, -8.74228e-08, 0.707107, -0.707107, -3.88416e-08, 4.58328, 0.444296)
+light_energy = 2.0
+light_volumetric_fog_energy = 0.0
+spot_range = 24.9057
+spot_angle = 41.5768
+
+[node name="AnimationPlayer" parent="." index="1"]
+speed_scale = 5.0
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+unique_name_in_owner = true
+root_node = NodePath("%AnimationTree/..")
+tree_root = SubResource("AnimationNodeStateMachine_6nn2t")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/idle = false
+parameters/conditions/is_jump = false
+parameters/conditions/is_running = false
+parameters/conditions/is_walking = false
+parameters/conditions/landed = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.17803, 0)
+shape = SubResource("CapsuleShape3D_cuyo6")
+
+[node name="CameraPivot" type="Node3D" parent="." index="4"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.953685, -0.300806, 0, 0.300806, 0.953685, 0, 14.0279, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" index="0"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+shape = SubResource("SphereShape3D_cuyo6")
+spring_length = 25.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" index="0"]
+unique_name_in_owner = true
+
+[node name="DialogMarker" type="Marker3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.3655, 0)
+
+[node name="DisplayTextBox" parent="DialogMarker" index="0" node_paths=PackedStringArray("spawn_pos") instance=ExtResource("4_fgi2k")]
+unique_name_in_owner = true
+visible = false
+spawn_pos = NodePath("..")

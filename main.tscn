@@ -1,6 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=18 format=3 uid="uid://cxknqhnxe0l78"]
 
-[ext_resource type="PackedScene" uid="uid://72fwnbvoiw71" path="res://scenes/character/character.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://ci6r5r3hlrwjq" path="res://script/worldgen/world_gen.gd" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://bf7oc7st1txej" path="res://script/worldgen/generation_settings.gd" id="3_1bvp3"]
@@ -71,8 +71,6 @@ size = Vector3(50, 10, 50)
 [sub_resource type="BoxShape3D" id="BoxShape3D_5vw27"]
 size = Vector3(50, 10, 50)
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_kek77"]
-
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_lquwl")
 
@@ -82,8 +80,6 @@ settings = SubResource("Resource_lquwl")
 metadata/_custom_type_script = "uid://ci6r5r3hlrwjq"
 
 [node name="Objects" type="Node3D" parent="WorldGen"]
-
-[node name="Character" parent="." instance=ExtResource("1_ig7tw")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -144,7 +140,6 @@ skeleton = NodePath("../..")
 [node name="Collider" type="CollisionShape3D" parent="SpawnPoint/SpawnPlatform"]
 shape = SubResource("BoxShape3D_5vw27")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("ConcavePolygonShape3D_kek77")
+[node name="Character" parent="." instance=ExtResource("1_ig7tw")]
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]
