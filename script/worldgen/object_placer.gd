@@ -6,9 +6,9 @@ var plants_placed: Dictionary[Vector3i, PlantBase]
 var buildings_placed: Dictionary[Vector3i, BuildingBase] = {}
 
 #plants scenes dictionaries
-@onready var large_plants = {
-	"tree1": preload("res://scenes/terrain/tree1.tscn"),
-	"tree2": preload("res://scenes/terrain/tree_2.tscn")
+var large_plants = {
+	"tree1": load("res://scenes/terrain/tree1.tscn"),
+	"tree2": load("res://scenes/terrain/tree_2.tscn")
 }
 
 #buildings scenes dictionary
@@ -51,9 +51,8 @@ func create_building(building: String, base_hexel: Hexel, chunk_id: Vector2i):
 	new_building.initialize()
 
 func place_plants(settings):
-	return
 	for hexel in Map.surface_layer.values():
-		if randf() < settings.large_plant_freq:
+		if settings.wet_noise.get_noise_2dv(hexel.grid_position_xz) > 0 && randf() < settings.large_plant_freq:
 			#place large plant
 			var new_large_plant = large_plants.values().pick_random().instantiate()
 			objects.add_child(new_large_plant)

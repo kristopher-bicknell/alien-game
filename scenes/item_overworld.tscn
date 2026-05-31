@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://borxgwxjcxtn7"]
+
+[ext_resource type="Script" uid="uid://qde0seqxu56" path="res://script/item_overworld.gd" id="1_ipi0c"]
+[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://scenes/ui/display_text_box.tscn" id="2_acbpy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ipi0c"]
+radius = 1.30546
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_acbpy"]
+radius = 0.556978
+
+[node name="Item" type="Node3D"]
+script = ExtResource("1_ipi0c")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+
+[node name="DetectionArea" type="CollisionShape3D" parent="DetectionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.285156, 0)
+shape = SubResource("SphereShape3D_ipi0c")
+
+[node name="PickupArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea"]
+shape = SubResource("SphereShape3D_acbpy")
+debug_color = Color(0.980583, 0, 0.378434, 0.42)
+
+[node name="ItemMesh" type="MeshInstance3D" parent="."]
+
+[node name="DisplayTextBox" parent="." instance=ExtResource("2_acbpy")]
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_entered" from="PickupArea" to="." method="_on_pickup_area_body_entered"]

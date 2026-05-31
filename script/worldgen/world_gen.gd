@@ -24,7 +24,6 @@ func _ready() -> void:
 	#	c.free()
 	#object_placer.clear_objects()
 	#call_deferred("load_world", SaveData.load_data_tostring())
-	
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("debug_reset"):

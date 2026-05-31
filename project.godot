@@ -21,6 +21,7 @@ GlobalInfo="*res://script/global/global_info.gd"
 Map="*res://script/global/map.gd"
 SaveData="*res://script/global/save_data.gd"
 GlobalTime="*res://script/global/time.gd"
+PlayerInventory="*res://script/global/inventory.gd"
 
 [editor]
 

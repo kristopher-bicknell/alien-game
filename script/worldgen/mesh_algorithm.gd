@@ -1,7 +1,7 @@
 class_name MeshAlgorithm
 
 const ATLAS_RES   = Vector2i(1811,1811)	# full atlas resolution in pixels
-const TILE_SIZE   = Vector2i(60,60)	# usable area of one tile
+const TILE_SIZE   = Vector2i(58,58)	# usable area of one tile
 const TILE_STRIDE = Vector2i(64,64)	# includes padding
 const TILE_MARGIN = Vector2i(11,11)		# margin before first tile, always +1 of the actual padded border
 const sides = 6

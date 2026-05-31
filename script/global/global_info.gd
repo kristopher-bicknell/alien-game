@@ -1,5 +1,5 @@
 extends Node
-#refer to via Global_Info
+#refer to via GlobalInfo
 
 enum ControlMode{
 	DEFAULT, #player and camera movement are processed in third person
@@ -10,11 +10,9 @@ enum ControlMode{
 
 static var control_mode: ControlMode = ControlMode.DEFAULT
 
-#static var player_name: String = "Chuck"
-#static var planet_name: String = "Mars 2"
-
 static var player_info = {
 	"player_name": "Chuck",
 	"planet_name": "Mars 2",
-	"skin_modulate": Color("cb9b75")
+	"skin_modulate": Color("cb9b75"),
+	"inventory_size": 30
 }

@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://rxxs63rqvqrf"]
+
+[ext_resource type="Shader" uid="uid://bibjbtygga60i" path="res://assets/res/grass.gdshader" id="1_g3btb"]
+[ext_resource type="Texture2D" uid="uid://bsixb4whdvww0" path="res://assets/environment/grassy.png" id="2_din80"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_din80"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b475j"]
+render_priority = 0
+shader = ExtResource("1_g3btb")
+shader_parameter/grass_shape = ExtResource("2_din80")
+
+[node name="Grass1" type="Area3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("QuadMesh_din80")
+surface_material_override/0 = SubResource("ShaderMaterial_b475j")

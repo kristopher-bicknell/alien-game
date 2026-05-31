@@ -1,11 +1,12 @@
 extends MeshInstance3D
 class_name Chunk
 
-var chunk_id: Vector2i
+@export var chunk_id: Vector2i
 var hexels : Array[Hexel]
 var hexels_dict: Dictionary[Vector3i, Hexel]
 var hexel_layers: Dictionary[int, Array] = {}
 @onready var collider = CollisionShape3D.new()
+var chunk_neightbors: Dictionary[String, Chunk]
 
 func init_chunk():
 	#why the FUCK does this keep happening dude

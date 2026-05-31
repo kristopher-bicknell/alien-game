@@ -1,12 +1,12 @@
 extends Node3D
 
-@onready var player = $Character as Player
+@onready var player = $Scene as Player
 
 func _process(delta):
-	$CanvasLayer/position.text = str($Character.position)
+	$CanvasLayer/position.text = str(player.position)
 
 func _ready():
-	$Character.position = $SpawnPoint.transform.origin
+	player.position = $SpawnPoint.transform.origin
 	for building in get_tree().get_nodes_in_group("buildings"):
 		if building is BuildingBase:
 			building.connect("send_text", player._on_display_text)
@@ -14,25 +14,25 @@ func _ready():
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("debug_reset"):
-		$Character.position = $SpawnPoint.position
+		player.position = $SpawnPoint.position
 		_debug_notif("loaded world")
 	if event.is_action_pressed("debug_save"):
 		SaveData.save_data_tostring()
 		_debug_notif("saved world")
 		#SaveData.load_data_tostring()
 	if event.is_action_pressed("debug_clearworld"):
-		$Character.position = $SpawnPoint.position
+		player.position = $SpawnPoint.position
 		_debug_notif("cleared map data")
 		$WorldGen.clear_chunks()
 	if event.is_action_pressed("debug_generatemap"):
-		$Character.position = $SpawnPoint.position
+		player.position = $SpawnPoint.position
 		_debug_notif("generating new world...")
 	if event.is_action_pressed("debug_playerreset"):
-		$Character.position = $SpawnPoint.position
+		player.position = $SpawnPoint.position
 
 func _on_death_plane_body_entered(body: Node3D) -> void:
 	if body is CharacterBody3D:
-		$Character.position = $SpawnPoint.position
+		player.position = $SpawnPoint.position
 
 
 func _on_chunk_manager_terraingen_finished() -> void:

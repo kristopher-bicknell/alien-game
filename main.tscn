@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=20 format=3 uid="uid://cxknqhnxe0l78"]
 
 [ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
@@ -8,6 +8,8 @@
 [ext_resource type="FastNoiseLite" uid="uid://bgc7ugo4i8pq7" path="res://assets/res/mainnoise.tres" id="4_5vw27"]
 [ext_resource type="Texture2D" uid="uid://donh8kaip6kwi" path="res://assets/environment/terrainatlas.png" id="4_kek77"]
 [ext_resource type="FastNoiseLite" uid="uid://b2cn8ba6rls7n" path="res://assets/res/terrainnoise.tres" id="6_kek77"]
+[ext_resource type="PackedScene" uid="uid://be1ab2r4hbqy0" path="res://scenes/terrain/tree1.tscn" id="9_4c57u"]
+[ext_resource type="PackedScene" uid="uid://cq2ayidlq8pnc" path="res://scenes/terrain/tree_2.tscn" id="10_efxa6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
 albedo_texture = ExtResource("4_kek77")
@@ -27,7 +29,7 @@ max_height = 64
 ground_to_air_ratio = 0.5
 num_caves = 3
 chunk_size = 8
-large_plant_freq = 0.01
+large_plant_freq = 0.08
 small_plant_freq = 0.01
 noise = ExtResource("4_5vw27")
 terrain_noise = ExtResource("6_kek77")
@@ -52,8 +54,9 @@ glow_blend_mode = 1
 fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.444823, 0.541372, 0.791449, 1)
-fog_density = 1.0
+fog_density = 0.5
 fog_sky_affect = 0.5
+fog_depth_curve = 3.13834
 fog_depth_begin = 100.0
 fog_depth_end = 300.0
 
@@ -66,10 +69,10 @@ albedo_color = Color(0.21, 0.678, 0.75, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kek77"]
 material = SubResource("StandardMaterial3D_5vw27")
-size = Vector3(50, 10, 50)
+size = Vector3(500, 10, 500)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5vw27"]
-size = Vector3(50, 10, 50)
+size = Vector3(500, 10, 500)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_lquwl")
@@ -134,12 +137,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 400, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="SpawnPoint/SpawnPlatform"]
+transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_kek77")
 skeleton = NodePath("../..")
 
 [node name="Collider" type="CollisionShape3D" parent="SpawnPoint/SpawnPlatform"]
 shape = SubResource("BoxShape3D_5vw27")
 
-[node name="Character" parent="." instance=ExtResource("1_ig7tw")]
+[node name="Scene" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Debug" type="Node3D" parent="."]
+
+[node name="Tree1" parent="Debug" instance=ExtResource("9_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 380, 0)
+
+[node name="tree2" parent="Debug" instance=ExtResource("10_efxa6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 379, 0)
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]
