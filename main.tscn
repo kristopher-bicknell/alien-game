@@ -84,9 +84,9 @@ metadata/_custom_type_script = "uid://ci6r5r3hlrwjq"
 
 [node name="Objects" type="Node3D" parent="WorldGen"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Info" type="RichTextLabel" parent="CanvasLayer"]
+[node name="Info" type="RichTextLabel" parent="UI"]
 offset_left = 8.0
 offset_top = 10.0
 offset_right = 427.0
@@ -94,19 +94,19 @@ offset_bottom = 273.0
 bbcode_enabled = true
 text = "test!!!"
 
-[node name="position" type="Label" parent="CanvasLayer"]
+[node name="position" type="Label" parent="UI"]
 offset_left = 522.0
 offset_top = 10.0
 offset_right = 562.0
 offset_bottom = 33.0
 
-[node name="debug_notification" type="Label" parent="CanvasLayer"]
+[node name="debug_notification" type="Label" parent="UI"]
 offset_left = 7.0
 offset_top = 613.0
 offset_right = 146.0
 offset_bottom = 636.0
 
-[node name="debug_noteforme" type="Label" parent="CanvasLayer"]
+[node name="debug_noteforme" type="Label" parent="UI"]
 offset_left = 869.0
 offset_top = 507.0
 offset_right = 1132.0
@@ -116,6 +116,12 @@ text = "[9] Generate new map
 [-] Save current map
 [=] Load map from file
 [\\] Reset player to spawn platform"
+
+[node name="Inventory" type="RichTextLabel" parent="UI"]
+offset_left = 880.0
+offset_top = 9.0
+offset_right = 1127.0
+offset_bottom = 172.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
@@ -144,8 +150,10 @@ skeleton = NodePath("../..")
 [node name="Collider" type="CollisionShape3D" parent="SpawnPoint/SpawnPlatform"]
 shape = SubResource("BoxShape3D_5vw27")
 
+[node name="DebugSpawnItemPoint" type="Marker3D" parent="SpawnPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0)
+
 [node name="Scene" parent="." instance=ExtResource("1_ig7tw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="Debug" type="Node3D" parent="."]
 

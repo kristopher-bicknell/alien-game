@@ -1,15 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://borxgwxjcxtn7"]
+[gd_scene load_steps=6 format=3 uid="uid://borxgwxjcxtn7"]
 
 [ext_resource type="Script" uid="uid://qde0seqxu56" path="res://script/item_overworld.gd" id="1_ipi0c"]
 [ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://scenes/ui/display_text_box.tscn" id="2_acbpy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ipi0c"]
-radius = 1.30546
+radius = 9.80585
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_acbpy"]
-radius = 0.556978
+radius = 0.907942
 
-[node name="Item" type="Node3D"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_acbpy"]
+height = 0.391846
+radius = 0.439453
+
+[node name="Item" type="RigidBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+gravity_scale = 3.0
 script = ExtResource("1_ipi0c")
 
 [node name="DetectionArea" type="Area3D" parent="."]
@@ -26,7 +33,15 @@ debug_color = Color(0.980583, 0, 0.378434, 0.42)
 
 [node name="ItemMesh" type="MeshInstance3D" parent="."]
 
-[node name="DisplayTextBox" parent="." instance=ExtResource("2_acbpy")]
+[node name="TextBoxSpawnPos" type="Marker3D" parent="."]
+
+[node name="DisplayTextBox" parent="TextBoxSpawnPos" node_paths=PackedStringArray("spawn_pos") instance=ExtResource("2_acbpy")]
+spawn_pos = NodePath("..")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.195923, 0)
+shape = SubResource("CylinderShape3D_acbpy")
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="PickupArea" to="." method="_on_pickup_area_body_entered"]

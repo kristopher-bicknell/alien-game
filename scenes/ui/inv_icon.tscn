@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://k2pyjir35s5y"]
+
+[ext_resource type="Texture2D" uid="uid://pfymcr6sd5ja" path="res://assets/items/itematlas.png" id="1_jlp3g"]
+[ext_resource type="Script" uid="uid://c0af2p1cp7fnx" path="res://script/ui/inv_icon.gd" id="2_joxaf"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 2
+size_flags_vertical = 6
+script = ExtResource("2_joxaf")
+metadata/_edit_use_anchors_ = true
+
+[node name="InvIcon" type="Sprite2D" parent="."]
+texture = ExtResource("1_jlp3g")
+hframes = 5
+vframes = 5
+
+[node name="Number" type="Label" parent="."]
+offset_left = 29.0
+offset_top = 40.0
+offset_right = 69.0
+offset_bottom = 63.0
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://coasbso51gc07"]
+[gd_scene load_steps=3 format=3 uid="uid://coasbso51gc07"]
 
+[ext_resource type="Script" uid="uid://du6u6ny6bllai" path="res://script/ui/inventory_ui.gd" id="1_avmd0"]
 [ext_resource type="LabelSettings" uid="uid://jo35jjb1aulc" path="res://assets/res/menu_heading.tres" id="1_s6ek7"]
 
 [node name="Inventory" type="Control"]
@@ -9,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_avmd0")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -35,3 +37,21 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "menu"
 label_settings = ExtResource("1_s6ek7")
+
+[node name="ItemsView" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 186.0
+offset_top = 148.0
+offset_right = 1077.0
+offset_bottom = 582.0
+columns = 7
+
+[node name="Exit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 34.0
+offset_right = 77.0
+offset_bottom = 74.0
+text = "X"
+
+[connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]

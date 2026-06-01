@@ -10,7 +10,7 @@ var chunks: ChunkManager
 @onready var objects: Node3D = $Objects
 
 #UI
-@onready var label: RichTextLabel = $"../CanvasLayer/Info"
+@onready var label: RichTextLabel = $"../UI/Info"
 var threads: Array[Thread] = [Thread.new(), Thread.new(), Thread.new(), Thread.new()]
 
 
@@ -140,9 +140,8 @@ func generate_world():
 	#print("Caves removed ", removed)
 	caves.finished_caves()
 	#make terrain geometry
-	var hg = HexelGenerator.new()
 	for chunk_id in hexels.keys():
-		var new_chunk = hg.generate_chunk(hexels[chunk_id], interval, chunk_id)
+		var new_chunk = HexelGenerator.generate_chunk(hexels[chunk_id], interval, chunk_id)
 		chunks.add_chunk(new_chunk, chunk_id)
 		new_chunk.add_to_group("chunks")
 		new_chunk.init_chunk()

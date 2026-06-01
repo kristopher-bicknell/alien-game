@@ -3,9 +3,15 @@ extends Node3D
 @onready var player = $Scene as Player
 
 func _process(delta):
-	$CanvasLayer/position.text = str(player.position)
+	$UI/position.text = str(player.position)
+	$UI/Inventory.text = str(PlayerInventory.items)
+
+@onready var item = preload("res://scenes/item_overworld.tscn")
 
 func _ready():
+	var new_item = item.instantiate()
+	new_item.set_item(ItemData.ItemType.LOG)
+	$SpawnPoint/DebugSpawnItemPoint.add_child(new_item)
 	player.position = $SpawnPoint.transform.origin
 	for building in get_tree().get_nodes_in_group("buildings"):
 		if building is BuildingBase:
@@ -51,6 +57,6 @@ func is_point_in_cave(point:Vector3) -> bool:
 	return false
 
 func _debug_notif(notif: String):
-	$CanvasLayer/debug_notification.text = notif
+	$UI/debug_notification.text = notif
 	await get_tree().create_timer(5)
-	$CanvasLayer/debug_notification.text = ""
+	$UI/debug_notification.text = ""
