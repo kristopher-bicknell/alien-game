@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://xodxq1wid12c"]
+
+[ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="1_fx01o"]
+[ext_resource type="Script" uid="uid://cdjmocwnm38ul" path="res://script/ui/ingredient_menu_item_display.gd" id="1_lcsin"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lcsin"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="IngredientMenuItemDisplay" type="Panel"]
+custom_minimum_size = Vector2(0, 30)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 210.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lcsin")
+
+[node name="ItemName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -96.0
+offset_right = 95.0
+offset_bottom = 30.0
+grow_horizontal = 2
+theme = ExtResource("1_fx01o")
+text = "Aluminum sheet"
+label_settings = SubResource("LabelSettings_lcsin")
+vertical_alignment = 1
+
+[node name="Quantity" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 40.0
+offset_right = 106.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme = ExtResource("1_fx01o")
+text = "1 / 1"
+label_settings = SubResource("LabelSettings_lcsin")
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=21 format=3 uid="uid://cxknqhnxe0l78"]
 
 [ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
@@ -8,6 +8,7 @@
 [ext_resource type="FastNoiseLite" uid="uid://bgc7ugo4i8pq7" path="res://assets/res/mainnoise.tres" id="4_5vw27"]
 [ext_resource type="Texture2D" uid="uid://donh8kaip6kwi" path="res://assets/environment/terrainatlas.png" id="4_kek77"]
 [ext_resource type="FastNoiseLite" uid="uid://b2cn8ba6rls7n" path="res://assets/res/terrainnoise.tres" id="6_kek77"]
+[ext_resource type="PackedScene" uid="uid://tnl4leesxb0n" path="res://scenes/building/furnace.tscn" id="8_efxa6"]
 [ext_resource type="PackedScene" uid="uid://be1ab2r4hbqy0" path="res://scenes/terrain/tree1.tscn" id="9_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cq2ayidlq8pnc" path="res://scenes/terrain/tree_2.tscn" id="10_efxa6"]
 
@@ -117,12 +118,6 @@ text = "[9] Generate new map
 [=] Load map from file
 [\\] Reset player to spawn platform"
 
-[node name="Inventory" type="RichTextLabel" parent="UI"]
-offset_left = 880.0
-offset_top = 9.0
-offset_right = 1127.0
-offset_bottom = 172.0
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
 
@@ -153,14 +148,20 @@ shape = SubResource("BoxShape3D_5vw27")
 [node name="DebugSpawnItemPoint" type="Marker3D" parent="SpawnPoint"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0)
 
+[node name="Furnace" parent="SpawnPoint" groups=["buildings"] instance=ExtResource("8_efxa6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -19, -17)
+
 [node name="Scene" parent="." instance=ExtResource("1_ig7tw")]
+unique_name_in_owner = true
 
 [node name="Debug" type="Node3D" parent="."]
 
-[node name="Tree1" parent="Debug" instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 380, 0)
-
 [node name="tree2" parent="Debug" instance=ExtResource("10_efxa6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 379, 0)
+
+[node name="Tree1" parent="Debug" instance=ExtResource("9_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 379, 0)
+
+[node name="Items" type="Node3D" parent="."]
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]

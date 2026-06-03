@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://dj84jkjt1dr4a"]
+
+[ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="1_kqhg0"]
+[ext_resource type="Texture2D" uid="uid://pfymcr6sd5ja" path="res://assets/items/itematlas.png" id="1_m1km7"]
+[ext_resource type="Script" uid="uid://bmn76rqt2jj8s" path="res://script/ui/craft_menu_item_button.gd" id="2_kqhg0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4d21"]
+atlas = ExtResource("1_m1km7")
+region = Rect2(0, 0, 100, 100)
+
+[node name="CraftMenuItemButton" type="Button"]
+offset_right = 465.0
+offset_bottom = 108.0
+theme = ExtResource("1_kqhg0")
+text = "Log"
+icon = SubResource("AtlasTexture_r4d21")
+script = ExtResource("2_kqhg0")

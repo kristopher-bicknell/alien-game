@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://celckv8ng1wup"]
+
+[ext_resource type="FontFile" uid="uid://bmljotyil3hcn" path="res://assets/res/fonts/Oxanium-Regular.ttf" id="1_7fohd"]
+
+[resource]
+Control/fonts/font = ExtResource("1_7fohd")

@@ -3,6 +3,7 @@ class_name Player
 
 signal add_block
 signal remove_block
+signal hit
 
 @export_group("Movement")
 @export var move_speed := 25
@@ -34,6 +35,7 @@ func _input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
 
 func _unhandled_input(event: InputEvent) -> void:
 	if GlobalInfo.control_mode < 2:
@@ -118,3 +120,9 @@ func update_skin(color: Color):
 		skin_material.shader = load("res://assets/res/player_skin_shader.gdshader")
 	skin_material.set_shader_parameter("skin_modulate", GlobalInfo.player_info["skin_modulate"])
 	$metarig/Skeleton3D/skin.set_surface_override_material(0, skin_material)
+
+func interact_with(workstation: String, pos: Marker3D):
+	anim_tree.set("parameters/conditions/is_interact", true)
+	set_anim_state(false, false)
+	anim_tree.set("parameters/conditions/is_interact", false)
+	

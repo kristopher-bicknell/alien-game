@@ -1,24 +1,31 @@
 extends Node3D
 
-@onready var player = $Scene as Player
+@onready var player = %Scene as Player
 
 func _process(delta):
 	$UI/position.text = str(player.position)
-	$UI/Inventory.text = str(PlayerInventory.items)
 
 @onready var item = preload("res://scenes/item_overworld.tscn")
 
 func _ready():
 	var new_item = item.instantiate()
-	new_item.set_item(ItemData.ItemType.LOG)
+	new_item.set_item(ItemData.ItemType.GLASS)
 	$SpawnPoint/DebugSpawnItemPoint.add_child(new_item)
 	player.position = $SpawnPoint.transform.origin
 	for building in get_tree().get_nodes_in_group("buildings"):
 		if building is BuildingBase:
 			building.connect("send_text", player._on_display_text)
 			building.connect("send_area_exited", player._on_clear_text)
+			building.connect("send_interacted", player.interact_with)
+	$SpawnPoint/Furnace.connect("send_text", player._on_display_text)
+	$SpawnPoint/Furnace.connect("send_area_exited", player._on_clear_text)
+	$SpawnPoint/Furnace.connect("send_interacted", player.interact_with)
+	$Debug/Tree1.connect("spawn_item", spawn_item)
 
 func _input(event: InputEvent):
+	if event.is_action_pressed("open_inventory"):
+		#open inventory
+		UIManager.load_ui("inventory")
 	if event.is_action_pressed("debug_reset"):
 		player.position = $SpawnPoint.position
 		_debug_notif("loaded world")
@@ -60,3 +67,9 @@ func _debug_notif(notif: String):
 	$UI/debug_notification.text = notif
 	await get_tree().create_timer(5)
 	$UI/debug_notification.text = ""
+
+func spawn_item(item_spawn: ItemData.ItemType, pos: Vector3):
+	var new_item = item.instantiate()
+	$Items.add_child(new_item)
+	new_item.set_item(item_spawn)
+	new_item.global_position = pos

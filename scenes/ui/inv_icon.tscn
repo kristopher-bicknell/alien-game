@@ -1,28 +1,73 @@
-[gd_scene load_steps=3 format=3 uid="uid://k2pyjir35s5y"]
+[gd_scene load_steps=5 format=3 uid="uid://k2pyjir35s5y"]
 
 [ext_resource type="Texture2D" uid="uid://pfymcr6sd5ja" path="res://assets/items/itematlas.png" id="1_jlp3g"]
 [ext_resource type="Script" uid="uid://c0af2p1cp7fnx" path="res://script/ui/inv_icon.gd" id="2_joxaf"]
+[ext_resource type="Texture2D" uid="uid://nwfk4ychfvni" path="res://assets/ui/item_background.png" id="3_joxaf"]
 
-[node name="Control" type="Control"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-size_flags_horizontal = 2
-size_flags_vertical = 6
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_joxaf"]
+size = Vector2(100, 102)
+
+[node name="InvIcon" type="Area2D"]
 script = ExtResource("2_joxaf")
 metadata/_edit_use_anchors_ = true
 
-[node name="InvIcon" type="Sprite2D" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_joxaf")
+
+[node name="InvIcon" type="Sprite2D" parent="TextureRect"]
+position = Vector2(50, 50)
 texture = ExtResource("1_jlp3g")
 hframes = 5
 vframes = 5
 
-[node name="Number" type="Label" parent="."]
-offset_left = 29.0
-offset_top = 40.0
-offset_right = 69.0
-offset_bottom = 63.0
+[node name="ColorRect" type="ColorRect" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -34.0
+offset_top = -23.0
+offset_right = -6.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0, 0, 0, 0.403922)
+
+[node name="Number" type="Label" parent="TextureRect/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="debug_itemname" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_joxaf")
