@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=22 format=3 uid="uid://cxknqhnxe0l78"]
 
 [ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://tnl4leesxb0n" path="res://scenes/building/furnace.tscn" id="8_efxa6"]
 [ext_resource type="PackedScene" uid="uid://be1ab2r4hbqy0" path="res://scenes/terrain/tree1.tscn" id="9_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cq2ayidlq8pnc" path="res://scenes/terrain/tree_2.tscn" id="10_efxa6"]
+[ext_resource type="PackedScene" uid="uid://5s7nqsk4h1r4" path="res://scenes/building/workbench.tscn" id="12_dg77c"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
 albedo_texture = ExtResource("4_kek77")
@@ -66,7 +67,7 @@ fog_depth_end = 300.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vw27"]
 shading_mode = 0
 disable_fog = true
-albedo_color = Color(0.21, 0.678, 0.75, 1)
+albedo_color = Color(0.866709, 0.496252, 0.347949, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kek77"]
 material = SubResource("StandardMaterial3D_5vw27")
@@ -92,6 +93,7 @@ offset_left = 8.0
 offset_top = 10.0
 offset_right = 427.0
 offset_bottom = 273.0
+mouse_filter = 2
 bbcode_enabled = true
 text = "test!!!"
 
@@ -148,20 +150,32 @@ shape = SubResource("BoxShape3D_5vw27")
 [node name="DebugSpawnItemPoint" type="Marker3D" parent="SpawnPoint"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0)
 
-[node name="Furnace" parent="SpawnPoint" groups=["buildings"] instance=ExtResource("8_efxa6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -19, -17)
-
 [node name="Scene" parent="." instance=ExtResource("1_ig7tw")]
 unique_name_in_owner = true
 
 [node name="Debug" type="Node3D" parent="."]
 
-[node name="tree2" parent="Debug" instance=ExtResource("10_efxa6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 379, 0)
+[node name="Tree1" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 382, -103)
 
-[node name="Tree1" parent="Debug" instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 379, 0)
+[node name="tree2" parent="Debug" groups=["plants"] instance=ExtResource("10_efxa6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 379, 83)
+
+[node name="Tree1_2" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 382, -103)
+
+[node name="Tree1_3" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 382, -103)
+
+[node name="Tree1_4" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103, 382, -103)
 
 [node name="Items" type="Node3D" parent="."]
+
+[node name="Furnace" parent="." instance=ExtResource("8_efxa6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 380, 0)
+
+[node name="Workbench" parent="." instance=ExtResource("12_dg77c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 380, -22)
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]

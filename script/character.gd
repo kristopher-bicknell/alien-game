@@ -3,7 +3,7 @@ class_name Player
 
 signal add_block
 signal remove_block
-signal hit
+signal interact
 
 @export_group("Movement")
 @export var move_speed := 25
@@ -17,6 +17,7 @@ signal hit
 var _camera_input_direction := Vector2.ZERO
 var _last_movement_direction := Vector3.BACK
 var _gravity := -30.0
+var held_item = null
 
 @onready var _camera_pivot: Node3D = %CameraPivot
 @onready var _camera: Camera3D = %Camera3D
@@ -25,16 +26,25 @@ var _gravity := -30.0
 @onready var ray_cast: BlockRay = %RayCast3D
 @onready var display_text_box: DisplayTextBox = %DisplayTextBox
 @onready var skin_material: ShaderMaterial = ShaderMaterial.new()
+@onready var skeleton: Skeleton3D = $metarig/Skeleton3D
+@onready var dominant_hand: BoneAttachment3D = $metarig/Skeleton3D/HeldItemAttachment
+@onready var hair: MeshInstance3D = $metarig/Skeleton3D/HairAttachment/HairMesh
 
 func _ready():
 	display_text_box.set_text("Player")
 	update_skin(GlobalInfo.player_info["skin_modulate"])
+	update_hair(GlobalInfo.player_info["hair"])
+	dominant_hand.bone_idx = skeleton.find_bone("handR")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("middle_click"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	#check for interactions
+	if GlobalInfo.control_mode < 2:
+		if Input.is_action_just_pressed("interact"):
+			interact.emit()
 	
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -121,8 +131,20 @@ func update_skin(color: Color):
 	skin_material.set_shader_parameter("skin_modulate", GlobalInfo.player_info["skin_modulate"])
 	$metarig/Skeleton3D/skin.set_surface_override_material(0, skin_material)
 
-func interact_with(workstation: String, pos: Marker3D):
-	anim_tree.set("parameters/conditions/is_interact", true)
-	set_anim_state(false, false)
-	anim_tree.set("parameters/conditions/is_interact", false)
-	
+func update_hair(hair_info: Dictionary):
+	hair.mesh = GlobalInfo.get_hair_mesh()
+	hair.get_surface_override_material(0).set_shader_parameter("hair_texture", GlobalInfo.get_hair_texture())
+	hair.get_surface_override_material(0).set_shader_parameter("hair_modulate", hair_info["color"])
+
+func interact_with(station):
+	if station is CraftStation:
+		position = station.snap_point.global_position
+		anim_tree.set("parameters/conditions/is_interact", true)
+		set_anim_state(false,false)
+		await get_tree().create_timer(1.0).timeout
+		anim_tree.set("parameters/conditions/is_interact", false)
+		UIManager.load_ui(station.menu_name, station.building_name, station)
+
+func hold_something(something: PackedScene):
+	held_item = something.instantiate()
+	dominant_hand.add_child(held_item)

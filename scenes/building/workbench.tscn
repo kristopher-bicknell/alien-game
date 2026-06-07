@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://5s7nqsk4h1r4"]
+
+[ext_resource type="Script" uid="uid://bctg2eg6qse43" path="res://script/building/stations/craftstation.gd" id="1_abepf"]
+[ext_resource type="ArrayMesh" uid="uid://bwyeqqv82hkvo" path="res://assets/buildings/workbench/workbench.obj" id="2_r2pii"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oe2r6"]
+size = Vector3(6, 13, 6)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_s1wk3"]
+height = 5.21973
+radius = 4.6875
+
+[sub_resource type="Animation" id="Animation_bd2uk"]
+resource_name = "RESET"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cp650"]
+_data = {
+&"RESET": SubResource("Animation_bd2uk")
+}
+
+[node name="Workbench" type="StaticBody3D" node_paths=PackedStringArray("timer", "interact_area", "snap_point") groups=["buildings"]]
+script = ExtResource("1_abepf")
+menu_name = "craft"
+timer = NodePath("CraftTimer")
+interact_area = NodePath("Area3D")
+interact_text = "[R] Use"
+snap_point = NodePath("Area3D/Marker3D")
+building_name = "workbench"
+metadata/_custom_type_script = "uid://bctg2eg6qse43"
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_r2pii")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.7085, 0)
+shape = SubResource("BoxShape3D_oe2r6")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60986, 5.35399)
+shape = SubResource("CylinderShape3D_s1wk3")
+
+[node name="Marker3D" type="Marker3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.34158)
+
+[node name="AnimationTree" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_cp650")
+}
+
+[node name="CraftTimer" type="Timer" parent="."]

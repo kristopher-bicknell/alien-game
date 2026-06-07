@@ -1,17 +1,70 @@
-[gd_scene load_steps=5 format=3 uid="uid://dj84jkjt1dr4a"]
+[gd_scene load_steps=10 format=3 uid="uid://dj84jkjt1dr4a"]
 
 [ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="1_kqhg0"]
-[ext_resource type="Texture2D" uid="uid://pfymcr6sd5ja" path="res://assets/items/itematlas.png" id="1_m1km7"]
 [ext_resource type="Script" uid="uid://bmn76rqt2jj8s" path="res://script/ui/craft_menu_item_button.gd" id="2_kqhg0"]
+[ext_resource type="Texture2D" uid="uid://bhuaf7jb54ikl" path="res://assets/ui/item_selectbox.png" id="2_r4d21"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_r4d21"]
-atlas = ExtResource("1_m1km7")
-region = Rect2(0, 0, 100, 100)
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtour"]
+atlas = ExtResource("2_r4d21")
+region = Rect2(0, 0, 465, 108)
 
-[node name="CraftMenuItemButton" type="Button"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wrbwd"]
+load_path = "res://.godot/imported/item_selectbox.png-5d440575f6836d2dfd967bb07506c647.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbmyl"]
+atlas = SubResource("CompressedTexture2D_wrbwd")
+region = Rect2(0, 108, 465, 108)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tp4ee"]
+load_path = "res://.godot/imported/item_selectbox.png-5d440575f6836d2dfd967bb07506c647.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0bj47"]
+atlas = SubResource("CompressedTexture2D_tp4ee")
+region = Rect2(465, 0, 465, 108)
+
+[sub_resource type="LabelSettings" id="LabelSettings_kqhg0"]
+font_size = 36
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0.243137, 0, 0.34902, 0.270588)
+shadow_offset = Vector2(3, 3)
+
+[node name="CraftMenuItemButton" type="TextureButton"]
+custom_minimum_size = Vector2(465, 108)
 offset_right = 465.0
 offset_bottom = 108.0
 theme = ExtResource("1_kqhg0")
-text = "Log"
-icon = SubResource("AtlasTexture_r4d21")
+texture_normal = SubResource("AtlasTexture_gtour")
+texture_pressed = SubResource("AtlasTexture_jbmyl")
+texture_hover = SubResource("AtlasTexture_0bj47")
 script = ExtResource("2_kqhg0")
+
+[node name="Icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 5.0
+offset_top = -50.0
+offset_right = 105.0
+offset_bottom = 50.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -336.0
+offset_top = -40.0
+offset_bottom = 41.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Log"
+label_settings = SubResource("LabelSettings_kqhg0")
+horizontal_alignment = 1
+vertical_alignment = 1

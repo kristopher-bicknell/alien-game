@@ -1,12 +1,17 @@
 extends Node
 
+func full_save():
+	save_data_tostring()
+	save_player()
+
+func full_load():
+	load_data_tostring()
+	load_player()
+
 func save_data_tostring():
-	#var file = FileAccess.open("user://saves/" + filename, FileAccess.WRITE)
-	#if FileAccess.get_open_error() is Error:
-	#	printerr(FileAccess.get_open_error())
-	#	return
 	#load dict of Hexel and world gen settings
-	var file = FileAccess.open("user://world.dat", FileAccess.WRITE)
+	var player_directory = player_save_directory()
+	var file = FileAccess.open(player_directory + "/world.dat", FileAccess.WRITE)
 	if FileAccess.get_open_error() != OK:
 		print(FileAccess.get_open_error())
 		return
@@ -67,16 +72,14 @@ func handle_save_negative(vector: Vector2):
 	return return_vector
 
 func load_data_tostring():
-	var file = FileAccess.open("user://world.dat", FileAccess.READ)
+	var player_directory = player_save_directory()
+	var file = FileAccess.open(player_directory + "/world.dat", FileAccess.READ)
 	if FileAccess.get_open_error() != OK:
 		printerr(FileAccess.get_open_error())
 		return
-	if file.file_exists("user://world.dat"):
-		print("File exists")
 	var world_data = file.get_as_text()
 	var map_local_coords = {}
 	var settings = Map.world_settings
-	
 	#Reset everything relavent for save loading!
 	#Map.clear_map()
 	var save_arr = []
@@ -146,3 +149,28 @@ func save_config():
 
 func load_config():
 	pass
+
+func save_player():
+	var player_directory = player_save_directory()
+	var file = FileAccess.open(player_directory + "/player.dat", FileAccess.WRITE)
+	if FileAccess.get_open_error() != OK:
+		printerr(FileAccess.get_open_error())
+		return
+	#save player data
+	file.store_var(GlobalInfo.player_info)
+	file.close()
+
+func load_player():
+	var player_directory = player_save_directory()
+	var file = FileAccess.open(player_directory + "/player.dat", FileAccess.READ)
+	if !FileAccess.file_exists(file.get_path_absolute()):
+		push_warning("Player file at " + player_directory + " not found!")
+		return
+	GlobalInfo.player_info = file.get_var()
+	file.close()
+
+func player_save_directory():
+	var player_directory = "user://"+GlobalInfo.player_info["player_name"]
+	if !DirAccess.dir_exists_absolute(player_directory):
+		DirAccess.make_dir_absolute(player_directory)
+	return player_directory

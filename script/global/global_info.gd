@@ -10,9 +10,46 @@ enum ControlMode{
 
 static var control_mode: ControlMode = ControlMode.DEFAULT
 
+enum HairTypes {BUZZ, BUNS, MOHAWK, BRAT}
+
+const hair_types = {
+	HairTypes.BUZZ: {
+		"mesh": "res://assets/characters/you/hair_buzz.obj",
+		"texture": "res://assets/characters/you/hair_buns_texture.png"
+	},
+	HairTypes.BUNS: {
+		"mesh": "res://assets/characters/you/hair_buns.obj",
+		"texture": "res://assets/characters/you/hair_buns_texture.png"
+	},
+	HairTypes.MOHAWK: {
+		"mesh": "res://assets/characters/you/hair_mohawk.obj",
+		"texture": "res://assets/characters/you/hair_mohawk_texture.png"
+	},
+	HairTypes.BRAT: {
+		"mesh": "res://assets/characters/you/hair_brat.obj",
+		"texture": "res://assets/characters/you/hair_brat_texture.png"
+	}
+}
+
 static var player_info = {
 	"player_name": "Chuck",
 	"planet_name": "Mars 2",
 	"skin_modulate": Color("cb9b75"),
+	"hair": {
+		"type": HairTypes.BUNS,
+		"mesh": "res://assets/characters/you/hair_buns.obj",
+		"texture": "res://assets/characters/you/hair_buns_texture.png",
+		"color": Color("C55CFF")},
 	"inventory_size": 30
 }
+
+static func set_hair_type(new_hair_type: HairTypes):
+	player_info["hair"]["type"] = new_hair_type
+	player_info["hair"]["mesh"] = hair_types[new_hair_type]["mesh"]
+	player_info["hair"]["texture"] = hair_types[new_hair_type]["texture"]
+
+
+
+static func get_hair_mesh(): return load(player_info["hair"]["mesh"])
+
+static func get_hair_texture(): return load(player_info["hair"]["texture"])

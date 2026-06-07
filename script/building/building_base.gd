@@ -11,19 +11,19 @@ extends StaticBody3D
 ##Should be added to building via script of building inheriting class
 var building_data: BuildingData = null
 var player_inside: bool = false
+@export var building_name: String
 
 signal send_area_entered()
 signal send_area_exited()
 signal send_text(text:String)
-signal send_interacted(snap_pos: Marker3D)
+signal send_interacted_valid(snap_pos: Marker3D)
 
 func _ready():
-	if interact_area != null:
-		interact_area.connect("body_entered", interact_area_body_entered)
-		interact_area.connect("body_exited", interact_area_body_exited)
+	interact_area.connect("body_entered", interact_area_body_entered)
+	interact_area.connect("body_exited", interact_area_body_exited)
 
 func interact_area_body_entered(body:Node3D):
-	if body is CharacterBody3D:
+	if body is Player:
 		if interact_area == null: return
 		player_inside = true
 		send_area_entered.emit()
@@ -32,10 +32,14 @@ func interact_area_body_entered(body:Node3D):
 		print(interact_text)
 
 func interact_area_body_exited(body:Node3D):
-	if body is CharacterBody3D:
+	if body is Player:
 		if interact_area == null: return
 		player_inside = false
 		send_area_exited.emit()
+
+func player_interact():
+	if !player_inside: return
+	send_interacted_valid.emit(self)
 
 func create_building_data(chunk: Vector2, origin: Vector3):
 	building_data = BuildingData.new()

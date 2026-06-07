@@ -5,8 +5,10 @@ extends UIBase
 @onready var ingredient_menu_display_scene = preload("res://scenes/ui/ingredient_menu_item_display.tscn")
 @export var station: String
 
+var current_item: ItemData.ItemType
 var current_quantity: int = 1
 var current_recipe: Recipe
+var station_ref: CraftStation
 
 func load_ui():
 	%StationName.text = station.capitalize()
@@ -17,7 +19,11 @@ func load_ui():
 		new_entry.set_recipe(item, recipes[item])
 		new_entry.connect("pressed", _item_select.bind(new_entry.item, new_entry.recipe))
 
+func update_window():
+	_item_select(current_item, current_recipe)
+
 func _item_select(item, recipe):
+	current_item = item
 	var item_info = ItemData.item_dict[item]
 	current_recipe = recipe
 	$Background/ItemDisplayWindow/ItemName.text = item_info["name"]
@@ -113,6 +119,7 @@ func set_can_craft():
 
 func can_craft(quantity):
 	#TODO: need to add in support for checking oxygen, hydrogen, and water
+	if station_ref.is_processing: return false
 	var can_craft = true
 	for item in current_recipe.ingredients.keys():
 		if PlayerInventory.items.has(item):
@@ -139,3 +146,6 @@ func set_quantity_constraints():
 func _on_dec_quantity_button_pressed() -> void:
 	current_quantity -= 1
 	set_quantity_constraints()
+
+func _on_start_craft_button_pressed() -> void:
+	station_ref.start_crafting(current_item, current_quantity, current_recipe)

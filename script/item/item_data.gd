@@ -16,6 +16,8 @@ const item_dict = {
 	ItemType.INVALID: {
 		"name": "INVALID",
 		"description": "An invalid item. Cool!",
+		"mesh": "res://assets/items/egg.obj",
+		"texture_overworld": Vector2.ZERO
 	},
 	ItemType.TREE1_LOG: {
 		"name": "Tree1 log",
@@ -168,7 +170,7 @@ const item_dict = {
 		"name": "Fiber",
 		"description": "Fibrous. Reminds you of hemp.",
 		"mesh": "res://assets/items/dirt_pile.obj",
-		"texture_overworld": Vector2.ZERO,
+		"texture_overworld": Vector2(0,1),
 		"texture_icon": Vector2i(5,2)
 		},
 	ItemType.CLAY: {
@@ -195,7 +197,7 @@ const item_dict = {
 }
 
 static var recipes = {
-	"workstation" : {
+	"workbench" : {
 		ItemType.TREE1_PLANK: Recipe.new({ItemType.TREE1_LOG: 1}, [0,0,0,0]),
 		ItemType.TREE2_PLANK: Recipe.new({ItemType.TREE3_LOG: 1}, [0,0,0,0]),
 		ItemType.TREE3_PLANK: Recipe.new({ItemType.TREE3_LOG: 1}, [0,0,0,0]),
@@ -204,7 +206,7 @@ static var recipes = {
 		ItemType.MOTOR: Recipe.new({ItemType.COPPER_WIRE: 1, ItemType.IRON_BAR: 1, ItemType.ALUMINUM_SHEET: 1}, [0,0,0,0])
 	},
 	"furnace" : {
-		ItemType.IRON_BAR: Recipe.new({ItemType.IRON_ORE: 1}, [0, 2.0, 0, 50.0]),
+		ItemType.IRON_BAR: Recipe.new({ItemType.IRON_ORE: 1}, [0, 2.0, 0, 15.0]),
 		ItemType.COPPER_BAR: Recipe.new({ItemType.COPPER_ORE: 1}, [0, 1.0, 0, 60.0]),
 		ItemType.ALUMINUM_BAR: Recipe.new({ItemType.ALUMINUM_ORE: 1}, [0, 1.0, 0, 40.0]),
 		ItemType.GLASS: Recipe.new({ItemType.SAND_PILE: 1}, [0, 2.0, 0, 50.0])

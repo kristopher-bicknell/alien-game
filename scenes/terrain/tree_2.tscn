@@ -1,14 +1,240 @@
-[gd_scene load_steps=4 format=3 uid="uid://cq2ayidlq8pnc"]
+[gd_scene load_steps=21 format=3 uid="uid://cq2ayidlq8pnc"]
 
 [ext_resource type="Script" uid="uid://2ekngidht1x" path="res://script/tree.gd" id="1_fcxxm"]
 [ext_resource type="ArrayMesh" uid="uid://mglh08o7btk5" path="res://assets/environment/tree2_base.obj" id="1_xi3w1"]
 [ext_resource type="ArrayMesh" uid="uid://cvkhbnbqugmba" path="res://assets/environment/tree2_leafs.obj" id="2_fcxxm"]
 
-[node name="tree2" type="StaticBody3D"]
+[sub_resource type="Gradient" id="Gradient_firxy"]
+colors = PackedColorArray(0.315664, 0.585127, 0.727022, 1, 0.440572, 0.770695, 0.838565, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1p20y"]
+noise_type = 2
+frequency = 0.0468
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_44vyj"]
+color_ramp = SubResource("Gradient_firxy")
+noise = SubResource("FastNoiseLite_1p20y")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fcxxm"]
+albedo_texture = SubResource("NoiseTexture2D_44vyj")
+
+[sub_resource type="Gradient" id="Gradient_fcxxm"]
+offsets = PackedFloat32Array(0, 0.994652)
+colors = PackedColorArray(0.361286, 0.876397, 0.680357, 1, 0.674376, 0.96678, 0.876308, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_firxy"]
+noise_type = 2
+frequency = 0.0225
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1p20y"]
+color_ramp = SubResource("Gradient_fcxxm")
+noise = SubResource("FastNoiseLite_firxy")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_firxy"]
+albedo_color = Color(0.361286, 0.876397, 0.680357, 1)
+albedo_texture = SubResource("NoiseTexture2D_1p20y")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_fcxxm"]
+height = 35.8053
+radius = 4.3501
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_firxy"]
+height = 11.5
+radius = 10.0
+
+[sub_resource type="Animation" id="Animation_00p2j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tree2Base:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tree2Base:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tree2Leafs:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Tree2Leafs:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_wuvas"]
+resource_name = "destroy"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tree2Base:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -100, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tree2Base:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.1, 0.1, 0.1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tree2Leafs:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -100, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Tree2Leafs:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.1, 0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_y8pa0"]
+resource_name = "hit"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tree2Leafs:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.1, 1.1, 1.1), Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tree2Base:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.1, 1.1, 1.1), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wuvas"]
+_data = {
+&"RESET": SubResource("Animation_00p2j"),
+&"destroy": SubResource("Animation_wuvas"),
+&"hit": SubResource("Animation_y8pa0")
+}
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1p20y"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, -100, 0)
+scale_min = 0.3
+scale_max = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00p2j"]
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_44vyj"]
+material = SubResource("StandardMaterial3D_00p2j")
+
+[node name="tree2" type="StaticBody3D" node_paths=PackedStringArray("interaction_area", "particles", "anim_player")]
 script = ExtResource("1_fcxxm")
+interaction_area = NodePath("InteractionArea")
+particles = NodePath("Particles")
+anim_player = NodePath("AnimationPlayer")
+tree_type = 2
 
 [node name="Tree2Base" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_xi3w1")
+surface_material_override/0 = SubResource("StandardMaterial3D_fcxxm")
 
 [node name="Tree2Leafs" type="MeshInstance3D" parent="."]
 mesh = ExtResource("2_fcxxm")
+surface_material_override/0 = SubResource("StandardMaterial3D_firxy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.9026, 0)
+shape = SubResource("CylinderShape3D_fcxxm")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.75, 0)
+shape = SubResource("CylinderShape3D_firxy")
+debug_color = Color(0.653118, 0.518259, 0, 0.42)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_wuvas")
+}
+
+[node name="Particles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.8, 9, 0.9)
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_1p20y")
+draw_pass_1 = SubResource("QuadMesh_44vyj")

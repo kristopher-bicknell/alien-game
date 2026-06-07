@@ -1,37 +1,56 @@
-[gd_scene load_steps=5 format=3 uid="uid://k2pyjir35s5y"]
+[gd_scene load_steps=10 format=3 uid="uid://k2pyjir35s5y"]
 
-[ext_resource type="Texture2D" uid="uid://pfymcr6sd5ja" path="res://assets/items/itematlas.png" id="1_jlp3g"]
+[ext_resource type="Texture2D" uid="uid://dgk6sm0wyhlge" path="res://assets/ui/inventory_buttons.png" id="2_jlp3g"]
 [ext_resource type="Script" uid="uid://c0af2p1cp7fnx" path="res://script/ui/inv_icon.gd" id="2_joxaf"]
-[ext_resource type="Texture2D" uid="uid://nwfk4ychfvni" path="res://assets/ui/item_background.png" id="3_joxaf"]
+[ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="3_joxaf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_joxaf"]
+atlas = ExtResource("2_jlp3g")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nyoq5"]
+load_path = "res://.godot/imported/inventory_buttons.png-a1c304db27b1f35a10d21a56b29c776a.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtoig"]
+atlas = SubResource("CompressedTexture2D_nyoq5")
+region = Rect2(0, 100, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ahryl"]
+load_path = "res://.godot/imported/inventory_buttons.png-a1c304db27b1f35a10d21a56b29c776a.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stlut"]
+atlas = SubResource("CompressedTexture2D_ahryl")
+region = Rect2(100, 0, 100, 100)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_joxaf"]
 size = Vector2(100, 102)
 
-[node name="InvIcon" type="Area2D"]
+[node name="Button" type="TextureButton"]
+offset_right = 100.0
+offset_bottom = 100.0
+texture_normal = SubResource("AtlasTexture_joxaf")
+texture_pressed = SubResource("AtlasTexture_rtoig")
+texture_hover = SubResource("AtlasTexture_stlut")
 script = ExtResource("2_joxaf")
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -25.0
-offset_top = -25.0
-offset_right = 25.0
-offset_bottom = 25.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_joxaf")
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="InvIcon" type="Sprite2D" parent="TextureRect"]
-position = Vector2(50, 50)
-texture = ExtResource("1_jlp3g")
-hframes = 5
-vframes = 5
-
-[node name="ColorRect" type="ColorRect" parent="TextureRect"]
+[node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -45,8 +64,9 @@ offset_bottom = -2.0
 grow_horizontal = 0
 grow_vertical = 0
 color = Color(0, 0, 0, 0.403922)
+metadata/_edit_use_anchors_ = true
 
-[node name="Number" type="Label" parent="TextureRect/ColorRect"]
+[node name="Number" type="Label" parent="ColorRect"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -62,12 +82,54 @@ grow_vertical = 2
 text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="debug_itemname" type="Label" parent="TextureRect"]
+[node name="debug_itemname" type="Label" parent="ColorRect/Number"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = -60.0
+offset_top = -76.0
+offset_right = -20.0
+offset_bottom = -53.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="PopupPanel" type="Panel" parent="."]
+visible = false
+z_index = 100
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_right = 110.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_joxaf")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PopupPanel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 96.0
+bbcode_enabled = true
+scroll_active = false
+
+[node name="InvIcon" type="Area2D" parent="."]
+position = Vector2(50, 50)
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InvIcon"]
 shape = SubResource("RectangleShape2D_joxaf")
+
+[connection signal="mouse_entered" from="." to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_entered" from="." to="InvIcon" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_button_mouse_exited"]
+[connection signal="mouse_exited" from="." to="InvIcon" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_button_pressed"]
+[connection signal="pressed" from="." to="InvIcon" method="_on_button_pressed"]
+[connection signal="mouse_entered" from="InvIcon" to="InvIcon" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="InvIcon" to="InvIcon" method="_on_mouse_exited"]

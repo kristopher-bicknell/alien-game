@@ -1,5 +1,6 @@
 extends Node3D
 
+#debugging this shit without being able to rename the root node of the player SUCKS dude
 @onready var player = %Scene as Player
 
 func _process(delta):
@@ -8,19 +9,24 @@ func _process(delta):
 @onready var item = preload("res://scenes/item_overworld.tscn")
 
 func _ready():
-	var new_item = item.instantiate()
-	new_item.set_item(ItemData.ItemType.GLASS)
-	$SpawnPoint/DebugSpawnItemPoint.add_child(new_item)
+	debug_ready()
 	player.position = $SpawnPoint.transform.origin
 	for building in get_tree().get_nodes_in_group("buildings"):
 		if building is BuildingBase:
-			building.connect("send_text", player._on_display_text)
-			building.connect("send_area_exited", player._on_clear_text)
-			building.connect("send_interacted", player.interact_with)
-	$SpawnPoint/Furnace.connect("send_text", player._on_display_text)
-	$SpawnPoint/Furnace.connect("send_area_exited", player._on_clear_text)
-	$SpawnPoint/Furnace.connect("send_interacted", player.interact_with)
-	$Debug/Tree1.connect("spawn_item", spawn_item)
+			building.send_text.connect(player._on_display_text)
+			building.send_area_exited.connect(player._on_clear_text)
+			if building is CraftStation:
+				building.send_interacted_valid.connect(player.interact_with)
+			player.interact.connect(building.player_interact)
+	for plant in get_tree().get_nodes_in_group("plants"):
+		if plant is TallPlant:
+			player.interact.connect(plant.hit)
+			plant.connect("spawn_item", spawn_item)
+
+func debug_ready():
+	var new_item = item.instantiate()
+	new_item.set_item(ItemData.ItemType.GLASS)
+	$SpawnPoint/DebugSpawnItemPoint.add_child(new_item)
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("open_inventory"):
@@ -46,7 +52,6 @@ func _input(event: InputEvent):
 func _on_death_plane_body_entered(body: Node3D) -> void:
 	if body is CharacterBody3D:
 		player.position = $SpawnPoint.position
-
 
 func _on_chunk_manager_terraingen_finished() -> void:
 	pass

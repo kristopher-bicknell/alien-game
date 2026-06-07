@@ -1,7 +1,12 @@
 extends Node
 
 ##key = item type, value = number of the item. ONLY ADD OR REMOVE VIA FUNCTIONS
-static var items: Dictionary[ItemData.ItemType, int] = {}
+static var items: Dictionary[ItemData.ItemType, int] = {
+	ItemData.ItemType.TREE1_LOG: 5,
+	ItemData.ItemType.IRON_ORE: 7,
+	ItemData.ItemType.MOTOR: 999,
+	ItemData.ItemType.EGG: 1
+}
 ##total number of items in inventory. only works if you use the functions, or itll desync and youll die.
 static var item_count: int = 0
 

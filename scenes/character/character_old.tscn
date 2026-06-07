@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b3ftd0snvj06i" path="res://script/character.gd" id="2_cuyo6"]
 [ext_resource type="PackedScene" uid="uid://d3gnrdn4o5y75" path="res://assets/you.glb" id="2_jhcf0"]
 [ext_resource type="Script" uid="uid://rjdn43n4gspd" path="res://script/block_ray.gd" id="3_mutn8"]
-[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://scenes/ui/display_text_box.tscn" id="4_fgi2k"]
+[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://assets/buildings/spaceship/ui/display_text_box.tscn" id="4_fgi2k"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgi2k"]
 shading_mode = 0

@@ -29,7 +29,7 @@ theme = ExtResource("1_k2sdp")
 script = ExtResource("1_wx78o")
 station = "workstation"
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -99,7 +99,7 @@ offset_left = 516.0
 offset_top = 81.0
 offset_right = 757.0
 offset_bottom = 322.0
-color = Color(0.607843, 0.607843, 0.607843, 1)
+color = Color(0.519857, 0.5146, 0.83, 0.654902)
 
 [node name="ItemIcon" type="Sprite2D" parent="Background/ItemDisplayWindow"]
 visible = false
@@ -150,7 +150,7 @@ offset_right = 108.0
 offset_bottom = 26.0
 grow_horizontal = 0
 grow_vertical = 2
-color = Color(0.607843, 0.607843, 0.607843, 1)
+color = Color(0.521569, 0.513726, 0.831373, 0.654902)
 
 [node name="DecQuantityButton" type="Button" parent="Background/ItemDisplayWindow/StartCraftButton/QuantityBox"]
 unique_name_in_owner = true
@@ -229,7 +229,7 @@ offset_right = 360.5
 offset_bottom = 143.0
 grow_horizontal = 2
 grow_vertical = 0
-color = Color(0.607843, 0.607843, 0.607843, 1)
+color = Color(0.521569, 0.513726, 0.831373, 0.654902)
 
 [node name="ParametersLabel" type="Label" parent="Background/ItemDisplayWindow/ParametersWindow"]
 layout_mode = 1
@@ -316,7 +316,7 @@ offset_right = 238.0
 offset_bottom = 156.5
 grow_horizontal = 0
 grow_vertical = 2
-color = Color(0.607843, 0.607843, 0.607843, 1)
+color = Color(0.521569, 0.513726, 0.831373, 0.654902)
 
 [node name="ItemName" type="Label" parent="Background/ItemDisplayWindow/IngredientsWindow"]
 layout_mode = 1
@@ -363,4 +363,5 @@ offset_bottom = 102.0
 focus_mode = 0
 text = "UPGRADE"
 
+[connection signal="pressed" from="Background/ItemDisplayWindow/StartCraftButton" to="." method="_on_start_craft_button_pressed"]
 [connection signal="pressed" from="Background/ItemDisplayWindow/StartCraftButton/QuantityBox/DecQuantityButton" to="." method="_on_dec_quantity_button_pressed"]

@@ -1,6 +1,62 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://celckv8ng1wup"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://celckv8ng1wup"]
 
 [ext_resource type="FontFile" uid="uid://bmljotyil3hcn" path="res://assets/res/fonts/Oxanium-Regular.ttf" id="1_7fohd"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vwe55"]
+bg_color = Color(0.4005, 0.3726, 0.54, 0.478431)
+skew = Vector2(0.565, 0)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.258824)
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cqlav"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uoisi"]
+bg_color = Color(0.646156, 0.571601, 0.995262, 0.478431)
+skew = Vector2(0.565, 0)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.258824)
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4tmyk"]
+bg_color = Color(0.666667, 0.6, 1, 0.478431)
+skew = Vector2(0.565, 0)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.258824)
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5yreo"]
+bg_color = Color(0.454808, 0.390996, 0.938186, 0.478431)
+skew = Vector2(0.565, 0)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.258824)
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7fohd"]
+bg_color = Color(0.666667, 0.6, 1, 0.635294)
+skew = Vector2(-0.02, -0.002)
+border_width_left = 12
+border_width_top = 12
+border_width_right = 12
+border_width_bottom = 12
+border_color = Color(0.666667, 0.6, 1, 1)
+border_blend = true
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 1
+shadow_offset = Vector2(1, 1)
+
 [resource]
+Button/font_sizes/font_size = 20
+Button/styles/disabled = SubResource("StyleBoxFlat_vwe55")
+Button/styles/focus = SubResource("StyleBoxEmpty_cqlav")
+Button/styles/hover = SubResource("StyleBoxFlat_uoisi")
+Button/styles/normal = SubResource("StyleBoxFlat_4tmyk")
+Button/styles/pressed = SubResource("StyleBoxFlat_5yreo")
 Control/fonts/font = ExtResource("1_7fohd")
+Panel/styles/panel = SubResource("StyleBoxFlat_7fohd")

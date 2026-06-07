@@ -11,15 +11,18 @@ var player_inside: bool = false
 
 func _ready():
 	if tree_type == 1:
-		hp = 10
-		drops = {ItemData.ItemType.TREE1_LOG: 5}
-	if interaction_area:
-		interaction_area.connect("body_entered", _body_entered)
-		interaction_area.connect("body_exited", _body_exited)
+		hp = 2
+		drops = {ItemData.ItemType.TREE1_LOG: Vector2(0.9, 5.0),
+		ItemData.ItemType.FIBER: Vector2(0.1, 2.0)}
+	if tree_type == 2:
+		hp = 2
+		drops = {ItemData.ItemType.TREE2_LOG: Vector2(0.9, 5.0)}
+	interaction_area.connect("body_entered", _body_entered)
+	interaction_area.connect("body_exited", _body_exited)
 
-func _input(event: InputEvent):
-	if event.is_action_pressed("interact") and player_inside:
-		$AnimationPlayer.play("hit")
+func hit():
+	if player_inside and hp > 0:
+		anim_player.play("hit")
 		particles.restart()
 		particles.emitting = true
 		hp -= 1
@@ -30,8 +33,10 @@ func check_hp():
 		anim_player.play("destroy")
 		#spawn wood and kill the tree
 		for item in drops.keys():
-			for number in drops[item]:
-				spawn_item.emit(item, get_item_spawn())
+			var prob_and_calls = drops[item]
+			for i in range(prob_and_calls.y):
+				if randf() <= prob_and_calls.x:
+					spawn_item.emit(item, get_item_spawn())
 		await anim_player.animation_finished
 		queue_free()
 

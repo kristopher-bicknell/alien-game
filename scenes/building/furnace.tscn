@@ -1,7 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://tnl4leesxb0n"]
+[gd_scene load_steps=25 format=3 uid="uid://tnl4leesxb0n"]
 
-[ext_resource type="Script" uid="uid://bctg2eg6qse43" path="res://script/building/stations/furnace.gd" id="1_bd2uk"]
+[ext_resource type="Script" uid="uid://bctg2eg6qse43" path="res://script/building/stations/craftstation.gd" id="1_bd2uk"]
 [ext_resource type="ArrayMesh" uid="uid://dihpmauquxqod" path="res://assets/buildings/furnace/furnace.obj" id="2_cp650"]
+[ext_resource type="PackedScene" uid="uid://rkd4tlno18sv" path="res://scenes/ui/display_item_crafting.tscn" id="3_cp650"]
+[ext_resource type="Texture2D" uid="uid://difvj0fjrqx62" path="res://assets/buildings/furnace/furnace_texture.png" id="3_qoea5"]
+[ext_resource type="Texture2D" uid="uid://bpugbfn1v0g32" path="res://assets/buildings/furnace/furnace_interiormap.png" id="4_k52hi"]
+[ext_resource type="ArrayMesh" uid="uid://gpeqjafka1jw" path="res://assets/buildings/furnace/furnace_lid.obj" id="4_o3jvm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k52hi"]
+albedo_texture = ExtResource("3_qoea5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6hsub"]
+albedo_texture = ExtResource("3_qoea5")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bd2uk"]
 radius = 4.17127
@@ -11,27 +21,194 @@ height = 12.0779
 height = 5.21973
 radius = 4.6875
 
-[node name="Furnace" type="Node3D"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5hnkk"]
+animation = &"RESET"
 
-[node name="Body" type="StaticBody3D" parent="." node_paths=PackedStringArray("interact_area", "snap_point")]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6hsub"]
+animation = &"cookin"
+play_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_11bqo"]
+animation = &"cookin"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qo2gs"]
+animation = &"cookin_loop"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mh5uk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pfnll"]
+advance_mode = 2
+advance_condition = &"is_crafting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ccgcq"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cxnw7"]
+advance_mode = 2
+advance_condition = &"is_done_crafting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kxmd1"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4vmnf"]
+states/RESET/node = SubResource("AnimationNodeAnimation_5hnkk")
+states/RESET/position = Vector2(316, 100)
+states/cookin/node = SubResource("AnimationNodeAnimation_11bqo")
+states/cookin/position = Vector2(485, 49)
+"states/cookin 2/node" = SubResource("AnimationNodeAnimation_6hsub")
+"states/cookin 2/position" = Vector2(473, 182)
+states/cookin_loop/node = SubResource("AnimationNodeAnimation_qo2gs")
+states/cookin_loop/position = Vector2(593, 130)
+transitions = ["Start", "RESET", SubResource("AnimationNodeStateMachineTransition_mh5uk"), "RESET", "cookin", SubResource("AnimationNodeStateMachineTransition_pfnll"), "cookin", "cookin_loop", SubResource("AnimationNodeStateMachineTransition_ccgcq"), "cookin_loop", "cookin 2", SubResource("AnimationNodeStateMachineTransition_cxnw7"), "cookin 2", "RESET", SubResource("AnimationNodeStateMachineTransition_kxmd1")]
+
+[sub_resource type="Animation" id="Animation_bd2uk"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid_Mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.0472, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Exterior/FurnaceInterior:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fik5w"]
+resource_name = "cookin"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid_Mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.0472, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Exterior/FurnaceInterior:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 0.433333, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_w7l0h"]
+resource_name = "cookin_loop"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid_Mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Exterior/FurnaceInterior:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.433333, 0, 1), Color(1, 0.773333, 0.15, 1), Color(1, 0.335, 0.05, 1), Color(1, 0.433333, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cp650"]
+_data = {
+&"RESET": SubResource("Animation_bd2uk"),
+&"cookin": SubResource("Animation_fik5w"),
+&"cookin_loop": SubResource("Animation_w7l0h")
+}
+
+[node name="Furnace" type="StaticBody3D" node_paths=PackedStringArray("timer", "popup_point", "crafting_animations", "interact_area", "snap_point") groups=["buildings"]]
 script = ExtResource("1_bd2uk")
-interact_area = NodePath("../Area3D")
+menu_name = "craft"
+timer = NodePath("CraftTimer")
+popup_point = NodePath("PopupPoint")
+crafting_animations = NodePath("AnimationTree")
+interact_area = NodePath("Area3D")
 interact_text = "[R] Use"
-snap_point = NodePath("../Area3D/Marker3D")
+snap_point = NodePath("Area3D/Marker3D")
+building_name = "furnace"
 
-[node name="Mesh" type="MeshInstance3D" parent="Body"]
+[node name="Exterior" type="MeshInstance3D" parent="."]
 mesh = ExtResource("2_cp650")
 skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_k52hi")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+[node name="FurnaceInterior" type="Sprite3D" parent="Exterior"]
+transform = Transform3D(31.7248, 0, 0, 0, 23.0098, 0, 0, 0, 1.00804, 0, 2.41582, 3.90707)
+modulate = Color(0, 0, 0, 1)
+texture = ExtResource("4_k52hi")
+
+[node name="Lid_Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, -2.59161, 6.24759, -3.04678)
+mesh = ExtResource("4_o3jvm")
+surface_material_override/0 = SubResource("StandardMaterial3D_6hsub")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7085, 0)
 shape = SubResource("CapsuleShape3D_bd2uk")
 
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60986, 5.35399)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.354)
 shape = SubResource("CylinderShape3D_bd2uk")
 
 [node name="Marker3D" type="Marker3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.34158)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_4vmnf")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_crafting = false
+parameters/conditions/is_done_crafting = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_cp650")
+}
+
+[node name="CraftTimer" type="Timer" parent="."]
+
+[node name="PopupPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.5441, 0)
+
+[node name="DisplayItemCrafting" parent="PopupPoint" node_paths=PackedStringArray("spawn_pos") instance=ExtResource("3_cp650")]
+visible = false
+spawn_pos = NodePath("..")

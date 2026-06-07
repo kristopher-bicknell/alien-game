@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bs1oo1kxtu76n"]
+
+[ext_resource type="ArrayMesh" uid="uid://ned3bmudoh57" path="res://assets/held_item_test.obj" id="1_t4vym"]
+
+[node name="HoldItemTest" type="MeshInstance3D"]
+mesh = ExtResource("1_t4vym")

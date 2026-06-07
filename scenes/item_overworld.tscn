@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://borxgwxjcxtn7"]
 
 [ext_resource type="Script" uid="uid://qde0seqxu56" path="res://script/item_overworld.gd" id="1_ipi0c"]
-[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://scenes/ui/display_text_box.tscn" id="2_acbpy"]
+[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://assets/buildings/spaceship/ui/display_text_box.tscn" id="2_acbpy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ipi0c"]
 radius = 9.80585
@@ -11,7 +11,7 @@ radius = 0.907942
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_acbpy"]
 height = 0.391846
-radius = 0.439453
+radius = 0.617676
 
 [node name="Item" type="RigidBody3D"]
 axis_lock_angular_x = true
