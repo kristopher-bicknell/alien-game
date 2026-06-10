@@ -6,6 +6,7 @@ var hexels : Array[Hexel]
 var hexels_dict: Dictionary[Vector3i, Hexel]
 var hexel_layers: Dictionary[int, Array] = {}
 @onready var collider = CollisionShape3D.new()
+@onready var area_collider = CollisionShape3D.new()
 var chunk_neightbors: Dictionary[String, Chunk]
 
 func init_chunk():
@@ -41,6 +42,14 @@ func generate_collider():
 	collider.shape = shape
 	add_child(body)
 	body.add_child(collider)
+	#handle the Area3D here
+	var area = Area3D.new()
+	var area_shape = ChunkManager.get_border_mesh().create_trimesh_shape()
+	area_collider.shape = area_shape
+	area_collider.position = hexels_dict[Vector3i(0,0,0)].world_position
+	add_child(area)
+	area.add_child(area_collider)
+	area.body_entered.connect(_on_body_entered)
 
 ##Given a hexel, removes all hexels above it in the column. Leaves given hexel alone.
 func flatten_to(flatten_pos: Vector3i): 
@@ -103,3 +112,7 @@ func hexel_at_point(hd) -> Hexel:
 	
 	#print("Visited: ", visited.size(), " / ", layer.size())
 	return current
+
+func _on_body_entered(body: Node3D):
+	if body is Player:
+		print("player collided with chunk ", chunk_id)

@@ -4,18 +4,20 @@ var map_as_dict : Dictionary[Vector3i, Hexel] = {}
 var is_map_staggered = false
 var world_settings : GenerationSettings
 var noise_range : Vector2
-var surface_layer: Dictionary[Vector3i, Hexel] = {}
+var surface_layer: Dictionary[Vector2i, Hexel] = {}
 var chunks = {}
 
 ## Construct a dictionary for our 2d top layer of hexels
-func set_map(all_hexels, top_hexels):
+func set_map(all_hexels, top_hexels, chunk_id):
 	#map_as_dict.clear()
 	for hexel : Hexel in all_hexels:
 		if hexel != null:
-			map_as_dict[Vector3i(hexel.grid_position_xyz)] = hexel
+			var grid_pos = hexel.grid_position_xyz
+			map_as_dict[Vector3i(grid_pos.x + (world_settings.chunk_size * chunk_id.x), grid_pos.y, grid_pos.z + (world_settings.chunk_size * chunk_id.y))] = hexel
 	for t_hexel in top_hexels:
 		if t_hexel != null:
-			surface_layer[Vector3i(t_hexel.grid_position_xyz)] = t_hexel
+			var grid_pos = t_hexel.grid_position_xz
+			surface_layer[Vector2i(grid_pos.x + (world_settings.chunk_size * chunk_id.x), grid_pos.y + (world_settings.chunk_size * chunk_id.y))] = t_hexel
 
 
 func clear_map():

@@ -1,15 +1,17 @@
 class_name BuildingBase
 extends StaticBody3D
 
-##Area where player can stand in to interact with building
+@export_category("Interactability")
+##Area where player can stand in to interact with buildin
 @export var interact_area: Area3D = null
 ##Text to be displayed above character when in the interactable area
 @export var interact_text: String = ""
 ##Point to snap player position to.
 ##Alternatively, if player exits a building, this is where they return to.
 @export var snap_point: Marker3D = null
+@export_category("Building Info")
 ##Should be added to building via script of building inheriting class
-var building_data: BuildingData = null
+@export var building_data: BuildingData = null
 var player_inside: bool = false
 @export var building_name: String
 
@@ -21,6 +23,8 @@ signal send_interacted_valid(snap_pos: Marker3D)
 func _ready():
 	interact_area.connect("body_entered", interact_area_body_entered)
 	interact_area.connect("body_exited", interact_area_body_exited)
+	if building_data:
+		building_data.set_size()
 
 func interact_area_body_entered(body:Node3D):
 	if body is Player:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=23 format=3 uid="uid://cxknqhnxe0l78"]
 
 [ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://tnl4leesxb0n" path="res://scenes/building/furnace.tscn" id="8_efxa6"]
 [ext_resource type="PackedScene" uid="uid://be1ab2r4hbqy0" path="res://scenes/terrain/tree1.tscn" id="9_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cq2ayidlq8pnc" path="res://scenes/terrain/tree_2.tscn" id="10_efxa6"]
+[ext_resource type="PackedScene" uid="uid://d004x8gdkrmdg" path="res://scenes/building/khan_home.tscn" id="11_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://5s7nqsk4h1r4" path="res://scenes/building/workbench.tscn" id="12_dg77c"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
@@ -26,10 +27,10 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 32
-max_height = 64
+radius = 64
+max_height = 32
 ground_to_air_ratio = 0.5
-num_caves = 3
+num_caves = 0
 chunk_size = 8
 large_plant_freq = 0.08
 small_plant_freq = 0.01
@@ -71,10 +72,10 @@ albedo_color = Color(0.866709, 0.496252, 0.347949, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kek77"]
 material = SubResource("StandardMaterial3D_5vw27")
-size = Vector3(500, 10, 500)
+size = Vector3(300, 10, 300)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5vw27"]
-size = Vector3(500, 10, 500)
+size = Vector3(300, 10, 300)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_lquwl")
@@ -170,6 +171,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 382, -103)
 [node name="Tree1_4" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103, 382, -103)
 
+[node name="KhanHome" parent="Debug" instance=ExtResource("11_ycdy4")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -49, 379, 34)
+
 [node name="Items" type="Node3D" parent="."]
 
 [node name="Furnace" parent="." instance=ExtResource("8_efxa6")]
@@ -177,5 +181,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 380, 0)
 
 [node name="Workbench" parent="." instance=ExtResource("12_dg77c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 380, -22)
+
+[node name="InteriorSceneLocation" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10000, 0)
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]

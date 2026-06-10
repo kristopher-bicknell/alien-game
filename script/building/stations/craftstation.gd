@@ -36,7 +36,7 @@ func start_crafting(craft_item: ItemData.ItemType, num: int, recipe: Recipe):
 		return
 	UIManager.call_current_ui("update_window")
 	
-	#set station to craft for time specified
+	#set building to craft for time specified
 	is_processing = true
 	timer.start(recipe.resources[3])
 	#setup popup display

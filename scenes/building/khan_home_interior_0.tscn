@@ -1,0 +1,138 @@
+[gd_scene load_steps=16 format=3 uid="uid://dte2stv6vkman"]
+
+[ext_resource type="Script" uid="uid://b8rju7b8gut04" path="res://script/building/building_interior.gd" id="1_0heip"]
+[ext_resource type="ArrayMesh" uid="uid://b1su7qk8v6giu" path="res://assets/buildings/khan/khan_home_interior_0.obj" id="1_jud1i"]
+[ext_resource type="Texture2D" uid="uid://by234ib6pak6s" path="res://assets/buildings/khan/khan_home_interior_0.png" id="2_n21vh"]
+[ext_resource type="Texture2D" uid="uid://b36e44rrf1rg2" path="res://assets/buildings/khan/khan_home_interior_0_normalmap.png" id="3_w2jrs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w2jrs"]
+transparency = 1
+depth_draw_mode = 1
+albedo_texture = ExtResource("2_n21vh")
+normal_enabled = true
+normal_texture = ExtResource("3_w2jrs")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n21vh"]
+size = Vector3(46, 47, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w2jrs"]
+size = Vector3(27.5583, 47, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0heip"]
+size = Vector3(26.0611, 46.8126, 24.2991)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_x6fv8"]
+height = 52.021
+radius = 9.13672
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g252h"]
+size = Vector3(26.4088, 50.8869, 17.8245)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u5fjr"]
+size = Vector3(10.1997, 55.2404, 15.1624)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ju1uc"]
+size = Vector3(13.8588, 50.813, 29.8392)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0heip"]
+height = 18.1377
+radius = 6.09033
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_g252h"]
+height = 18.1377
+radius = 6.82324
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4xa5d"]
+size = Vector3(135.597, 1, 74.5977)
+
+[node name="KhanHomeInteriorBase" type="Node3D" node_paths=PackedStringArray("warp_points", "entry_spawn_point")]
+script = ExtResource("1_0heip")
+warp_points = {
+NodePath("ExitArea"): 0,
+NodePath("UpstairsArea"): 2
+}
+entry_spawn_point = NodePath("EntrySpawnPoint")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_jud1i")
+surface_material_override/0 = SubResource("StandardMaterial3D_w2jrs")
+
+[node name="Collision" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23, 33)
+shape = SubResource("BoxShape3D_n21vh")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23, -33)
+shape = SubResource("BoxShape3D_n21vh")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -43, 23, 0)
+shape = SubResource("BoxShape3D_n21vh")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 43, 23, 0)
+shape = SubResource("BoxShape3D_n21vh")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(0.932708, 0, 0.360632, 0, 1, 0, -0.360632, 0, 0.932708, -29.4924, 23, -28.1146)
+shape = SubResource("BoxShape3D_w2jrs")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(0.93561, 0, -0.353034, 0, 1, 0, 0.353034, 0, 0.93561, -29.4924, 23, 28.1111)
+shape = SubResource("BoxShape3D_w2jrs")
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(0.935061, 0, 0.354487, 0, 1, 0, -0.354487, 0, 0.935061, 29.941, 23, 28.0055)
+shape = SubResource("BoxShape3D_w2jrs")
+
+[node name="CollisionShape3D9" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.0594, 22.9063, -19.5182)
+shape = SubResource("BoxShape3D_0heip")
+
+[node name="CollisionShape3D10" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.3924, 25.0105, -20.2796)
+shape = SubResource("CylinderShape3D_x6fv8")
+
+[node name="CollisionShape3D11" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1013, 24.9435, -25.1399)
+shape = SubResource("BoxShape3D_g252h")
+
+[node name="CollisionShape3D12" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(0.0868949, 0, 0.996217, 0, 1, 0, -0.996217, 0, 0.0868949, -36.3442, 24.9435, -5.37737)
+shape = SubResource("BoxShape3D_g252h")
+
+[node name="CollisionShape3D13" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.792, 27.1202, 14.5611)
+shape = SubResource("BoxShape3D_u5fjr")
+
+[node name="CollisionShape3D14" type="CollisionShape3D" parent="Collision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.78, 24.9065, 6.97556)
+shape = SubResource("BoxShape3D_ju1uc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.497761, 0.867314, 0, -0.867314, 0.497761, 0, 0, 0)
+
+[node name="ExitArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.920887, 8.06885, 29.6929)
+shape = SubResource("CylinderShape3D_0heip")
+debug_color = Color(0.99, 0.8415, 0, 0.760784)
+
+[node name="UpstairsArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="UpstairsArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.8311, 8.06885, -2.73601)
+shape = SubResource("CylinderShape3D_g252h")
+debug_color = Color(0.99, 0.8415, 0, 0.760784)
+
+[node name="EntrySpawnPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22.8859)
+
+[node name="floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.609, 0)
+shape = SubResource("BoxShape3D_4xa5d")

@@ -3,11 +3,16 @@ extends Node3D
 
 var chunks: Dictionary[Vector2i, Chunk] = {}
 
+static var border_mesh
+
+func _ready():
+	border_mesh = load("res://assets/environment/terrain/chunkborder.obj")
+
 const neighbor_ref = {
-	"west": Vector2(-1,0),
-	"east": Vector2(1,0),
-	"north": Vector2(0,1),
-	"south": Vector2(0,-1)
+	"west": Vector2i(-1,0),
+	"east": Vector2i(1,0),
+	"north": Vector2i(0,1),
+	"south": Vector2i(0,-1)
 }
 
 func add_chunk(new_chunk: Chunk, chunk_id: Vector2i):
@@ -15,6 +20,7 @@ func add_chunk(new_chunk: Chunk, chunk_id: Vector2i):
 	chunks[new_chunk.chunk_id] = new_chunk
 	Map.chunks[new_chunk.chunk_id] = new_chunk
 	add_child(new_chunk)
+	set_chunk_neighbors()
 
 func set_chunk_neighbors():
 	for chunk_id in chunks.keys():
@@ -31,6 +37,9 @@ func get_chunk(chunk_id: Vector2i) -> Chunk:
 	if chunks.has(chunk_id):
 		return chunks[chunk_id]
 	return null
+
+static func get_border_mesh():
+	return border_mesh
 
 func clear_chunks():
 	for chunk in chunks.values():

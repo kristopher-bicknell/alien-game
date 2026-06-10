@@ -18,6 +18,7 @@ var _camera_input_direction := Vector2.ZERO
 var _last_movement_direction := Vector3.BACK
 var _gravity := -30.0
 var held_item = null
+var tile_below: Hexel
 
 @onready var _camera_pivot: Node3D = %CameraPivot
 @onready var _camera: Camera3D = %Camera3D
@@ -44,6 +45,7 @@ func _input(event: InputEvent) -> void:
 	#check for interactions
 	if GlobalInfo.control_mode < 2:
 		if Input.is_action_just_pressed("interact"):
+			WarpManager.overworld_pos = global_position
 			interact.emit()
 	
 
@@ -107,6 +109,7 @@ func _physics_process(delta: float) -> void:
 			velocity.y += jump_impulse
 		set_anim_state(is_starting_jump, is_sprint)
 
+
 func set_anim_state(is_starting_jump, is_sprint):
 	if is_starting_jump:
 		anim_tree.set("parameters/conditions/is_jump", is_starting_jump)
@@ -136,14 +139,14 @@ func update_hair(hair_info: Dictionary):
 	hair.get_surface_override_material(0).set_shader_parameter("hair_texture", GlobalInfo.get_hair_texture())
 	hair.get_surface_override_material(0).set_shader_parameter("hair_modulate", hair_info["color"])
 
-func interact_with(station):
-	if station is CraftStation:
-		position = station.snap_point.global_position
+func interact_with(building):
+	if building is CraftStation:
+		position = building.snap_point.global_position
 		anim_tree.set("parameters/conditions/is_interact", true)
 		set_anim_state(false,false)
 		await get_tree().create_timer(1.0).timeout
 		anim_tree.set("parameters/conditions/is_interact", false)
-		UIManager.load_ui(station.menu_name, station.building_name, station)
+		UIManager.load_ui(building.menu_name, building.building_name, building)
 
 func hold_something(something: PackedScene):
 	held_item = something.instantiate()

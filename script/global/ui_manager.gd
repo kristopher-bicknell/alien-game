@@ -21,8 +21,8 @@ func load_ui(screen: String, extra = null, origin = null):
 		current_ui = new_screen
 		root.add_child(new_screen)
 		if origin is CraftStation:
-			new_screen.station = extra
-			new_screen.station_ref = origin
+			new_screen.building = extra
+			new_screen.building_ref = origin
 			new_screen.load_ui()
 
 func cull_ui():

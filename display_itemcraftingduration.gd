@@ -4,9 +4,9 @@ extends DisplayControl
 var timer: Timer
 var duration: float
 
-##Pass in item being crafted and the timer node on the station
-func setup(item: ItemData.ItemType, station_timer: Timer):
-	timer = station_timer
+##Pass in item being crafted and the timer node on the building
+func setup(item: ItemData.ItemType, building_timer: Timer):
+	timer = building_timer
 	duration = timer.wait_time
 	var item_data = ItemData.item_dict[item]
 	$ItemIcon.texture = AtlasTexture.new()

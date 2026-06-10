@@ -92,6 +92,7 @@ func create_cave_mesh():
 	var area = Area3D.new()
 	for instance in range(multimesh.instance_count):
 		var shape = CollisionShape3D.new()
+		shape.add_to_group("caves")
 		shape.shape = SphereShape3D.new()
 		shape.shape.radius = randf_range(CAVE_RADIUS_RANGE.x, CAVE_RADIUS_RANGE.y)
 		shape.transform = multimesh.get_instance_transform(instance)
@@ -101,7 +102,7 @@ func create_cave_mesh():
 
 func finished_caves():
 	#"cave" group is applied to any non-permanent nodes used for cave generation
-	for cave in get_tree().get_nodes_in_group("cave"):
+	for cave in get_tree().get_nodes_in_group("caves"):
 		cave.queue_free()
 	#possibly unnecessary to clear out arrays, but it's fiiiiine
 	paths.clear()

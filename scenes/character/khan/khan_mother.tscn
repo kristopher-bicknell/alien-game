@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://d1p3q2b5kqnys"]
+[gd_scene load_steps=11 format=4 uid="uid://d1p3q2b5kqnys"]
 
 [ext_resource type="Texture2D" uid="uid://bkm0us6sp2th5" path="res://assets/characters/khan/mother_khan.png" id="2_oebls"]
 
@@ -453,6 +453,10 @@ _data = {
 radius = 3.0
 height = 26.0
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bt1d6"]
+height = 15.0
+radius = 14.0
+
 [node name="khan_mother" type="StaticBody3D"]
 
 [node name="metarig" type="Node3D" parent="."]
@@ -663,3 +667,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13, 0)
 shape = SubResource("CapsuleShape3D_bt1d6")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="TalkArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TalkArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+shape = SubResource("CylinderShape3D_bt1d6")
+debug_color = Color(0.83408, 0.00131994, 0.936375, 0.42)

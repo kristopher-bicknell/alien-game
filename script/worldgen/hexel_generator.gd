@@ -28,7 +28,7 @@ static func generate_chunk(map : Array[Hexel], interval, chunk_id) -> Chunk:
 static func build_chunkdata(map, interval, chunk_id, map_dict) -> Chunk:
 	var mesh = MeshAlgorithm.remesh(map_dict)
 	var chunk = prepared_chunk(mesh, map, chunk_id)
-	Map.set_map(map, get_surface_hexels(map_dict))
+	Map.set_map(map, get_surface_hexels(map_dict), chunk_id)
 	return chunk
 
 static func get_surface_hexels(map_dictionary: Dictionary[Vector3i, Hexel]) -> Array[Hexel]:
@@ -115,11 +115,11 @@ static func shape_geometry(prism, map_dict) -> bool:
 		return false
 
 	# Remove overhang
-	var below = prism.grid_position_xyz
-	below.y -= 1
-	if below.y >= 1 and air_at_pos(below, map_dict):
-		prism.type = HexelData.hexel_type.AIR
-		return true
+	#var below = prism.grid_position_xyz
+	#below.y -= 1
+	#if below.y >= 1 and air_at_pos(below, map_dict):
+#		prism.type = HexelData.hexel_type.AIR
+	#	return true
 	
 	return false
 

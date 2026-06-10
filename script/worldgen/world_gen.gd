@@ -62,7 +62,7 @@ func load_world(chunks_dict: Dictionary[Vector2, Dictionary]):
 		#$"../CanvasLayer/debug_noteforme".text = "Generating chunk " + str(chunk_id) + "..."
 		##chunk map data can be generated in thread?
 		var id = keys_as_array[i]
-		hexels[Vector2(id.x, id.y)] = GridMapper.generate_map_from_save(chunks_dict[id], id, settings)
+		hexels[Vector2(id.x, id.y)] = GridMapper.generate_map_from_save(chunks_dict[id], id)
 		#mapper_thread.start(GridMapper.generate_map_from_save.bind(chunks_dict[chunk_id], chunk_id, settings))
 	#make terrain geometry
 	print("finished mapping")
@@ -120,7 +120,7 @@ func generate_world():
 	var hexels: Dictionary[Vector2i, Array]
 	for x in range(floor(-settings.radius / settings.chunk_size), floor(settings.radius / settings.chunk_size)):
 		for z in range(floor(-settings.radius / settings.chunk_size), floor(settings.radius / settings.chunk_size)):
-			hexels[Vector2i(x,z)] = GridMapper.calculate_map_positions(Vector2i(x,z), settings)
+			hexels[Vector2i(x,z)] = GridMapper.calculate_map_positions(Vector2i(x,z))
 	interval["Calculate Map Positions -- "] = Time.get_ticks_msec()
 	
 	#generate cave

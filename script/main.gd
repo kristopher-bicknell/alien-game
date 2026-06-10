@@ -17,11 +17,15 @@ func _ready():
 			building.send_area_exited.connect(player._on_clear_text)
 			if building is CraftStation:
 				building.send_interacted_valid.connect(player.interact_with)
+			elif building is EnterableBuilding:
+				building.send_interacted_valid.connect(WarpManager.warp_to)
 			player.interact.connect(building.player_interact)
 	for plant in get_tree().get_nodes_in_group("plants"):
 		if plant is TallPlant:
 			player.interact.connect(plant.hit)
 			plant.connect("spawn_item", spawn_item)
+	WarpManager.call_deferred("set_interior_spawn_point", $InteriorSceneLocation)
+	WarpManager.warp_player.connect(set_player_pos)
 
 func debug_ready():
 	var new_item = item.instantiate()
@@ -29,6 +33,8 @@ func debug_ready():
 	$SpawnPoint/DebugSpawnItemPoint.add_child(new_item)
 
 func _input(event: InputEvent):
+	if Input.is_action_just_pressed("rotate_left"):
+		add_child(load("res://scenes/god_mode_view.tscn").instantiate())
 	if event.is_action_pressed("open_inventory"):
 		#open inventory
 		UIManager.load_ui("inventory")
@@ -48,6 +54,8 @@ func _input(event: InputEvent):
 		_debug_notif("generating new world...")
 	if event.is_action_pressed("debug_playerreset"):
 		player.position = $SpawnPoint.position
+		#TODO: ADDING THIS FOR TESTING, REMOVE IT!!!
+		WarpManager.warp_to(WarpManager.WarpLocations.KHAN_INTERIOR_0)
 
 func _on_death_plane_body_entered(body: Node3D) -> void:
 	if body is CharacterBody3D:
@@ -56,11 +64,11 @@ func _on_death_plane_body_entered(body: Node3D) -> void:
 func _on_chunk_manager_terraingen_finished() -> void:
 	pass
 
-func is_point_in_cave(point:Vector3) -> bool:
+func find_chunk_with_point(point:Vector3) -> bool:
 	var space_state = get_world_3d().direct_space_state
 	var query = PhysicsPointQueryParameters3D.new()
 	query.position = point
-	query.set_collide_with_areas(true)
+	query.set_collide_with_areas(false)
 	query.set_collide_with_bodies(true)
 	var result = space_state.intersect_point(query)
 	for value in result:
@@ -78,3 +86,6 @@ func spawn_item(item_spawn: ItemData.ItemType, pos: Vector3):
 	$Items.add_child(new_item)
 	new_item.set_item(item_spawn)
 	new_item.global_position = pos
+
+func set_player_pos(new_pos: Vector3):
+	player.position = new_pos

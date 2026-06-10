@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://5s7nqsk4h1r4"]
+[gd_scene load_steps=8 format=3 uid="uid://5s7nqsk4h1r4"]
 
 [ext_resource type="Script" uid="uid://bctg2eg6qse43" path="res://script/building/stations/craftstation.gd" id="1_abepf"]
 [ext_resource type="ArrayMesh" uid="uid://bwyeqqv82hkvo" path="res://assets/buildings/workbench/workbench.obj" id="2_r2pii"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_abepf"]
+albedo_color = Color(1, 0.86, 0.6, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oe2r6"]
 size = Vector3(6, 13, 6)
@@ -31,6 +34,7 @@ metadata/_custom_type_script = "uid://bctg2eg6qse43"
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = ExtResource("2_r2pii")
 skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_abepf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.7085, 0)

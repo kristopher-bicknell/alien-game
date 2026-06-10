@@ -30,12 +30,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 mesh = ExtResource("1_numpc")
 surface_material_override/0 = SubResource("StandardMaterial3D_ncp3f")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 66, 39)
-light_energy = 50.0
-spot_range = 91.0
-spot_angle = 30.6564
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.625, 0)
 shape = SubResource("CylinderShape3D_dr06e")

@@ -8,4 +8,3 @@ func _ready() -> void:
 
 func create_building_data(chunk: Vector2, origin: Vector3):
 	super(chunk, origin)
-	building_data.set_size("spaceship")

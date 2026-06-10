@@ -1,11 +1,17 @@
-[gd_scene load_steps=25 format=3 uid="uid://tnl4leesxb0n"]
+[gd_scene load_steps=27 format=3 uid="uid://tnl4leesxb0n"]
 
 [ext_resource type="Script" uid="uid://bctg2eg6qse43" path="res://script/building/stations/craftstation.gd" id="1_bd2uk"]
+[ext_resource type="Script" uid="uid://bkk14h8v1arr" path="res://script/building/building_data.gd" id="2_5hnkk"]
 [ext_resource type="ArrayMesh" uid="uid://dihpmauquxqod" path="res://assets/buildings/furnace/furnace.obj" id="2_cp650"]
 [ext_resource type="PackedScene" uid="uid://rkd4tlno18sv" path="res://scenes/ui/display_item_crafting.tscn" id="3_cp650"]
 [ext_resource type="Texture2D" uid="uid://difvj0fjrqx62" path="res://assets/buildings/furnace/furnace_texture.png" id="3_qoea5"]
 [ext_resource type="Texture2D" uid="uid://bpugbfn1v0g32" path="res://assets/buildings/furnace/furnace_interiormap.png" id="4_k52hi"]
 [ext_resource type="ArrayMesh" uid="uid://gpeqjafka1jw" path="res://assets/buildings/furnace/furnace_lid.obj" id="4_o3jvm"]
+
+[sub_resource type="Resource" id="Resource_5hnkk"]
+script = ExtResource("2_5hnkk")
+size = 0
+metadata/_custom_type_script = "uid://bkk14h8v1arr"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k52hi"]
 albedo_texture = ExtResource("3_qoea5")
@@ -163,6 +169,7 @@ crafting_animations = NodePath("AnimationTree")
 interact_area = NodePath("Area3D")
 interact_text = "[R] Use"
 snap_point = NodePath("Area3D/Marker3D")
+building_data = SubResource("Resource_5hnkk")
 building_name = "furnace"
 
 [node name="Exterior" type="MeshInstance3D" parent="."]
@@ -176,7 +183,7 @@ modulate = Color(0, 0, 0, 1)
 texture = ExtResource("4_k52hi")
 
 [node name="Lid_Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, -2.59161, 6.24759, -3.04678)
+transform = Transform3D(1, 0, 0, 0, 0.499998, 0.866026, 0, -0.866026, 0.499998, -2.59161, 6.24759, -3.04678)
 mesh = ExtResource("4_o3jvm")
 surface_material_override/0 = SubResource("StandardMaterial3D_6hsub")
 
