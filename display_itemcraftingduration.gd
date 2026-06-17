@@ -5,10 +5,10 @@ var timer: Timer
 var duration: float
 
 ##Pass in item being crafted and the timer node on the building
-func setup(item: ItemData.ItemType, building_timer: Timer):
+func setup(item: int, building_timer: Timer):
 	timer = building_timer
 	duration = timer.wait_time
-	var item_data = ItemData.item_dict[item]
+	var item_data = Item.item_data[item]
 	$ItemIcon.texture = AtlasTexture.new()
 	$ItemIcon.texture.set_atlas(load("res://assets/items/itematlas.png"))
 	$ItemIcon.texture.region = Rect2(

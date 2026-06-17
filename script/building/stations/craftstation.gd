@@ -7,7 +7,7 @@ extends BuildingBase
 @export var crafting_animations: AnimationTree
 
 var is_processing: bool = false
-var item: ItemData.ItemType
+var item: int
 var number_crafting: int
 
 func _ready():
@@ -23,7 +23,7 @@ func player_interact():
 		retrieve_crafted()
 		super()
 
-func start_crafting(craft_item: ItemData.ItemType, num: int, recipe: Recipe):
+func start_crafting(craft_item: int, num: int, recipe: Recipe):
 	item = craft_item
 	number_crafting = num
 	#remove ingredients from inventory
@@ -48,11 +48,11 @@ func start_crafting(craft_item: ItemData.ItemType, num: int, recipe: Recipe):
 		crafting_animations.set("parameters/conditions/is_done_crafting", false)
 
 func retrieve_crafted():
-	if item != ItemData.ItemType.INVALID && number_crafting > 0:
+	if item != -1 and number_crafting > 0:
 		for i in range(number_crafting):
 			PlayerInventory.add_item(item)
 	#reset contents
-	item = ItemData.ItemType.INVALID
+	item = -1
 	number_crafting = -1
 
 func _craft_timeout():

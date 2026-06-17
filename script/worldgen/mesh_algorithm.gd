@@ -29,6 +29,7 @@ static func remesh(map: Dictionary[Vector3i, Hexel]):
 			indices.append(indice + v_offset)
 	
 	var surface = SurfaceTool.new()
+	surface.clear()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for v_index in range(verts.size()):
 		surface.set_uv(uvs[v_index])
@@ -50,7 +51,6 @@ static func build_hex_prism(hexel: Hexel, map: Dictionary[Vector3i, Hexel]) -> D
 	var indices = PackedInt32Array()
 	if hexel.type == HexelData.hexel_type.AIR:
 		return {"verts": verts, "uvs": uvs, "indices": indices}
-
 	var top_start = verts.size()
 	var size = Map.world_settings.hexel_size
 	var height = Map.world_settings.hexel_height

@@ -46,10 +46,11 @@ func player_interact():
 	send_interacted_valid.emit(self)
 
 func create_building_data(chunk: Vector2, origin: Vector3):
-	building_data = BuildingData.new()
+	if !building_data:
+		building_data = BuildingData.new()
 	building_data.chunk = chunk
 	building_data.origin = origin
 
 func initialize():
 	if building_data == null: return
-	position = building_data.origin
+	#position = building_data.origin

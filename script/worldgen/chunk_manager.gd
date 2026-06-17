@@ -15,6 +15,16 @@ const neighbor_ref = {
 	"south": Vector2i(0,-1)
 }
 
+func regenerate_all_meshes():
+	for chunk in chunks.values():
+		chunk.mesh = ArrayMesh.new()
+		await get_tree().create_timer(0.5).timeout
+		##TODO: REMOVE THIS, IT IS FOR TESTING
+		for hexel in chunk.hexels_dict.values():
+			if hexel.type != HexelData.hexel_type.ORE_GREEN: hexel.type = HexelData.hexel_type.AIR
+		chunk.reset_geometry()
+		print("reset geometry for chunk ", chunk.chunk_id)
+
 func add_chunk(new_chunk: Chunk, chunk_id: Vector2i):
 	new_chunk.chunk_id = chunk_id
 	chunks[new_chunk.chunk_id] = new_chunk
@@ -25,13 +35,13 @@ func add_chunk(new_chunk: Chunk, chunk_id: Vector2i):
 func set_chunk_neighbors():
 	for chunk_id in chunks.keys():
 		if chunks.has(chunk_id + neighbor_ref["west"]):
-			chunks[chunk_id].chunk_neightbors["west"] = chunks[chunk_id + neighbor_ref["west"]]
+			chunks[chunk_id].chunk_neighbors["west"] = chunks[chunk_id + neighbor_ref["west"]]
 		if chunks.has(chunk_id + neighbor_ref["east"]):
-			chunks[chunk_id].chunk_neightbors["east"] = chunks[chunk_id + neighbor_ref["east"]]
+			chunks[chunk_id].chunk_neighbors["east"] = chunks[chunk_id + neighbor_ref["east"]]
 		if chunks.has(chunk_id + neighbor_ref["north"]):
-			chunks[chunk_id].chunk_neightbors["north"] = chunks[chunk_id + neighbor_ref["north"]]
+			chunks[chunk_id].chunk_neighbors["north"] = chunks[chunk_id + neighbor_ref["north"]]
 		if chunks.has(chunk_id + neighbor_ref["south"]):
-			chunks[chunk_id].chunk_neightbors["south"] = chunks[chunk_id + neighbor_ref["south"]]
+			chunks[chunk_id].chunk_neighbors["south"] = chunks[chunk_id + neighbor_ref["south"]]
 
 func get_chunk(chunk_id: Vector2i) -> Chunk:
 	if chunks.has(chunk_id):

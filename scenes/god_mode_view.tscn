@@ -12,11 +12,12 @@ mesh = ExtResource("1_gkme0")
 script = ExtResource("1_pa5qt")
 
 [node name="CameraPivot" type="Node3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 151.088)
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
@@ -24,5 +25,10 @@ custom_aabb = AABB(0, 2.5, 0, 0, 0, 0)
 multimesh = SubResource("MultiMesh_ijbud")
 
 [node name="Landtile" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 mesh = ExtResource("1_gkme0")
 surface_material_override/0 = ExtResource("3_ajisp")
+
+[node name="debug_dir" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

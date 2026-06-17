@@ -1,38 +1,47 @@
 extends TextureButton
 
-var item: ItemData.ItemType
+var index: int
+signal select
+var is_selected: bool = false
+var awaiting_swap: bool = false
+var is_empty: bool = false
 
-func set_item(new_item: ItemData.ItemType, num: int):
-	#i dont know how this would happen, but i have learned to just catch every possible error
-	if num <= 0:
-		set_empty()
-	$ColorRect.visible = true
-	item = new_item
-	var item_data = ItemData.item_dict[item]
-	#TODO: this is wrong currently
-	$ColorRect/Number/debug_itemname.text = item_data["name"]
-	$ColorRect/Number.text = str(num)
-	
-	$Icon.texture = AtlasTexture.new()
-	$Icon.texture.set_atlas(load("res://assets/items/itematlas.png"))
-	$Icon.texture.region = Rect2(
-		item_data["texture_icon"].x * 100, item_data["texture_icon"].y * 100,
-		100,100)
+func _ready():
+	%Icon.texture = AtlasTexture.new()
+	%Icon.texture.set_atlas(load("res://assets/items/itematlas.png"))
 
-func set_empty():
-	item = -1
-	visible = false
-
-
-func _on_button_pressed() -> void:
-	print("button pressed!")
-
-
-func _on_button_mouse_entered() -> void:
-	$PopupPanel.show()
+#func _on_button_mouse_entered() -> void:
+	#if disabled: return
+	#if item == null: return
+	#$PopupPanel.show()
 	#cache item data and then construct the desciption box
-	var item_data = ItemData.item_dict[item]
-	$PopupPanel/RichTextLabel.text = item_data["name"] + "\n" + item_data["description"]
+	#var item_data = Item.item_data[item.type]
+	#$PopupPanel/RichTextLabel.text = item_data["name"] + "\n" + item_data["description"]
 
-func _on_button_mouse_exited() -> void:
-	$PopupPanel.hide()
+#func _on_button_mouse_exited() -> void:
+	#if disabled: return
+	#$PopupPanel.hide()
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			select.emit(index)
+		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+			select.emit(index, true)
+
+func toggle_swap(swap: bool):
+	awaiting_swap = swap
+
+func set_display(content: InventoryEntry):
+	if content.type == -1 or content.num <= 0:
+		is_empty = true
+		%Content.hide()
+		return
+	is_empty = false
+	%Content.show()
+	var item_data = Item.item_data[content.type]
+	%Icon.texture.region = Rect2(
+		item_data.texture_icon.x * 100, item_data.texture_icon.y * 100,
+		100,100)
+	%debug_itemname.text = item_data.name
+	%Number.text = str(content.num)

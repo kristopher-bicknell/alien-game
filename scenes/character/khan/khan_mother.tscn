@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=4 uid="uid://d1p3q2b5kqnys"]
 
-[ext_resource type="Texture2D" uid="uid://bkm0us6sp2th5" path="res://assets/characters/khan/mother_khan.png" id="2_oebls"]
+[ext_resource type="Shader" uid="uid://dev10yr4p2obm" path="res://assets/res/character_shader.gdshader" id="1_bt1d6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_toayd"]
 
@@ -108,8 +108,24 @@ bind/26/name = &"heel.02.R"
 bind/26/bone = -1
 bind/26/pose = Transform3D(0.999943, -0.000254899, -0.0106352, -0.0106353, -0.047907, -0.998793, -0.000254882, 0.998853, -0.0479063, 1.84729, -0.592839, -0.341594)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onmtp"]
-albedo_texture = ExtResource("2_oebls")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_svd64"]
+render_priority = 0
+shader = ExtResource("1_bt1d6")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/clamp_diffuse_to_max = false
+shader_parameter/cuts = 3
+shader_parameter/wrap = 0.0
+shader_parameter/steepness = 1.0
+shader_parameter/use_attenuation = true
+shader_parameter/use_specular = true
+shader_parameter/specular_strength = 1.0
+shader_parameter/specular_shininess = 16.0
+shader_parameter/use_rim = true
+shader_parameter/rim_width = 8.0
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/use_ramp = false
+shader_parameter/use_borders = false
+shader_parameter/border_width = 0.01
 
 [sub_resource type="Animation" id="Animation_u1bo6"]
 resource_name = "idle_loop"
@@ -655,7 +671,7 @@ bones/26/scale = Vector3(1, 1, 0.999999)
 [node name="retopo" type="MeshInstance3D" parent="metarig/Skeleton3D"]
 mesh = SubResource("ArrayMesh_e7qda")
 skin = SubResource("Skin_lehd0")
-surface_material_override/0 = SubResource("StandardMaterial3D_onmtp")
+surface_material_override/0 = SubResource("ShaderMaterial_svd64")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

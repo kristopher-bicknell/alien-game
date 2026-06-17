@@ -22,75 +22,29 @@ load_path = "res://.godot/imported/inventory_buttons.png-a1c304db27b1f35a10d21a5
 atlas = SubResource("CompressedTexture2D_ahryl")
 region = Rect2(100, 0, 100, 100)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_joxaf"]
-size = Vector2(100, 102)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joxaf"]
+bg_color = Color(0.666667, 0.6, 1, 0.635294)
+skew = Vector2(-0.02, -0.002)
+border_width_left = 12
+border_width_top = 12
+border_width_right = 12
+border_width_bottom = 12
+border_color = Color(0.666667, 0.6, 1, 1)
+border_blend = true
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 4
+shadow_offset = Vector2(1, 1)
 
 [node name="Button" type="TextureButton"]
 offset_right = 100.0
 offset_bottom = 100.0
+size_flags_horizontal = 6
 texture_normal = SubResource("AtlasTexture_joxaf")
 texture_pressed = SubResource("AtlasTexture_rtoig")
 texture_hover = SubResource("AtlasTexture_stlut")
 script = ExtResource("2_joxaf")
-metadata/_edit_use_anchors_ = true
-
-[node name="Icon" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -34.0
-offset_top = -23.0
-offset_right = -6.0
-offset_bottom = -2.0
-grow_horizontal = 0
-grow_vertical = 0
-color = Color(0, 0, 0, 0.403922)
-metadata/_edit_use_anchors_ = true
-
-[node name="Number" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="debug_itemname" type="Label" parent="ColorRect/Number"]
-layout_mode = 0
-offset_left = -60.0
-offset_top = -76.0
-offset_right = -20.0
-offset_bottom = -53.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="PopupPanel" type="Panel" parent="."]
@@ -116,20 +70,123 @@ offset_top = 4.0
 offset_right = 190.0
 offset_bottom = 96.0
 bbcode_enabled = true
+text = "If you can see this, congrats! You're not supposed to see this."
 scroll_active = false
 
-[node name="InvIcon" type="Area2D" parent="."]
-position = Vector2(50, 50)
+[node name="ContextPanel" type="Panel" parent="."]
+visible = false
+z_index = 101
+layout_mode = 0
+offset_left = 100.0
+offset_top = 1.0
+offset_right = 253.0
+offset_bottom = 161.0
+theme = ExtResource("3_joxaf")
+theme_override_styles/panel = SubResource("StyleBoxFlat_joxaf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContextPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -65.5
+offset_top = 5.0
+offset_right = 65.5
+offset_bottom = 109.0
+grow_horizontal = 2
+
+[node name="Button" type="Button" parent="ContextPanel/VBoxContainer"]
+layout_mode = 2
+text = "Move stack"
+
+[node name="Button3" type="Button" parent="ContextPanel/VBoxContainer"]
+layout_mode = 2
+text = "Discard"
+
+[node name="Button4" type="Button" parent="ContextPanel/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
+[node name="Content" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InvIcon"]
-shape = SubResource("RectangleShape2D_joxaf")
+[node name="ColorRect" type="ColorRect" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.15
+anchor_bottom = 1.05
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0, 0, 0, 0.403922)
+metadata/_edit_use_anchors_ = true
 
+[node name="Number" type="Label" parent="Content/ColorRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="debug_itemname" type="Label" parent="Content/ColorRect/Number"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.413043
+anchor_bottom = 0.413043
+offset_left = -60.0
+offset_top = -76.0
+offset_right = -20.0
+offset_bottom = -53.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_button_mouse_entered"]
-[connection signal="mouse_entered" from="." to="InvIcon" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_button_mouse_exited"]
-[connection signal="mouse_exited" from="." to="InvIcon" method="_on_button_mouse_exited"]
-[connection signal="pressed" from="." to="." method="_on_button_pressed"]
-[connection signal="pressed" from="." to="InvIcon" method="_on_button_pressed"]
-[connection signal="mouse_entered" from="InvIcon" to="InvIcon" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="InvIcon" to="InvIcon" method="_on_mouse_exited"]

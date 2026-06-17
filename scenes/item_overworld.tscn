@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://borxgwxjcxtn7"]
 
 [ext_resource type="Script" uid="uid://qde0seqxu56" path="res://script/item_overworld.gd" id="1_ipi0c"]
-[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://assets/buildings/spaceship/ui/display_text_box.tscn" id="2_acbpy"]
+[ext_resource type="PackedScene" uid="uid://bsk4yjhp2dll3" path="res://scenes/ui/display_text_box.tscn" id="2_acbpy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ipi0c"]
 radius = 9.80585
@@ -13,11 +13,13 @@ radius = 0.907942
 height = 0.391846
 radius = 0.617676
 
-[node name="Item" type="RigidBody3D"]
+[node name="Item" type="RigidBody3D" node_paths=PackedStringArray("item_mesh", "display_text_box")]
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 gravity_scale = 3.0
 script = ExtResource("1_ipi0c")
+item_mesh = NodePath("ItemMesh")
+display_text_box = NodePath("TextBoxSpawnPos/DisplayTextBox")
 
 [node name="DetectionArea" type="Area3D" parent="."]
 
@@ -37,6 +39,7 @@ debug_color = Color(0.980583, 0, 0.378434, 0.42)
 
 [node name="DisplayTextBox" parent="TextBoxSpawnPos" node_paths=PackedStringArray("spawn_pos") instance=ExtResource("2_acbpy")]
 spawn_pos = NodePath("..")
+metadata/_edit_use_anchors_ = true
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.195923, 0)

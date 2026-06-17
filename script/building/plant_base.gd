@@ -1,8 +1,8 @@
 class_name PlantBase
 extends StaticBody3D
 
-signal spawn_item(item: ItemData.ItemType, pos: Vector3)
-var drops: Dictionary[ItemData.ItemType, Vector2]
+signal spawn_item(item: Item, pos: Vector3)
+var drops: ItemDropTable
 var hp: int
 
 func initialize(pos: Vector3):

@@ -5,14 +5,14 @@ extends UIBase
 @onready var ingredient_menu_display_scene = preload("res://scenes/ui/ingredient_menu_item_display.tscn")
 @export var building: String
 
-var current_item: ItemData.ItemType
+var current_item: int
 var current_quantity: int = 1
 var current_recipe: Recipe
 var building_ref: CraftStation
 
 func load_ui():
 	%StationName.text = building.capitalize()
-	var recipes = ItemData.recipes[building]
+	var recipes = Item.recipes[building]
 	for item in recipes.keys():
 		var new_entry = item_select_button_scene.instantiate()
 		$Background/RecipesWindow/ScrollContainer/VBoxContainer.add_child(new_entry)
@@ -24,7 +24,7 @@ func update_window():
 
 func _item_select(item, recipe):
 	current_item = item
-	var item_info = ItemData.item_dict[item]
+	var item_info = Item.item_data[item]
 	current_recipe = recipe
 	$Background/ItemDisplayWindow/ItemName.text = item_info["name"]
 	$Background/ItemDisplayWindow/ItemIcon.visible = true
@@ -122,8 +122,8 @@ func can_craft(quantity):
 	if building_ref.is_processing: return false
 	var can_craft = true
 	for item in current_recipe.ingredients.keys():
-		if PlayerInventory.items.has(item):
-			if PlayerInventory.items[item] * quantity < current_recipe.ingredients[item] * quantity:
+		if PlayerInventory.has(item):
+			if PlayerInventory.find_first_of(item).num * quantity < current_recipe.ingredients[item] * quantity:
 				can_craft = false
 		else:
 			can_craft = false

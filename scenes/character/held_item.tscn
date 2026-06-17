@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl8ivfq3m1suh"]
+
+[ext_resource type="Script" uid="uid://civf5elabo3gm" path="res://script/item/held_item.gd" id="1_lrsge"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_lrsge"]
+
+[node name="HeldItem" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_lrsge")
+script = ExtResource("1_lrsge")

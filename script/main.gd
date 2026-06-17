@@ -23,21 +23,24 @@ func _ready():
 	for plant in get_tree().get_nodes_in_group("plants"):
 		if plant is TallPlant:
 			player.interact.connect(plant.hit)
-			plant.connect("spawn_item", spawn_item)
+			plant.spawn_item.connect(spawn_item)
 	WarpManager.call_deferred("set_interior_spawn_point", $InteriorSceneLocation)
 	WarpManager.warp_player.connect(set_player_pos)
+	UIManager.player_hold.connect(player.hold_item)
 
 func debug_ready():
 	var new_item = item.instantiate()
-	new_item.set_item(ItemData.ItemType.GLASS)
+	new_item.set_item(Item.PICK)
 	$SpawnPoint/DebugSpawnItemPoint.add_child(new_item)
 
 func _input(event: InputEvent):
 	if Input.is_action_just_pressed("rotate_left"):
-		add_child(load("res://scenes/god_mode_view.tscn").instantiate())
+		if GlobalInfo.control_mode == GlobalInfo.ControlMode.DEFAULT:
+			add_child(load("res://scenes/god_mode_view.tscn").instantiate())
 	if event.is_action_pressed("open_inventory"):
 		#open inventory
-		UIManager.load_ui("inventory")
+		if GlobalInfo.control_mode == GlobalInfo.ControlMode.DEFAULT:
+			UIManager.load_ui("inventory")
 	if event.is_action_pressed("debug_reset"):
 		player.position = $SpawnPoint.position
 		_debug_notif("loaded world")
@@ -78,10 +81,10 @@ func find_chunk_with_point(point:Vector3) -> bool:
 
 func _debug_notif(notif: String):
 	$UI/debug_notification.text = notif
-	await get_tree().create_timer(5)
+	await get_tree().create_timer(5).timeout
 	$UI/debug_notification.text = ""
 
-func spawn_item(item_spawn: ItemData.ItemType, pos: Vector3):
+func spawn_item(item_spawn: int, pos: Vector3):
 	var new_item = item.instantiate()
 	$Items.add_child(new_item)
 	new_item.set_item(item_spawn)

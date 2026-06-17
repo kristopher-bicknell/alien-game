@@ -43,3 +43,21 @@ func get_tile_neighbors_planar(hexel : Hexel) -> Array[Hexel]:
 		if neighbor_coords in map_as_dict:
 			neighbors.append(map_as_dict[neighbor_coords])
 	return neighbors
+
+##helper function to transition to a neighboring chunk for a hexel, given a coordinate
+func check_tile_chunkbounds(pos: Vector3i):
+	var return_array = []
+	if pos.x < 0:
+		return_array.append("west")
+		#return_array.append()
+	elif pos.x >= Map.world_settings.chunk_size:
+		return_array.append("east")
+	elif pos.y < 0:
+		return_array.append("south")
+	elif pos.y >= Map.world_settings.chunk_size:
+		return_array.append("north")
+	else: return pos
+	var offset = ChunkManager.neighbor_ref[return_array[0]]
+	var new_pos = pos - (Vector3i(offset.x * world_settings.chunk_size, 0, offset.y * world_settings.chunk_size))
+	return_array.append[new_pos]
+	return return_array

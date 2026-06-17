@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=34 format=3 uid="uid://cxknqhnxe0l78"]
 
 [ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://donh8kaip6kwi" path="res://assets/environment/terrainatlas.png" id="4_kek77"]
 [ext_resource type="FastNoiseLite" uid="uid://b2cn8ba6rls7n" path="res://assets/res/terrainnoise.tres" id="6_kek77"]
 [ext_resource type="PackedScene" uid="uid://tnl4leesxb0n" path="res://scenes/building/furnace.tscn" id="8_efxa6"]
+[ext_resource type="PackedScene" uid="uid://c13vk63ja8gej" path="res://scenes/ui/hotbar.tscn" id="8_w48qg"]
 [ext_resource type="PackedScene" uid="uid://be1ab2r4hbqy0" path="res://scenes/terrain/tree1.tscn" id="9_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cq2ayidlq8pnc" path="res://scenes/terrain/tree_2.tscn" id="10_efxa6"]
 [ext_resource type="PackedScene" uid="uid://d004x8gdkrmdg" path="res://scenes/building/khan_home.tscn" id="11_ycdy4"]
@@ -32,7 +33,7 @@ max_height = 32
 ground_to_air_ratio = 0.5
 num_caves = 0
 chunk_size = 8
-large_plant_freq = 0.08
+large_plant_freq = 0.0
 small_plant_freq = 0.01
 noise = ExtResource("4_5vw27")
 terrain_noise = ExtResource("6_kek77")
@@ -48,8 +49,7 @@ solid_first_layer = true
 metadata/_custom_type_script = "uid://bf7oc7st1txej"
 
 [sub_resource type="Environment" id="Environment_lquwl"]
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 5.0
+tonemap_mode = 3
 glow_enabled = true
 glow_intensity = 0.3
 glow_strength = 0.5
@@ -72,10 +72,83 @@ albedo_color = Color(0.866709, 0.496252, 0.347949, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kek77"]
 material = SubResource("StandardMaterial3D_5vw27")
-size = Vector3(300, 10, 300)
+size = Vector3(200, 10, 200)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5vw27"]
-size = Vector3(300, 10, 300)
+size = Vector3(200, 10, 200)
+
+[sub_resource type="PrismMesh" id="PrismMesh_w48qg"]
+size = Vector3(50, 250, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w48qg"]
+transparency = 1
+no_depth_test = true
+diffuse_mode = 3
+disable_ambient_light = true
+disable_fog = true
+albedo_color = Color(1, 1, 1, 0.160784)
+emission_enabled = true
+emission = Color(0.489622, 0.489622, 0.489622, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vivmo"]
+transparency = 1
+no_depth_test = true
+diffuse_mode = 3
+disable_ambient_light = true
+disable_fog = true
+albedo_color = Color(1, 1, 1, 0.160784)
+emission_enabled = true
+emission = Color(0.489622, 0.489622, 0.489622, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_2cqfq"]
+material = SubResource("StandardMaterial3D_vivmo")
+text = "NORTH"
+font_size = 127
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2cqfq"]
+transparency = 1
+no_depth_test = true
+diffuse_mode = 3
+disable_ambient_light = true
+disable_fog = true
+albedo_color = Color(1, 1, 1, 0.160784)
+emission_enabled = true
+emission = Color(0.489622, 0.489622, 0.489622, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_074og"]
+material = SubResource("StandardMaterial3D_2cqfq")
+text = "SOUTH"
+font_size = 127
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yaehf"]
+transparency = 1
+no_depth_test = true
+diffuse_mode = 3
+disable_ambient_light = true
+disable_fog = true
+albedo_color = Color(1, 1, 1, 0.160784)
+emission_enabled = true
+emission = Color(0.489622, 0.489622, 0.489622, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_82xsv"]
+material = SubResource("StandardMaterial3D_yaehf")
+text = "WEST"
+font_size = 127
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_074og"]
+transparency = 1
+no_depth_test = true
+diffuse_mode = 3
+disable_ambient_light = true
+disable_fog = true
+albedo_color = Color(1, 1, 1, 0.160784)
+emission_enabled = true
+emission = Color(0.489622, 0.489622, 0.489622, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_ryguw"]
+material = SubResource("StandardMaterial3D_074og")
+text = "EAST"
+font_size = 127
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_lquwl")
@@ -121,11 +194,13 @@ text = "[9] Generate new map
 [=] Load map from file
 [\\] Reset player to spawn platform"
 
+[node name="Hotbar" parent="UI" instance=ExtResource("8_w48qg")]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 23, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866026, 0, -0.866026, 0.5, 0, 23, 0)
 shadow_enabled = true
 
 [node name="DeathPlane" type="Area3D" parent="."]
@@ -157,22 +232,62 @@ unique_name_in_owner = true
 [node name="Debug" type="Node3D" parent="."]
 
 [node name="Tree1" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 382, -103)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 382, -73)
 
 [node name="tree2" parent="Debug" groups=["plants"] instance=ExtResource("10_efxa6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 379, 83)
 
 [node name="Tree1_2" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 382, -103)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 382, -73)
 
 [node name="Tree1_3" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 382, -103)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 382, -73)
 
 [node name="Tree1_4" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103, 382, -103)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 382, -73)
 
 [node name="KhanHome" parent="Debug" instance=ExtResource("11_ycdy4")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -49, 379, 34)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Debug"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -332, -180)
+mesh = SubResource("PrismMesh_w48qg")
+surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
+
+[node name="NorthLabel" type="MeshInstance3D" parent="Debug/MeshInstance3D"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 157, 6.86269e-06)
+mesh = SubResource("TextMesh_2cqfq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Debug"]
+transform = Transform3D(-1, 1.50996e-07, 6.60024e-15, 0, -4.37114e-08, 1, 1.50996e-07, 1, 4.37114e-08, 0, -332, 142)
+mesh = SubResource("PrismMesh_w48qg")
+surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
+
+[node name="NorthLabel" type="MeshInstance3D" parent="Debug/MeshInstance3D2"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -3.6692e-05, 155, 6.77527e-06)
+mesh = SubResource("TextMesh_074og")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Debug"]
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -151, -332, -11)
+mesh = SubResource("PrismMesh_w48qg")
+surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
+
+[node name="NorthLabel" type="MeshInstance3D" parent="Debug/MeshInstance3D3"]
+transform = Transform3D(100, 0, 0, 0, 100, 8.35187e-21, 0, 8.35187e-21, 100, -1.04904e-05, 161, 7.03754e-06)
+mesh = SubResource("TextMesh_82xsv")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Debug"]
+transform = Transform3D(7.54979e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, -7.54979e-08, -3.30012e-15, 154, -332, -11)
+mesh = SubResource("PrismMesh_w48qg")
+surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
+
+[node name="NorthLabel" type="MeshInstance3D" parent="Debug/MeshInstance3D4"]
+transform = Transform3D(100, 0, 0, 0, 100, 2.49152e-20, 0, 2.49152e-20, 100, -1.81198e-05, 159, 6.95011e-06)
+mesh = SubResource("TextMesh_ryguw")
+skeleton = NodePath("../..")
 
 [node name="Items" type="Node3D" parent="."]
 
@@ -183,6 +298,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 380, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 380, -22)
 
 [node name="InteriorSceneLocation" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10000, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1000, 0)
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]

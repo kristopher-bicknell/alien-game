@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://coasbso51gc07"]
+[gd_scene load_steps=7 format=3 uid="uid://coasbso51gc07"]
 
 [ext_resource type="Script" uid="uid://du6u6ny6bllai" path="res://script/ui/inventory_ui.gd" id="1_avmd0"]
 [ext_resource type="LabelSettings" uid="uid://jo35jjb1aulc" path="res://assets/res/menu_heading.tres" id="1_s6ek7"]
 [ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="2_xeaml"]
+[ext_resource type="Texture2D" uid="uid://pfymcr6sd5ja" path="res://assets/items/itematlas.png" id="4_5yy05"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xeaml"]
 bg_color = Color(0.519857, 0.5146, 0.83, 0.839216)
@@ -16,6 +17,10 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ulvp7"]
+atlas = ExtResource("4_5yy05")
+region = Rect2(0, 0, 100, 100)
 
 [node name="Inventory" type="Control"]
 layout_mode = 3
@@ -77,7 +82,8 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Exit: [Esc]"
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="SlotContainer" type="GridContainer" parent="."]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
 anchors_preset = 8
@@ -85,10 +91,63 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -497.0
+offset_left = -452.0
 offset_top = -108.0
-offset_right = 497.0
+offset_right = 452.0
 offset_bottom = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 8
+
+[node name="SwapIcon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_ulvp7")
+
+[node name="ColorRect" type="ColorRect" parent="SwapIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.15
+anchor_bottom = 1.05
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0, 0, 0, 0.403922)
+metadata/_edit_use_anchors_ = true
+
+[node name="SwapNumber" type="Label" parent="SwapIcon/ColorRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="debug_itemname" type="Label" parent="SwapIcon/ColorRect/SwapNumber"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.413043
+anchor_bottom = 0.413043
+offset_left = -60.0
+offset_top = -76.0
+offset_right = -20.0
+offset_bottom = -53.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true

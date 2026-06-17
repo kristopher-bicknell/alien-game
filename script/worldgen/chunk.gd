@@ -7,7 +7,7 @@ var hexels_dict: Dictionary[Vector3i, Hexel]
 var hexel_layers: Dictionary[int, Array] = {}
 @onready var collider = CollisionShape3D.new()
 @onready var area_collider = CollisionShape3D.new()
-var chunk_neightbors: Dictionary[String, Chunk]
+var chunk_neighbors: Dictionary[String, Chunk]
 
 func init_chunk():
 	#why the FUCK does this keep happening dude
@@ -51,15 +51,23 @@ func generate_collider():
 	area.add_child(area_collider)
 	area.body_entered.connect(_on_body_entered)
 
-##Given a hexel, removes all hexels above it in the column. Leaves given hexel alone.
+##Given a hexel, removes all hexels above it in the column. Also copies that same hexel up to the point
 func flatten_to(flatten_pos: Vector3i): 
 	if !hexels_dict.has(flatten_pos):
+		#check with the neighbors
+		var new_pos_array = Map.check_tile_chunkbounds(flatten_pos)
+		if new_pos_array == flatten_pos: return
+		chunk_neighbors[new_pos_array[0]].flatten_to(new_pos_array[1])
 		return
-	var hexel = hexels_dict[flatten_pos]
-	var hexel_base_pos = hexel.grid_position_xz
-	for y in range(hexel.grid_position.xyz.y + 1, $WorldGen.settings.max_height):
-		if hexels_dict.has(Vector3i(hexel_base_pos.x, y, hexel_base_pos.y)):
-			hexels_dict[Vector3i(hexel_base_pos.x, y, hexel_base_pos.y)].type = HexelData.hexel_type.AIR
+	#remove all tiles above
+	for y in range(0, Map.world_settings.max_height):
+		if hexels_dict.has(Vector3i(flatten_pos.x, y, flatten_pos.z)):
+			hexels_dict[Vector3i(flatten_pos.x, y, flatten_pos.z)].type = HexelData.hexel_type.AIR
+	#add a 1 block platform below the building
+	#var below_hexel = hexels_dict[flatten_pos - Vector3i(0,-1,0)]
+	#if below_hexel.type == HexelData.hexel_type.AIR:
+	#	below_hexel.type = HexelData.hexel_type.DIRT
+	reset_geometry()
 
 func fill_pos_dict():
 	for v: Hexel in hexels:
@@ -69,6 +77,32 @@ func fill_pos_dict():
 			#print("Hexel layer: ", y)
 		hexel_layers[y].append(v)
 
+func add_hexel(block_hit: BlockRay.RayHit):
+	var hexel = hexel_at_point(block_hit)
+	if hexel:
+		print("add at ", hexel.grid_position_xyz)
+		#get the first air block up
+		while hexel.type != HexelData.hexel_type.AIR:
+			hexel = hexels_dict[hexel.grid_position_xyz + Vector3i(0,1,0)]
+		hexel.type = HexelData.hexel_type.GRAVEL
+		reset_geometry()
+
+func remove_hexel(block_hit: BlockRay.RayHit):
+	var hexel = hexel_at_point(block_hit)
+	if hexel:
+		if hexel.type == HexelData.hexel_type.AIR:
+			hexel = hexels_dict[hexel.grid_position_xyz - Vector3i(0,1,0)]
+		print("remove at ", hexel.grid_position_xyz)
+		#put down a placeholder shape mf so i can see where it hitted
+		#var example_mesh = MeshInstance3D.new()
+		#example_mesh.mesh = load("res://assets/environment/landtile.obj")
+		#var new_material = load("res://assets/res/god_mode_view_material.tres") as StandardMaterial3D
+		#example_mesh.set_surface_override_material(0, new_material)
+		#add_child(example_mesh)
+		#example_mesh.position = hexel.world_position
+		#now do the removing
+		hexel.type = HexelData.hexel_type.AIR
+		reset_geometry()
 
 # Find a hexel at a given location
 # We cant just compare against where the user clicked since hexels can have various sizes/offsets!
@@ -86,30 +120,21 @@ func hexel_at_point(hd) -> Hexel:
 	if not layer:
 		return null
 	
-	# Start from a random hexel (or pick first)
-	var current: Hexel = layer.pick_random()
+	#go through layer and pick out all hexels that are x += 7.5 and y += 8.66
+	var close_hexels = []
+	for hexel in layer:
+		#I chose these numbers arbitrarily based on the approximate distance betwween neighboring tiles
+		if abs(hexel.world_position.x - corrected_pos.x) <= 7.5:
+			if abs(hexel.world_position.z - corrected_pos.z) <= 8.66:
+				close_hexels.append(hexel)
+	var current: Hexel = close_hexels[0]
 	var current_dist: float = current.world_position.distance_to(corrected_pos)
-	var visited: Array[Hexel]
-		
-	while true:
-		var found_better := false
-		var neighbors: Array[Hexel] = Map.get_tile_neighbors_planar(current)
-		#draw_neighbors(current)
-		for n in neighbors:
-			if visited.has(n):
-				continue
-			var dist := n.world_position.distance_to(corrected_pos)
+	for hexel in close_hexels:
+		if hexel != current:
+			var dist = hexel.world_position.distance_to(corrected_pos)
 			if dist < current_dist:
-				current = n
+				current = hexel
 				current_dist = dist
-				found_better = true
-		
-		visited.append(current)
-		
-		# stop when no closer neighbor exists
-		if not found_better:
-			break
-	
 	#print("Visited: ", visited.size(), " / ", layer.size())
 	return current
 

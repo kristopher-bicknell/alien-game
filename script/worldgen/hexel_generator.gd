@@ -15,6 +15,7 @@ static func load_chunk(map: Array[Hexel], interval, chunk_id):
 
 static func generate_chunk(map : Array[Hexel], interval, chunk_id) -> Chunk:
 	var map_dict : Dictionary[Vector3i, Hexel] = {}
+	var fixed_id = Vector2i(chunk_id.y, chunk_id.x)
 	for hexel in map:
 		map_dict[hexel.grid_position_xyz] = hexel
 	
@@ -23,7 +24,7 @@ static func generate_chunk(map : Array[Hexel], interval, chunk_id) -> Chunk:
 	interval["Processing Hexels total -- "] = Time.get_ticks_msec()
 
 	interval["Build hexels -- "] = Time.get_ticks_msec()
-	return build_chunkdata(map, interval, chunk_id, map_dict)
+	return build_chunkdata(map, interval, fixed_id, map_dict)
 
 static func build_chunkdata(map, interval, chunk_id, map_dict) -> Chunk:
 	var mesh = MeshAlgorithm.remesh(map_dict)
@@ -209,6 +210,32 @@ static func get_stone(pos: Vector3) -> int:
 
 ##Ideally, creates a random walk to place ore
 static func create_ore(map_dict):
+	for i in range(randi_range(0,3)):
+		var start_point = null
+		for attempts in range(5):
+			if start_point == null:
+				var point = Vector3i(
+					randi_range(0,Map.world_settings.chunk_size-1),
+					randi_range(0,Map.world_settings.max_height*0.5),
+					randi_range(0,Map.world_settings.chunk_size-1))
+				#check that point exists in map and is not on surface
+				if map_dict.has(point):
+					#TODO: replace
+					if map_dict[point].type != HexelData.hexel_type.AIR and map_dict[point].type != HexelData.hexel_type.BEDROCK:
+						start_point = point
+		for j in range(randi_range(3,10)): #creates 1 to 10 blocks of ore in vein
+			if start_point != null: #don't try to spawn ore at a null point, idk
+				map_dict[start_point].type = HexelData.hexel_type.ORE_GREEN
+				var dir = randi_range(0,6)
+				match dir:
+					0: start_point += Vector3i(0,0,-1); break
+					1: start_point += Vector3i(0,0,1); break
+					2: start_point += Vector3i(-1,0,0); break
+					3: start_point += Vector3i(1,0,0); break
+					4: start_point += Vector3i(0,-1,0); break
+					5: start_point += Vector3i(0,1,0); break
+				if !map_dict.has(start_point): j = 100 #end the loop idk man
+	
 	return
 	for i in randi_range(0,4): #creates i ore veins in chunk
 		var start_point = null

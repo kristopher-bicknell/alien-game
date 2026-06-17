@@ -1,10 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://cn6itjpraoqua"]
+[gd_scene load_steps=13 format=3 uid="uid://cn6itjpraoqua"]
 
 [ext_resource type="ArrayMesh" uid="uid://dt7yo5lkfyts4" path="res://assets/buildings/spaceship/spaceship.obj" id="1_numpc"]
 [ext_resource type="Script" uid="uid://cy50djyp2byr4" path="res://script/building/spaceship.gd" id="1_oayyn"]
+[ext_resource type="Script" uid="uid://bkk14h8v1arr" path="res://script/building/building_data.gd" id="2_7ygly"]
 [ext_resource type="Texture2D" uid="uid://x4nv663jk3cb" path="res://assets/buildings/spaceship/spaceship_texture.png" id="2_dr06e"]
 [ext_resource type="Texture2D" uid="uid://wj7woo4qfh4s" path="res://assets/buildings/spaceship/spaceship_metallic.png" id="3_oayyn"]
 [ext_resource type="Texture2D" uid="uid://dyvuhqoarp1m5" path="res://assets/buildings/spaceship/spaceship_roughness.png" id="4_7ygly"]
+
+[sub_resource type="Resource" id="Resource_ncp3f"]
+script = ExtResource("2_7ygly")
+size = 3
+metadata/_custom_type_script = "uid://bkk14h8v1arr"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ncp3f"]
 albedo_texture = ExtResource("2_dr06e")
@@ -20,9 +26,18 @@ radius = 19.0
 height = 14.0
 radius = 6.0
 
-[node name="Spaceship" type="StaticBody3D"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_oayyn"]
+size = Vector2(40, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ygly"]
+shading_mode = 0
+
+[node name="Spaceship" type="StaticBody3D" node_paths=PackedStringArray("interact_area", "snap_point")]
 script = ExtResource("1_oayyn")
+interact_area = NodePath("EnterArea")
 interact_text = "Enter (E)"
+snap_point = NodePath("EnterArea/SnapPoint")
+building_data = SubResource("Resource_ncp3f")
 metadata/_custom_type_script = "uid://dj51lhayb4lr6"
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
@@ -42,6 +57,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 shape = SubResource("CylinderShape3D_oayyn")
 
 [node name="SnapPoint" type="Marker3D" parent="EnterArea"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("PlaneMesh_oayyn")
+surface_material_override/0 = SubResource("StandardMaterial3D_7ygly")
 
 [connection signal="body_entered" from="EnterArea" to="." method="interact_area_body_entered"]
 [connection signal="body_exited" from="EnterArea" to="." method="interact_area_body_exited"]

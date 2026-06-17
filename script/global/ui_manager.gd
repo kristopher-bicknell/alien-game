@@ -3,12 +3,13 @@ extends Node
 var root
 static var current_ui: UIBase = null
 
+var hotbar: Hotbar
+signal player_hold(item: int)
+
 const ui_screens = {
 	"inventory": "res://scenes/ui/inventory.tscn",
 	"craft": "res://scenes/ui/craft_window.tscn"
 }
-
-#@onready var ui_canvas = CanvasLayer.new()
 
 func _ready():
 	root = get_tree().root
@@ -24,10 +25,17 @@ func load_ui(screen: String, extra = null, origin = null):
 			new_screen.building = extra
 			new_screen.building_ref = origin
 			new_screen.load_ui()
+		hotbar.visible = false
+		hotbar.enabled = false
 
 func cull_ui():
 	GlobalInfo.control_mode = GlobalInfo.ControlMode.DEFAULT
+	hotbar.visible = true
+	hotbar.enabled = true
 
 func call_current_ui(function: String):
 	if current_ui:
 		current_ui.call(function)
+
+func hold_item(item: int):
+	player_hold.emit(item)

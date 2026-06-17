@@ -12,18 +12,17 @@ var large_plants = {
 }
 
 #buildings scenes dictionary
-@onready var buildings = {
-	"spaceship": preload("res://scenes/building/spaceship.tscn")
+static var buildings = {
+	"spaceship": load("res://scenes/building/spaceship.tscn")
 }
 
-@onready var chunk_manager: ChunkManager = $WorldGen/Chunks
+#@onready var chunk_manager: ChunkManager = $WorldGen/Chunks
 
 
 func set_objects(new_objects: Node3D):
 	objects = new_objects
 
-func create_building(building: String, base_hexel: Hexel, chunk_id: Vector2i):
-	return
+func create_building(building: String, base_hexel: Hexel, chunk_id: Vector2i, chunk_manager):
 	if !buildings.has(building):
 		push_warning(building + " was not found in buildings dict")
 		return
@@ -37,17 +36,16 @@ func create_building(building: String, base_hexel: Hexel, chunk_id: Vector2i):
 	new_building.add_to_group("buildings")
 	var building_origin = base_hexel.grid_position_xyz
 	buildings_placed[building_origin] = new_building
-	
+	new_building.global_position = base_hexel.world_position
 	new_building.create_building_data(chunk_id, building_origin)
 	#flatten ground to beneath building
-	for tile in new_building.building_data.size:
-		var tile_offset = building_origin + tile
+	for tile in new_building.building_data.size_array:
+		var tile_offset = building_origin + Vector3i(tile.x, -1.0, tile.y)
 		chunk_manager.get_chunk(chunk_id).flatten_to(tile_offset)
 		#remove trees if they intersect
 		if plants_placed.has(tile_offset):
 			plants_placed[tile_offset].queue_free()
 			plants_placed.erase(tile_offset)
-	chunk_manager.get_chunk(chunk_id).reset_geometry()
 	new_building.initialize()
 
 func place_plants(settings):

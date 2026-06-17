@@ -21,7 +21,6 @@ func _process(delta: float):
 func distance_enabled():
 	var camera = get_viewport().get_camera_3d()
 	var camera_transform = camera.get_camera_transform()
-	var screen_position = camera.unproject_position(spawn_pos.global_transform.origin)
 	if !camera.is_position_behind(spawn_pos.global_position):
 		var new_scale = camera.near / (spawn_pos.global_position - camera_transform.origin).project(-camera_transform.basis.z).length()
 		scale = Vector2(500,500) * new_scale

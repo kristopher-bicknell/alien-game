@@ -11,6 +11,7 @@ var chunks: ChunkManager
 
 #UI
 @onready var label: RichTextLabel = $"../UI/Info"
+@onready var player: Player = %Scene
 var threads: Array[Thread] = [Thread.new(), Thread.new(), Thread.new(), Thread.new()]
 
 
@@ -30,6 +31,8 @@ func _input(event: InputEvent):
 		call_deferred("load_world", SaveData.load_data_tostring())
 	if event.is_action_pressed("debug_generatemap"):
 		call_deferred("generate_world")
+	if event.is_action_pressed("enter_warp"):
+		chunks.regenerate_all_meshes()
 
 func make_chunkmanager():
 	chunks = ChunkManager.new()
@@ -91,6 +94,9 @@ func load_world(chunks_dict: Dictionary[Vector2, Dictionary]):
 			new_chunk.init_chunk()
 	loaded_chunks.clear()
 	print("finished creating chunks")
+	for chunk in chunks.chunks.values():
+		player.add_block.connect(chunk.hexel_at_point)
+		player.remove_block.connect(chunk.hexel_at_point)
 	#$"../CanvasLayer/debug_noteforme".text = "created chunk " + str(chunk_id)
 
 var loaded_chunks = []
@@ -139,6 +145,7 @@ func generate_world():
 					removed += 1
 	#print("Caves removed ", removed)
 	caves.finished_caves()
+	
 	#make terrain geometry
 	for chunk_id in hexels.keys():
 		var new_chunk = HexelGenerator.generate_chunk(hexels[chunk_id], interval, chunk_id)
@@ -151,20 +158,27 @@ func generate_world():
 	var op = ObjectPlacer.new()
 	op.set_objects($Objects)
 	op.place_plants(settings)
-
 	
 	#Place spaceship
-	var spaceship_locations = Map.surface_layer.values()
-	spaceship_locations.shuffle() #randomize surface locations, idk man, is this the best way to do it? I dont think so
-	var spawn_pos = Vector3.ZERO
-	var ship_index = 0
-	#while spawn_pos == Vector3.ZERO:
-	#	var hexel = spaceship_locations[ship_index]
-	#	if hexel.type == HexelData.hexel_type.DIRT or hexel.type == HexelData.hexel_type.GRASS or hexel.type == HexelData.hexel_type.SAND:
-	#		op.create_building("spaceship", hexel, chunks.find_id_for(hexel))
-	#	ship_index += 1
-	
-	
+	var is_placed = false
+	#op.call_deferred("create_building", "spaceship", Map.surface_layer[Vector2i.ZERO], Vector2i.ZERO)
+	#return
+	var attempts = 0
+	while !is_placed:
+		#TODO: fix
+		var chunk_id = Vector2i.ZERO
+		#var chunk_id = chunks.chunks.keys().pick_random()
+		var hexel_xz = chunks.chunks[chunk_id].hexels_dict.values().pick_random().grid_position_xz
+		#TODO: make it not zero
+		var hexel = Map.surface_layer[Vector2i(4,3)]
+		if hexel.type == HexelData.hexel_type.DIRT or hexel.type == HexelData.hexel_type.GRASS or hexel.type == HexelData.hexel_type.SAND or attempts > 5:
+			print("suitable tile at ", hexel.grid_position_xyz)
+			op.create_building("spaceship", hexel, chunk_id, chunks)
+			chunks.get_chunk(chunk_id).reset_geometry()
+			is_placed = true
+			print("spaceship placed")
+		else:
+			attempts += 1
 	print_generation_results(starttime, interval)
 	#interaction_tracker.init()
 	#Debugger.draw_hexel_dictionary(Map.surface_layer)
@@ -172,6 +186,7 @@ func generate_world():
 func _exit_tree():
 	for thread in threads:
 		thread.wait_to_finish()
+
 
 ## This mess of a function loops through the timing results of generate_world and prints them
 func print_generation_results(start : float, dict : Dictionary):

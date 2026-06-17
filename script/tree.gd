@@ -12,11 +12,19 @@ var player_inside: bool = false
 func _ready():
 	if tree_type == 1:
 		hp = 2
-		drops = {ItemData.ItemType.TREE1_LOG: Vector2(0.9, 5.0),
-		ItemData.ItemType.FIBER: Vector2(0.1, 2.0)}
+		drops = ItemDropTable.new([
+			[Item.TREE1_LOG, 3, 1.0],
+			[Item.TREE1_LOG, 1, 0.5],
+			[Item.TREE1_LOG, 1, 0.25],
+			[Item.FIBER, 1, 0.1]
+		])
 	if tree_type == 2:
 		hp = 2
-		drops = {ItemData.ItemType.TREE2_LOG: Vector2(0.9, 5.0)}
+		drops = ItemDropTable.new([
+			[Item.TREE2_LOG, 3, 1.0],
+			[Item.TREE2_LOG, 1, 0.5],
+			[Item.TREE2_LOG, 1, 0.25]
+		])
 	interaction_area.connect("body_entered", _body_entered)
 	interaction_area.connect("body_exited", _body_exited)
 
@@ -32,11 +40,10 @@ func check_hp():
 	if hp <= 0:
 		anim_player.play("destroy")
 		#spawn wood and kill the tree
-		for item in drops.keys():
-			var prob_and_calls = drops[item]
-			for i in range(prob_and_calls.y):
-				if randf() <= prob_and_calls.x:
-					spawn_item.emit(item, get_item_spawn())
+		var loot = drops.get_loot()
+		for item in loot.keys():
+			for i in range(loot[item]):
+				spawn_item.emit(item, get_item_spawn())
 		await anim_player.animation_finished
 		queue_free()
 

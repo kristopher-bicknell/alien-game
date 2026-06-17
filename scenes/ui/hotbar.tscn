@@ -1,0 +1,245 @@
+[gd_scene load_steps=19 format=3 uid="uid://c13vk63ja8gej"]
+
+[ext_resource type="Script" uid="uid://b0pmj253toxxx" path="res://script/ui/hotbar.gd" id="1_6hkf2"]
+[ext_resource type="Texture2D" uid="uid://nwfk4ychfvni" path="res://assets/ui/item_background.png" id="2_tyl16"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_m1s8h"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hkf2"]
+atlas = SubResource("CompressedTexture2D_m1s8h")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tyl16"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pikvf"]
+atlas = SubResource("CompressedTexture2D_tyl16")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_miglr"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82eeh"]
+atlas = SubResource("CompressedTexture2D_miglr")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xu3a2"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1jgs"]
+atlas = SubResource("CompressedTexture2D_xu3a2")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1uw18"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fysmm"]
+atlas = SubResource("CompressedTexture2D_1uw18")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7flr0"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dimnp"]
+atlas = SubResource("CompressedTexture2D_7flr0")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ipcor"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qhi3"]
+atlas = SubResource("CompressedTexture2D_ipcor")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i2yph"]
+load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md7we"]
+atlas = SubResource("CompressedTexture2D_i2yph")
+region = Rect2(0, 0, 100, 100)
+
+[node name="Hotbar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_6hkf2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -548.0
+offset_top = -61.0
+offset_right = 548.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Slot0" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot0"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_6hkf2")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot0"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Slot1" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot1"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_pikvf")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot1"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Slot2" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot2"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_82eeh")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot2"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Slot3" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot3"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_f1jgs")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot3"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Slot4" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot4"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_fysmm")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot4"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Slot5" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot5"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_dimnp")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot5"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Slot6" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot6"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_8qhi3")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot6"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Slot7" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_tyl16")
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Slot7"]
+visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_md7we")
+
+[node name="Highlight" type="ColorRect" parent="HBoxContainer/Slot7"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.478, 0.42, 1, 0.376471)

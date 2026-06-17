@@ -1,6 +1,8 @@
 extends Node
 #refer to via GlobalInfo
 
+@onready var item_texture_atlas = preload("res://assets/items/item_overworldatlas.png")
+
 enum ControlMode{
 	DEFAULT, #player and camera movement are processed in third person
 	FPS,	 #player and camera movement are processed in a first person POV
@@ -48,8 +50,9 @@ static func set_hair_type(new_hair_type: HairTypes):
 	player_info["hair"]["mesh"] = hair_types[new_hair_type]["mesh"]
 	player_info["hair"]["texture"] = hair_types[new_hair_type]["texture"]
 
-
-
 static func get_hair_mesh(): return load(player_info["hair"]["mesh"])
 
 static func get_hair_texture(): return load(player_info["hair"]["texture"])
+
+func get_overworld_itemtexture(pos: Vector2):
+	return item_texture_atlas.get_image().get_region(Rect2i(pos * Vector2(100, 100), Vector2i(100, 100)))

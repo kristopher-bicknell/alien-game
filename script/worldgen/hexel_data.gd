@@ -37,7 +37,7 @@ const tile_map = {
 		"side": Vector2i(6, 0)
 	},
 	hexel_type.ORE_GREEN: {
-		"top": Vector2i(7, 0),
+		"top": Vector2i(6, 0),
 		"side": Vector2i(7, 0)
 	},
 	hexel_type.GRAVEL: {
@@ -47,6 +47,62 @@ const tile_map = {
 	hexel_type.SAND: {
 		"top": Vector2i(10,0),
 		"side": Vector2i(11,0)
+	}
+}
+
+##info on each block type
+static var tile_properties = {
+	hexel_type.BEDROCK: {
+		"hardness": -1
+	},
+	hexel_type.GRASS: {
+		"hardness": 1,
+		"drops": ItemDropTable.new([
+			[Item.DIRT_PILE, 2, 1.0],
+			[Item.GRASS_SEED, 1, 0.25]
+		])
+	},
+	hexel_type.DIRT: {
+		"hardness": 1,
+		"drops": ItemDropTable.new([
+			[Item.DIRT_PILE, 2, 1.0],
+			[Item.DIRT_PILE, 1, 0.5]
+		])
+	},
+	hexel_type.STONE: {
+		"hardness": 3,
+		"drops": ItemDropTable.new([
+			[Item.STONE, 2, 1.0],
+			[Item.STONE, 1, 0.5],
+			[Item.STONE, 1, 0.25]
+		])
+	},
+	hexel_type.STONE_RED: {
+		"top": Vector2i(4,1),
+		"side": Vector2i(5,1)
+	},
+	hexel_type.STONE_YELLOW: {
+		"top": Vector2i(4,2),
+		"side": Vector2i(5,2)
+	},
+	hexel_type.ORE_BLACK: {
+		"top": Vector2i(6, 0),
+		"side": Vector2i(6, 0)
+	},
+	hexel_type.ORE_GREEN: {
+		"top": Vector2i(7, 0),
+		"side": Vector2i(7, 0)
+	},
+	hexel_type.GRAVEL: {
+		"top": Vector2i(8,0),
+		"side": Vector2i(9,0)
+	},
+	hexel_type.SAND: {
+		"hardness": 1,
+		"drops": ItemDropTable.new([
+			[Item.SAND_PILE, 2, 1.0],
+			[Item.SAND_PILE, 1, 0.5]
+		])
 	}
 }
 
