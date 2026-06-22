@@ -10,6 +10,7 @@
 [sub_resource type="Resource" id="Resource_ncp3f"]
 script = ExtResource("2_7ygly")
 size = 3
+preview_mesh = ExtResource("1_numpc")
 metadata/_custom_type_script = "uid://bkk14h8v1arr"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ncp3f"]

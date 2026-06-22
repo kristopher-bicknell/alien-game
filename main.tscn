@@ -28,7 +28,7 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 64
+radius = 8
 max_height = 32
 ground_to_air_ratio = 0.5
 num_caves = 0
@@ -210,7 +210,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -344, 0)
 shape = SubResource("WorldBoundaryShape3D_lquwl")
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 400, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 276, 0)
 
 [node name="SpawnPlatform" type="StaticBody3D" parent="SpawnPoint"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)
@@ -232,55 +232,62 @@ unique_name_in_owner = true
 [node name="Debug" type="Node3D" parent="."]
 
 [node name="Tree1" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 382, -73)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 258, -73)
 
 [node name="tree2" parent="Debug" groups=["plants"] instance=ExtResource("10_efxa6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 379, 83)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 255, 83)
 
 [node name="Tree1_2" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 382, -73)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 258, -73)
 
 [node name="Tree1_3" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 382, -73)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 258, -73)
 
 [node name="Tree1_4" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 382, -73)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 258, -73)
 
 [node name="KhanHome" parent="Debug" instance=ExtResource("11_ycdy4")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -49, 379, 34)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -49, 255, 34)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Debug"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -332, -180)
+visible = false
 mesh = SubResource("PrismMesh_w48qg")
 surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
 
 [node name="NorthLabel" type="MeshInstance3D" parent="Debug/MeshInstance3D"]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 157, 6.86269e-06)
+visible = false
 mesh = SubResource("TextMesh_2cqfq")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Debug"]
 transform = Transform3D(-1, 1.50996e-07, 6.60024e-15, 0, -4.37114e-08, 1, 1.50996e-07, 1, 4.37114e-08, 0, -332, 142)
+visible = false
 mesh = SubResource("PrismMesh_w48qg")
 surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
 
 [node name="NorthLabel" type="MeshInstance3D" parent="Debug/MeshInstance3D2"]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -3.6692e-05, 155, 6.77527e-06)
+visible = false
 mesh = SubResource("TextMesh_074og")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Debug"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -151, -332, -11)
+visible = false
 mesh = SubResource("PrismMesh_w48qg")
 surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
 
 [node name="NorthLabel" type="MeshInstance3D" parent="Debug/MeshInstance3D3"]
 transform = Transform3D(100, 0, 0, 0, 100, 8.35187e-21, 0, 8.35187e-21, 100, -1.04904e-05, 161, 7.03754e-06)
+visible = false
 mesh = SubResource("TextMesh_82xsv")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Debug"]
 transform = Transform3D(7.54979e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, -7.54979e-08, -3.30012e-15, 154, -332, -11)
+visible = false
 mesh = SubResource("PrismMesh_w48qg")
 surface_material_override/0 = SubResource("StandardMaterial3D_w48qg")
 
@@ -292,12 +299,16 @@ skeleton = NodePath("../..")
 [node name="Items" type="Node3D" parent="."]
 
 [node name="Furnace" parent="." instance=ExtResource("8_efxa6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 380, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 256, 0)
 
 [node name="Workbench" parent="." instance=ExtResource("12_dg77c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 380, -22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 256, -22)
 
 [node name="InteriorSceneLocation" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1000, 0)
+
+[node name="jump_hold_elapsed" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]

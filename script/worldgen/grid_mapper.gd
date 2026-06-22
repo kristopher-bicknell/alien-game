@@ -60,3 +60,30 @@ static func world_to_tile(world_pos: Vector3) -> Vector3:
 ### Filters
 static func rectangular_buffer_filter(col: int, row: int, limit: int) -> bool:
 	return abs(col) > limit or abs(row) > limit
+
+static func offset_to_cube(pos: Vector2i):
+	var q = pos.y + (pos.x + (int(pos.x) & 1)) * 0.5
+	var r = -pos.x
+	return Vector3(q, r, -q - r)
+
+static func cube_to_offset(pos: Vector3):
+	var x = -pos.y
+	var y = pos.x + (pos.y + (int(pos.y) & 1)) * 0.5
+	return Vector2i(x, y)
+
+static func rotate_left(pos: Vector2i, center: Vector2i):
+	var cube_pos = offset_to_cube(pos)
+	var cube_center = offset_to_cube(center)
+	var distance_vector = cube_pos - cube_center
+	#a 60 degree turn clockwise (right) pushes each thing over one left and negates them
+	var rotated = Vector3(-distance_vector.y, -distance_vector.z, -distance_vector.x)
+	print(str(pos) + " -> " + str(cube_to_offset(rotated + cube_center)))
+	return cube_to_offset(rotated + cube_center)
+
+static func rotate_right(pos: Vector2i, center: Vector2i):
+	var cube_pos = offset_to_cube(pos)
+	var cube_center = offset_to_cube(center)
+	var distance_vector = cube_pos - cube_center
+	#a 60 degree turn c-clockwise (left) pushes each thing over one right and negates them
+	var rotated = Vector3(-distance_vector.z, -distance_vector.x, -distance_vector.y)
+	return cube_to_offset(rotated + cube_center)

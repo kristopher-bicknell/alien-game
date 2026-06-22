@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://cd7njtawndbn1"]
+
+[ext_resource type="ArrayMesh" uid="uid://pj4unvs6rbfm" path="res://assets/environment/terrain/LANDTILE_STANDARD.obj" id="1_otaob"]
+[ext_resource type="Material" uid="uid://cwxcre1jpg6wa" path="res://assets/res/god_mode_view_material.tres" id="2_ugv0a"]
+[ext_resource type="Script" uid="uid://dwkxhov5ngpya" path="res://script/building/god_mode_tile_preview.gd" id="3_ugv0a"]
+
+[node name="GodModeTilePreview" type="MeshInstance3D"]
+mesh = ExtResource("1_otaob")
+surface_material_override/0 = ExtResource("2_ugv0a")
+script = ExtResource("3_ugv0a")

@@ -1,15 +1,39 @@
-[gd_scene load_steps=5 format=3 uid="uid://djno1jb53ai4m"]
+[gd_scene load_steps=7 format=3 uid="uid://djno1jb53ai4m"]
 
-[ext_resource type="ArrayMesh" uid="uid://ci6hpxgtg3hur" path="res://assets/environment/landtile.obj" id="1_gkme0"]
 [ext_resource type="Script" uid="uid://c2lguc5wx8yrw" path="res://script/god_mode_view.gd" id="1_pa5qt"]
 [ext_resource type="Material" uid="uid://cwxcre1jpg6wa" path="res://assets/res/god_mode_view_material.tres" id="3_ajisp"]
+[ext_resource type="ArrayMesh" uid="uid://pj4unvs6rbfm" path="res://assets/environment/terrain/LANDTILE_STANDARD.obj" id="3_gd214"]
 
-[sub_resource type="MultiMesh" id="MultiMesh_ijbud"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pa5qt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pa5qt"]
+size = Vector3(8, 100, 8)
+
+[sub_resource type="MultiMesh" id="MultiMesh_pa5qt"]
 transform_format = 1
-mesh = ExtResource("1_gkme0")
+instance_count = 19
+visible_instance_count = 19
+mesh = SubResource("BoxMesh_pa5qt")
+buffer = PackedFloat32Array(9.10844e-44, 0, 1.4013e-45, 9.10844e-44, 1.4013e-45, 2.8026e-45, 9.10844e-44, 2.8026e-45, 4.2039e-45, 9.10844e-44, 4.2039e-45, 5.60519e-45, 9.10844e-44, 5.60519e-45, 7.00649e-45, 9.10844e-44, 7.00649e-45, 8.40779e-45, 9.10844e-44, 8.40779e-45, 9.80909e-45, 9.10844e-44, 9.80909e-45, 1.12104e-44, 9.10844e-44, 1.12104e-44, 1.26117e-44, 9.10844e-44, 1.26117e-44, 1.4013e-44, 9.10844e-44, 1.4013e-44, 1.54143e-44, 9.10844e-44, 1.54143e-44, 1.68156e-44, 9.10844e-44, 1.68156e-44, 1.82169e-44, 9.10844e-44, 1.82169e-44, 1.96182e-44, 9.10844e-44, 1.96182e-44, 2.10195e-44, 9.10844e-44, 2.10195e-44, 2.24208e-44, 9.10844e-44, 2.24208e-44, 2.38221e-44, 9.10844e-44, 2.38221e-44, 2.52234e-44, 9.10844e-44, 2.52234e-44, 2.66247e-44, 9.10844e-44, 2.66247e-44, 2.8026e-44, 9.10844e-44, 2.8026e-44, 2.94273e-44, 9.10844e-44, 2.94273e-44, 3.08286e-44, 9.10844e-44, 3.08286e-44, 3.22299e-44, 9.10844e-44, 3.22299e-44, 3.36312e-44, 9.10844e-44, 3.36312e-44, 3.50325e-44, 9.10844e-44, 3.50325e-44, 3.64338e-44, 9.10844e-44, 3.64338e-44, 3.78351e-44, 9.10844e-44, 3.78351e-44, 3.92364e-44, 9.10844e-44, 3.92364e-44, 4.06377e-44, 9.10844e-44, 4.06377e-44, 4.2039e-44, 9.10844e-44, 4.2039e-44, 4.34403e-44, 9.10844e-44, 4.34403e-44, 4.48416e-44, 9.10844e-44, 4.48416e-44, 4.62428e-44, 9.10844e-44, 4.62428e-44, 4.76441e-44, 9.10844e-44, 4.76441e-44, 4.90454e-44, 9.10844e-44, 4.90454e-44, 5.04467e-44, 9.10844e-44, 5.04467e-44, 5.1848e-44, 9.10844e-44, 5.1848e-44, 5.32493e-44, 9.10844e-44, 5.32493e-44, 5.46506e-44, 9.10844e-44, 5.46506e-44, 5.60519e-44, 9.10844e-44, 5.60519e-44, 5.74532e-44, 9.10844e-44, 5.74532e-44, 5.88545e-44, 9.10844e-44, 5.88545e-44, 6.02558e-44, 9.10844e-44, 6.02558e-44, 6.16571e-44, 9.10844e-44, 6.16571e-44, 6.30584e-44, 9.10844e-44, 6.30584e-44, 6.44597e-44, 9.10844e-44, 6.44597e-44, 6.5861e-44, 9.10844e-44, 6.5861e-44, 6.72623e-44, 9.10844e-44, 6.72623e-44, 6.86636e-44, 9.10844e-44, 6.86636e-44, 7.00649e-44, 9.10844e-44, 7.00649e-44, 7.14662e-44, 9.10844e-44, 7.14662e-44, 7.28675e-44, 9.10844e-44, 7.28675e-44, 7.42688e-44, 9.10844e-44, 7.42688e-44, 7.56701e-44, 9.10844e-44, 7.56701e-44, 7.70714e-44, 9.10844e-44, 7.70714e-44, 7.84727e-44, 9.10844e-44, 7.84727e-44, 7.9874e-44, 9.10844e-44, 7.9874e-44, 8.12753e-44, 9.10844e-44, 8.12753e-44, 8.26766e-44, 9.10844e-44, 8.26766e-44, 8.40779e-44, 9.10844e-44, 8.40779e-44, 8.54792e-44, 9.10844e-44, 8.54792e-44, 8.68805e-44, 9.10844e-44, 8.68805e-44, 8.82818e-44, 9.10844e-44, 8.82818e-44, 8.96831e-44, 0, 1.96182e-44, 1.4013e-45, 0, 2.10195e-44, 1.96182e-44, 1.4013e-45, 1.82169e-44, 2.8026e-45, 1.4013e-45, 1.96182e-44, 1.82169e-44, 2.8026e-45, 1.68156e-44, 4.2039e-45, 2.8026e-45, 1.82169e-44, 1.68156e-44, 4.2039e-45, 1.54143e-44, 5.60519e-45, 4.2039e-45, 1.68156e-44, 1.54143e-44, 5.60519e-45, 1.4013e-44, 7.00649e-45, 5.60519e-45, 1.54143e-44, 1.4013e-44, 7.00649e-45, 1.26117e-44, 8.40779e-45, 7.00649e-45, 1.4013e-44, 1.26117e-44)
 
 [node name="GodModeView" type="Node3D"]
 script = ExtResource("1_pa5qt")
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+material_override = SubResource("StandardMaterial3D_pa5qt")
+custom_aabb = AABB(0, 2.5, 0, 0, 0, 0)
+multimesh = SubResource("MultiMesh_pa5qt")
+
+[node name="Landtile" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+visible = false
+mesh = ExtResource("3_gd214")
+surface_material_override/0 = ExtResource("3_ajisp")
+
+[node name="debug_dir" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="CameraPivot" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -19,16 +43,9 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 151.088)
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-custom_aabb = AABB(0, 2.5, 0, 0, 0, 0)
-multimesh = SubResource("MultiMesh_ijbud")
+[node name="PreviewTiles" type="Node3D" parent="."]
+unique_name_in_owner = true
 
-[node name="Landtile" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = ExtResource("1_gkme0")
-surface_material_override/0 = ExtResource("3_ajisp")
-
-[node name="debug_dir" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="BuildingPreview" type="MeshInstance3D" parent="PreviewTiles"]
+unique_name_in_owner = true
+material_override = ExtResource("3_ajisp")

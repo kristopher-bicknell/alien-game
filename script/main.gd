@@ -28,6 +28,7 @@ func _ready():
 	WarpManager.warp_player.connect(set_player_pos)
 	UIManager.player_hold.connect(player.hold_item)
 
+
 func debug_ready():
 	var new_item = item.instantiate()
 	new_item.set_item(Item.PICK)

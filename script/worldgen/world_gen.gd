@@ -32,10 +32,12 @@ func _input(event: InputEvent):
 	if event.is_action_pressed("debug_generatemap"):
 		call_deferred("generate_world")
 	if event.is_action_pressed("enter_warp"):
+		return
 		chunks.regenerate_all_meshes()
 
 func make_chunkmanager():
 	chunks = ChunkManager.new()
+	Map.chunk_manager = chunks
 	add_child(chunks)
 
 func clear_chunks():
@@ -165,12 +167,9 @@ func generate_world():
 	#return
 	var attempts = 0
 	while !is_placed:
-		#TODO: fix
-		var chunk_id = Vector2i.ZERO
-		#var chunk_id = chunks.chunks.keys().pick_random()
+		var chunk_id = chunks.chunks.keys().pick_random()
 		var hexel_xz = chunks.chunks[chunk_id].hexels_dict.values().pick_random().grid_position_xz
-		#TODO: make it not zero
-		var hexel = Map.surface_layer[Vector2i(4,3)]
+		var hexel = Map.surface_layer[hexel_xz]
 		if hexel.type == HexelData.hexel_type.DIRT or hexel.type == HexelData.hexel_type.GRASS or hexel.type == HexelData.hexel_type.SAND or attempts > 5:
 			print("suitable tile at ", hexel.grid_position_xyz)
 			op.create_building("spaceship", hexel, chunk_id, chunks)

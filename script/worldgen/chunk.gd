@@ -56,18 +56,27 @@ func flatten_to(flatten_pos: Vector3i):
 	if !hexels_dict.has(flatten_pos):
 		#check with the neighbors
 		var new_pos_array = Map.check_tile_chunkbounds(flatten_pos)
-		if new_pos_array == flatten_pos: return
-		chunk_neighbors[new_pos_array[0]].flatten_to(new_pos_array[1])
+		if new_pos_array is Vector3i: return
+		if chunk_neighbors.has(new_pos_array[0]):
+			chunk_neighbors[new_pos_array[0]].flatten_to(new_pos_array[1])
 		return
 	#remove all tiles above
-	for y in range(0, Map.world_settings.max_height):
+	for y in range(flatten_pos.y + 1, Map.world_settings.max_height):
 		if hexels_dict.has(Vector3i(flatten_pos.x, y, flatten_pos.z)):
 			hexels_dict[Vector3i(flatten_pos.x, y, flatten_pos.z)].type = HexelData.hexel_type.AIR
 	#add a 1 block platform below the building
-	#var below_hexel = hexels_dict[flatten_pos - Vector3i(0,-1,0)]
-	#if below_hexel.type == HexelData.hexel_type.AIR:
-	#	below_hexel.type = HexelData.hexel_type.DIRT
+	var below_hexel = hexels_dict[flatten_pos]
+	if below_hexel.type == HexelData.hexel_type.AIR:
+		below_hexel.type = HexelData.hexel_type.DIRT
 	reset_geometry()
+
+func fill_from_to(from: Vector3i, to: int, fill_type: HexelData.hexel_type):
+	if hexels_dict.has(from) and hexels_dict.has(Vector3i(from.x, to, from.z)):
+		for y in range(to,  Map.world_settings.max_height, 1):
+			if hexels_dict.has(Vector3i(from.x, y, from.z)):
+				#if hexels_dict[Vector3i(from.x, y, from.z)].type == HexelData.hexel_type.AIR:
+				hexels_dict[Vector3i(from.x, y, from.z)].type = fill_type
+		reset_geometry()
 
 func fill_pos_dict():
 	for v: Hexel in hexels:
@@ -83,8 +92,11 @@ func add_hexel(block_hit: BlockRay.RayHit):
 		print("add at ", hexel.grid_position_xyz)
 		#get the first air block up
 		while hexel.type != HexelData.hexel_type.AIR:
-			hexel = hexels_dict[hexel.grid_position_xyz + Vector3i(0,1,0)]
-		hexel.type = HexelData.hexel_type.GRAVEL
+			if hexels_dict.has([hexel.grid_position_xyz + Vector3i(0,1,0)]):
+				hexel = hexels_dict[hexel.grid_position_xyz + Vector3i(0,1,0)]
+			else:
+				return
+		hexel.type = HexelData.hexel_type.TEST
 		reset_geometry()
 
 func remove_hexel(block_hit: BlockRay.RayHit):
@@ -93,28 +105,18 @@ func remove_hexel(block_hit: BlockRay.RayHit):
 		if hexel.type == HexelData.hexel_type.AIR:
 			hexel = hexels_dict[hexel.grid_position_xyz - Vector3i(0,1,0)]
 		print("remove at ", hexel.grid_position_xyz)
-		#put down a placeholder shape mf so i can see where it hitted
-		#var example_mesh = MeshInstance3D.new()
-		#example_mesh.mesh = load("res://assets/environment/landtile.obj")
-		#var new_material = load("res://assets/res/god_mode_view_material.tres") as StandardMaterial3D
-		#example_mesh.set_surface_override_material(0, new_material)
-		#add_child(example_mesh)
-		#example_mesh.position = hexel.world_position
 		#now do the removing
 		hexel.type = HexelData.hexel_type.AIR
 		reset_geometry()
 
-# Find a hexel at a given location
-# We cant just compare against where the user clicked since hexels can have various sizes/offsets!
-# perform greedy-first-search across the relevant layer for "quick" lookup.
+## Find a hexel at a given location
 func hexel_at_point(hd) -> Hexel:
 	# Move "into" the surface hit point toward the hexel center
 	var corrected_pos: Vector3 = hd.point - hd.normal * (Map.world_settings.hexel_height * 0.5)
 	
 	var y := int(floor(corrected_pos.y / Map.world_settings.hexel_height))
 	var layer = hexel_layers.get(y)
-	#print("Attempted select at layer:", y, " | corrected_pos:", corrected_pos)
-
+	
 	if not layer:
 		layer = hexel_layers.get(y - 1)
 	if not layer:
@@ -135,7 +137,6 @@ func hexel_at_point(hd) -> Hexel:
 			if dist < current_dist:
 				current = hexel
 				current_dist = dist
-	#print("Visited: ", visited.size(), " / ", layer.size())
 	return current
 
 func _on_body_entered(body: Node3D):

@@ -2,6 +2,7 @@ extends Node
 #refer to via GlobalInfo
 
 @onready var item_texture_atlas = preload("res://assets/items/item_overworldatlas.png")
+@onready var godmode_tile_mesh = preload("res://assets/environment/terrain/LANDTILE_STANDARD.obj")
 
 enum ControlMode{
 	DEFAULT, #player and camera movement are processed in third person

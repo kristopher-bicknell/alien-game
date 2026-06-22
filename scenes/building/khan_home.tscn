@@ -8,7 +8,8 @@
 
 [sub_resource type="Resource" id="Resource_r5cvb"]
 script = ExtResource("2_7j38y")
-size = 0
+size = 2
+preview_mesh = ExtResource("1_7fk6i")
 metadata/_custom_type_script = "uid://bkk14h8v1arr"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r5cvb"]

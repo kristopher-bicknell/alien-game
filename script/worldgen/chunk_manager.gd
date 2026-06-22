@@ -19,9 +19,6 @@ func regenerate_all_meshes():
 	for chunk in chunks.values():
 		chunk.mesh = ArrayMesh.new()
 		await get_tree().create_timer(0.5).timeout
-		##TODO: REMOVE THIS, IT IS FOR TESTING
-		for hexel in chunk.hexels_dict.values():
-			if hexel.type != HexelData.hexel_type.ORE_GREEN: hexel.type = HexelData.hexel_type.AIR
 		chunk.reset_geometry()
 		print("reset geometry for chunk ", chunk.chunk_id)
 
@@ -63,3 +60,9 @@ func find_id_for(find_hexel: Hexel) -> Vector2i:
 			if hexel == find_hexel:
 				return chunk.chunk_id
 	return Vector2i.ZERO
+
+func offset_to_chunk(offset: Vector2i):
+	var chunk_id = Vector2i((offset.x - posmod(offset.x, Map.world_settings.chunk_size)) / Map.world_settings.chunk_size, (offset.y - posmod(offset.y, Map.world_settings.chunk_size)) / Map.world_settings.chunk_size)
+	if chunks.has(chunk_id):
+		return chunks[chunk_id]
+	return null

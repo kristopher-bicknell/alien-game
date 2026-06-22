@@ -9,17 +9,20 @@ signal interact
 @export var move_speed := 25
 @export var acceleration := 98
 @export var rotation_speed := 10
-@export var jump_impulse := 50
+@export var jump_impulse := 4.5
+@export var jump_hold_acceleration := 0.012
 
 @export_group("Camera")
 @export_range(0.0,1.0) var mouse_sensitivity := 0.25
 
 var _camera_input_direction := Vector2.ZERO
 var _last_movement_direction := Vector3.BACK
-var _gravity := -30.0
+var _gravity := -40.0
 var held_item = null
 var active_chunk: Chunk
+var can_place = true
 
+@onready var place_remove_timer: Timer = $PlaceRemoveTimer
 @onready var _camera_pivot: Node3D = %CameraPivot
 @onready var _camera: Camera3D = %Camera3D
 @onready var _skin = %metarig
@@ -57,16 +60,28 @@ func _unhandled_input(event: InputEvent) -> void:
 		) #check that event is mouse movement and mouse is in the window
 		if is_camera_motion:
 			_camera_input_direction = event.screen_relative * mouse_sensitivity
-		if Input.is_action_just_pressed("left_click"):
-			var hit: BlockRay.RayHit = ray_cast.get_ray_hit()
-			if hit:
-				hit.chunk.remove_hexel(hit)
-				#remove_block.emit(ray_cast.get_ray_hit())
-		if Input.is_action_just_pressed("right_click"):
-			var hit: BlockRay.RayHit = ray_cast.get_ray_hit()
-			if hit:
-				hit.chunk.add_hexel(hit)
-				#add_block.emit(ray_cast.get_ray_hit())
+		if can_place:
+			if Input.is_action_just_pressed("left_click"):
+				var hit: BlockRay.RayHit = ray_cast.get_ray_hit()
+				if hit:
+					hit.chunk.remove_hexel(hit)
+					can_place = false
+					place_remove_timer.start()
+					#remove_block.emit(ray_cast.get_ray_hit())
+			if Input.is_action_just_pressed("right_click"):
+				var hit: BlockRay.RayHit = ray_cast.get_ray_hit()
+				if hit:
+					hit.chunk.add_hexel(hit)
+					can_place = false
+					place_remove_timer.start()
+					#add_block.emit(ray_cast.get_ray_hit())
+
+var starting_jump: bool = false
+var jump_hold_duration: float = 0.16
+var jump_hold_elapsed: float = 0.0
+
+func _process(delta: float) -> void:
+	$"../jump_hold_elapsed".text = "Hold elapsed: " + str(jump_hold_elapsed) + " \nY-velocity: " + str(velocity.y)
 
 func _physics_process(delta: float) -> void:
 	if GlobalInfo.control_mode < 1:
@@ -92,10 +107,26 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_pressed("sprint") and is_on_floor():
 			used_speed = move_speed * 2
 			is_sprint = true
+		elif !is_on_floor() and is_sprint:
+			if Input.is_action_pressed("sprint"):
+				used_speed = move_speed * 2
+				is_sprint = true
+			else:
+				is_sprint = false
+			
 		velocity = velocity.move_toward(move_direction * used_speed, acceleration * delta)
 		velocity.y = y_velocity + _gravity * delta
-		
-		var is_starting_jump := Input.is_action_just_pressed("jump") and is_on_floor()
+	
+		#jumping! account for pressed vs held jumps for variable height, as god intended
+		if Input.is_action_pressed("jump") and starting_jump:
+			if jump_hold_elapsed >= jump_hold_duration:
+				starting_jump = false
+				jump_hold_elapsed = 0.0
+			else:
+				jump_hold_elapsed = jump_hold_elapsed + delta
+		else:
+			starting_jump = Input.is_action_just_pressed("jump") and is_on_floor() and jump_hold_elapsed == 0.0
+			jump_hold_elapsed = 0.0
 		
 		move_and_slide()
 		
@@ -105,10 +136,10 @@ func _physics_process(delta: float) -> void:
 		#rotate player model
 		var target_angle := Vector3.BACK.signed_angle_to(_last_movement_direction, Vector3.UP)
 		_skin.global_rotation.y = lerp_angle(_skin.rotation.y, target_angle, rotation_speed * delta)
-		if is_starting_jump:
+		if starting_jump:
 			velocity.y += jump_impulse
-		set_anim_state(is_starting_jump, is_sprint)
-
+		velocity.y += jump_hold_acceleration * jump_hold_elapsed
+		set_anim_state(starting_jump, is_sprint)
 
 func set_anim_state(is_starting_jump, is_sprint):
 	if is_starting_jump:
@@ -151,3 +182,7 @@ func hold_item(item: int):
 	if item == -1: return
 	held_item = HeldItem.new(item)
 	dominant_hand.add_child(held_item)
+
+
+func _on_place_remove_timer_timeout() -> void:
+	can_place = true

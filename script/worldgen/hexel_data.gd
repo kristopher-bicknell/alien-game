@@ -1,7 +1,7 @@
 class_name HexelData
 extends Node
 
-enum hexel_type {AIR, BEDROCK, GRASS, DIRT, STONE, ORE_BLACK, ORE_GREEN, GRAVEL, SAND, STONE_RED, STONE_YELLOW}
+enum hexel_type {AIR, BEDROCK, GRASS, DIRT, STONE, ORE_BLACK, ORE_GREEN, GRAVEL, SAND, STONE_RED, STONE_YELLOW, TEST}
 
 # Convert hexel_type to position in our texture_atlas, bottom is optional
 const tile_map = {
@@ -47,6 +47,10 @@ const tile_map = {
 	hexel_type.SAND: {
 		"top": Vector2i(10,0),
 		"side": Vector2i(11,0)
+	},
+	hexel_type.TEST: {
+		"top": Vector2i(1,1),
+		"side": Vector2i(1,1)
 	}
 }
 

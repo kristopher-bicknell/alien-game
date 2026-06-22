@@ -7,6 +7,8 @@ var noise_range : Vector2
 var surface_layer: Dictionary[Vector2i, Hexel] = {}
 var chunks = {}
 
+static var chunk_manager: ChunkManager
+
 ## Construct a dictionary for our 2d top layer of hexels
 func set_map(all_hexels, top_hexels, chunk_id):
 	#map_as_dict.clear()
@@ -59,5 +61,5 @@ func check_tile_chunkbounds(pos: Vector3i):
 	else: return pos
 	var offset = ChunkManager.neighbor_ref[return_array[0]]
 	var new_pos = pos - (Vector3i(offset.x * world_settings.chunk_size, 0, offset.y * world_settings.chunk_size))
-	return_array.append[new_pos]
+	return_array.append(new_pos)
 	return return_array
