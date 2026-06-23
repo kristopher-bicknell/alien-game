@@ -11,7 +11,14 @@ static func load_chunk(map: Array[Hexel], interval, chunk_id):
 	for hexel in map:
 		map_dict[hexel.grid_position_xyz] = hexel
 	return build_chunkdata(map, interval, chunk_id, map_dict)
-	
+
+static func generate_chunk_flat(map: Array[Hexel], interval, chunk_id) -> Chunk:
+	var map_dict : Dictionary[Vector3i, Hexel] = {}
+	var fixed_id = Vector2i(chunk_id.y, chunk_id.x)
+	for hexel in map:
+			map_dict[hexel.grid_position_xyz] = hexel
+	var process_vector = process_hexels_flat(map, map_dict)
+	return build_chunkdata(map, interval, fixed_id, map_dict)
 
 static func generate_chunk(map : Array[Hexel], interval, chunk_id) -> Chunk:
 	var map_dict : Dictionary[Vector3i, Hexel] = {}
@@ -60,15 +67,17 @@ static func prepared_chunk(surface, map, chunk_id) -> Chunk:
 	chunk.chunk_id = chunk_id
 	return chunk
 
+static func process_hexels_flat(map, map_dict):
+	for hexel in map:
+		if hexel.grid_position_xyz.y > 1:
+			hexel.type = HexelData.hexel_type.AIR
+		else:
+			hexel.type = HexelData.hexel_type.BEDROCK
 
 static func process_hexels(map, map_dict) -> Vector2i:
 	# Prepare counters
 	var passes = 0
 	var total_removed = 0
-	
-	
-	for hexel in map: # do this once
-		map_dict[hexel.grid_position_xyz] = hexel
 	
 	#shape terrain
 	for hexel in map:

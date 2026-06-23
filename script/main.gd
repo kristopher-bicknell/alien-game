@@ -58,8 +58,7 @@ func _input(event: InputEvent):
 		_debug_notif("generating new world...")
 	if event.is_action_pressed("debug_playerreset"):
 		player.position = $SpawnPoint.position
-		#TODO: ADDING THIS FOR TESTING, REMOVE IT!!!
-		WarpManager.warp_to(WarpManager.WarpLocations.KHAN_INTERIOR_0)
+		$WorldGen.create_flat()
 
 func _on_death_plane_body_entered(body: Node3D) -> void:
 	if body is CharacterBody3D:

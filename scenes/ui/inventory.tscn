@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://coasbso51gc07"]
+[gd_scene load_steps=9 format=3 uid="uid://coasbso51gc07"]
 
 [ext_resource type="Script" uid="uid://du6u6ny6bllai" path="res://script/ui/inventory_ui.gd" id="1_avmd0"]
 [ext_resource type="LabelSettings" uid="uid://jo35jjb1aulc" path="res://assets/res/menu_heading.tres" id="1_s6ek7"]
 [ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="2_xeaml"]
 [ext_resource type="Texture2D" uid="uid://pfymcr6sd5ja" path="res://assets/items/itematlas.png" id="4_5yy05"]
+[ext_resource type="FontFile" uid="uid://bmljotyil3hcn" path="res://assets/res/fonts/Oxanium-Regular.ttf" id="5_ulvp7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xeaml"]
 bg_color = Color(0.519857, 0.5146, 0.83, 0.839216)
@@ -21,6 +22,12 @@ corner_radius_bottom_left = 5
 [sub_resource type="AtlasTexture" id="AtlasTexture_ulvp7"]
 atlas = ExtResource("4_5yy05")
 region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="FontVariation" id="FontVariation_weae1"]
+base_font = ExtResource("5_ulvp7")
+variation_transform = Transform2D(1, 0.3, 0, 1, 0, 0)
+spacing_glyph = 1
+spacing_top = 3
 
 [node name="Inventory" type="Control"]
 layout_mode = 3
@@ -105,6 +112,7 @@ visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 texture = SubResource("AtlasTexture_ulvp7")
 
 [node name="ColorRect" type="ColorRect" parent="SwapIcon"]
@@ -118,6 +126,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
 color = Color(0, 0, 0, 0.403922)
 metadata/_edit_use_anchors_ = true
 
@@ -151,3 +160,34 @@ offset_right = -20.0
 offset_bottom = -53.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 metadata/_edit_use_anchors_ = true
+
+[node name="ItemDescriptionPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+z_index = 100
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_right = 110.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("2_xeaml")
+
+[node name="ItemDescriptionText" type="RichTextLabel" parent="ItemDescriptionPanel"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 96.0
+mouse_filter = 2
+theme = ExtResource("2_xeaml")
+theme_override_fonts/normal_font = SubResource("FontVariation_weae1")
+bbcode_enabled = true
+text = "If you can see this, congrats! You're not supposed to see this."
+scroll_active = false

@@ -25,20 +25,24 @@ func set_items():
 		icons.append(new_icon)
 		new_icon.add_to_group("icon")
 		new_icon.select.connect(_on_select)
+		new_icon.highlight.connect(_highlight_over_button)
 		new_icon.index = i
 	set_displays()
 
 func _process(delta: float):
+	var mouse_pos = get_viewport().get_mouse_position()
+	%ItemDescriptionPanel.position = mouse_pos + Vector2(10.0, 15.0)
 	if !swap_mode or grabbed.is_empty():
 		%SwapIcon.visible = false
 		return
+	%ItemDescriptionPanel.visible = false
 	var data = Item.item_data[grabbed.type]
 	%SwapIcon.visible = true
 	%SwapIcon.texture.region = Rect2(
 		data.texture_icon.x * 100, data.texture_icon.y * 100,
 		100,100)
 	%SwapNumber.text = str(grabbed.num)
-	%SwapIcon.position = get_viewport().get_mouse_position()
+	%SwapIcon.position = mouse_pos + Vector2(-50,-50)
 
 func _on_select(curr_index: int, is_right: bool = false):
 	if swap_mode:
@@ -55,6 +59,7 @@ func _on_select(curr_index: int, is_right: bool = false):
 				items[curr_index].type = grabbed.type
 				if is_right:
 					items[curr_index].num = 1
+					grabbed.remove(1)
 				else:
 					items[curr_index].add(grabbed.num)
 					grabbed.erase()
@@ -64,9 +69,13 @@ func _on_select(curr_index: int, is_right: bool = false):
 					items[curr_index].copy(grabbed)
 					grabbed.erase()
 				else:
-					var temp = grabbed
-					grabbed.copy(items[curr_index])
-					items[curr_index].copy(temp)
+					#for some ungodly fucking reason i can only make the shallowest copies known to man of these things
+					var type = items[curr_index].type
+					var num = items[curr_index].num
+					var other_type = grabbed.type
+					var other_num = grabbed.num
+					items[curr_index] = InventoryEntry.new(other_type, other_num)
+					grabbed = InventoryEntry.new(type, num)
 					grabbed_from = curr_index
 		validate_inventory()
 		set_swap_mode()
@@ -113,3 +122,12 @@ func validate_inventory():
 
 func _exit_tree():
 	PlayerInventory.items = items
+
+func _highlight_over_button(state: bool, index: int):
+	if !state or swap_mode: #disable on swap mode, so the UI is cleaner
+		%ItemDescriptionPanel.hide()
+		return
+	if items[index].is_empty(): return
+	var item_data = Item.item_data[items[index].type]
+	%ItemDescriptionPanel.show()
+	%ItemDescriptionText.text = "[b]" + item_data["name"] + "[/b]\n" + item_data["description"]

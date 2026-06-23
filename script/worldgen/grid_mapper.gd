@@ -7,6 +7,21 @@ static func calculate_map_positions(chunk_id: Vector2) -> Array[Hexel]:
 	hexels = generate_map(chunk_id)
 	return hexels
 
+static func calculate_map_positions_flat(chunk_id: Vector2) -> Array[Hexel]:
+	var hexels: Array[Hexel]
+	hexels = generate_map_flat(chunk_id)
+	return hexels
+
+static func generate_map_flat(chunk_id: Vector2) -> Array[Hexel]:
+	var hexel_array: Array[Hexel] = []
+	for c in range(Map.world_settings.chunk_size):
+		for r in range(Map.world_settings.chunk_size):
+			for h in range(12):
+				var pos = Vector3(c, h, r) #column, height, row
+				var hexel = generate_hexel(pos, chunk_id)
+				hexel_array.append(hexel)
+	return hexel_array
+	
 
 static func generate_map(chunk_id: Vector2) -> Array[Hexel]:
 	var hexel_array: Array[Hexel] = []

@@ -183,18 +183,18 @@ offset_top = 613.0
 offset_right = 146.0
 offset_bottom = 636.0
 
+[node name="Hotbar" parent="UI" instance=ExtResource("8_w48qg")]
+
 [node name="debug_noteforme" type="Label" parent="UI"]
 offset_left = 869.0
-offset_top = 507.0
+offset_top = 395.0
 offset_right = 1132.0
-offset_bottom = 634.0
+offset_bottom = 522.0
 text = "[9] Generate new map
 [0] Clear map data
 [-] Save current map
 [=] Load map from file
-[\\] Reset player to spawn platform"
-
-[node name="Hotbar" parent="UI" instance=ExtResource("8_w48qg")]
+[\\] Create flat world"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")

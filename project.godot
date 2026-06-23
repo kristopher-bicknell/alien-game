@@ -25,6 +25,11 @@ PlayerInventory="*res://script/global/inventory.gd"
 UIManager="*res://script/global/ui_manager.gd"
 WarpManager="*res://script/global/warp_manager.gd"
 
+[display]
+
+window/size/viewport_width=1366
+window/size/viewport_height=768
+
 [editor]
 
 version_control/plugin_name="GitPlugin"

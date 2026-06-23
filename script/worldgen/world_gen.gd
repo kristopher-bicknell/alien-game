@@ -45,6 +45,19 @@ func clear_chunks():
 		chunks.clear_chunks()
 		remove_child(chunks)
 
+func create_flat():
+	clear_chunks()
+	make_chunkmanager()
+	var hexels: Dictionary[Vector2i, Array]
+	for x in range(-4,4):
+		for z in range(-4, 4):
+			hexels[Vector2i(x,z)] = GridMapper.calculate_map_positions(Vector2i(x,z))
+	for chunk_id in hexels.keys():
+		var new_chunk = HexelGenerator.generate_chunk_flat(hexels[chunk_id], {}, chunk_id)
+		chunks.add_chunk(new_chunk, chunk_id)
+		new_chunk.add_to_group("chunks")
+		new_chunk.init_chunk()
+
 # Randomize if no seed has been set
 func init_seed():
 	if settings.map_seed == 0 or settings.map_seed == null:

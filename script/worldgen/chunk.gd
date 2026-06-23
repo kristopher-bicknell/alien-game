@@ -22,6 +22,18 @@ func init_chunk():
 	add_to_group("hexels")
 	fill_pos_dict()
 
+func init_chunk_flat():
+	var temp_hexels: Array[Hexel] = []
+	for hexel in hexels:
+		if hexel != null:
+			temp_hexels.append(hexel)
+	hexels.clear()
+	hexels = temp_hexels
+	create_dict()
+	generate_collider()
+	add_to_group("hexels")
+	fill_pos_dict()
+
 func create_dict():
 	hexels_dict.clear()
 	for hexel in hexels:
@@ -91,11 +103,8 @@ func add_hexel(block_hit: BlockRay.RayHit):
 	if hexel:
 		print("add at ", hexel.grid_position_xyz)
 		#get the first air block up
-		while hexel.type != HexelData.hexel_type.AIR:
-			if hexels_dict.has([hexel.grid_position_xyz + Vector3i(0,1,0)]):
-				hexel = hexels_dict[hexel.grid_position_xyz + Vector3i(0,1,0)]
-			else:
-				return
+		while hexel.type != HexelData.hexel_type.AIR and hexel.grid_position_xyz.y < Map.world_settings.max_height - 1:
+			hexel = hexels_dict[hexel.grid_position_xyz + Vector3i(0,1,0)]
 		hexel.type = HexelData.hexel_type.TEST
 		reset_geometry()
 
@@ -106,8 +115,9 @@ func remove_hexel(block_hit: BlockRay.RayHit):
 			hexel = hexels_dict[hexel.grid_position_xyz - Vector3i(0,1,0)]
 		print("remove at ", hexel.grid_position_xyz)
 		#now do the removing
-		hexel.type = HexelData.hexel_type.AIR
-		reset_geometry()
+		if hexel.type != HexelData.hexel_type.BEDROCK:
+			hexel.type = HexelData.hexel_type.AIR
+			reset_geometry()
 
 ## Find a hexel at a given location
 func hexel_at_point(hd) -> Hexel:

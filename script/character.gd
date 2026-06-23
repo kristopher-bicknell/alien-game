@@ -172,7 +172,7 @@ func interact_with(building):
 		position = building.snap_point.global_position
 		anim_tree.set("parameters/conditions/is_interact", true)
 		set_anim_state(false,false)
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0).timeout                                                                                                                              
 		anim_tree.set("parameters/conditions/is_interact", false)
 		UIManager.load_ui(building.menu_name, building.building_name, building)
 
