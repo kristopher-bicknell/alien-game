@@ -1,13 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsk4yjhp2dll3"]
+[gd_scene load_steps=7 format=3 uid="uid://bsk4yjhp2dll3"]
 
 [ext_resource type="Script" uid="uid://bnp3r71a7qr5x" path="res://script/text_box.gd" id="1_re8cp"]
+[ext_resource type="FontVariation" uid="uid://xuv7qa2tyl8e" path="res://assets/res/fonts/normal_font.tres" id="2_4n022"]
+[ext_resource type="FontVariation" uid="uid://hq7n85214yyh" path="res://scenes/ui/italics_font.tres" id="3_ko8ml"]
+[ext_resource type="FontVariation" uid="uid://dw4ejbtn66qc5" path="res://scenes/ui/bold_italics_font.tres" id="4_iifv3"]
+[ext_resource type="FontVariation" uid="uid://bg4i75u8k52um" path="res://scenes/ui/bold_font.tres" id="5_7isj7"]
 
-[sub_resource type="SystemFont" id="SystemFont_re8cp"]
-subpixel_positioning = 0
-
-[sub_resource type="Theme" id="Theme_myfa5"]
-default_font = SubResource("SystemFont_re8cp")
-default_font_size = 16
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hdxyx"]
+bg_color = Color(1, 1, 1, 0.580392)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+expand_margin_left = 5.0
+expand_margin_top = 2.0
+expand_margin_right = 5.0
+expand_margin_bottom = 2.0
 
 [node name="DisplayTextBox" type="Control"]
 layout_mode = 3
@@ -18,35 +25,33 @@ mouse_filter = 2
 script = ExtResource("1_re8cp")
 metadata/_custom_type_script = "uid://b1yf7826qeucp"
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="PanelContainer" parent="."]
 layout_mode = 1
 offset_left = -25.0
-offset_top = -25.0
+offset_top = -18.0
 offset_right = 25.0
-offset_bottom = 25.0
+offset_bottom = 14.0
 mouse_filter = 2
-color = Color(1, 1, 1, 0.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_hdxyx")
 
 [node name="Text" type="RichTextLabel" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -147.0
-offset_top = -36.0
-offset_right = 147.0
-offset_bottom = 36.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
-theme = SubResource("Theme_myfa5")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_4n022")
+theme_override_fonts/italics_font = ExtResource("3_ko8ml")
+theme_override_fonts/bold_italics_font = ExtResource("4_iifv3")
+theme_override_fonts/bold_font = ExtResource("5_7isj7")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
 bbcode_enabled = true
 text = "null"
 fit_content = true
 scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 justification_flags = 131

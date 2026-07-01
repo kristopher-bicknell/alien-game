@@ -1,0 +1,275 @@
+[gd_scene load_steps=18 format=3 uid="uid://d30lq77e0ccwh"]
+
+[ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="1_t7mmw"]
+[ext_resource type="Script" uid="uid://cjfq5utesemgw" path="res://script/ui/dialog_display.gd" id="2_yvdol"]
+[ext_resource type="Resource" uid="uid://g3sd6rxa27px" path="res://assets/res/dialog/test.tres" id="3_756lo"]
+[ext_resource type="FontVariation" uid="uid://xuv7qa2tyl8e" path="res://assets/res/fonts/normal_font.tres" id="3_a22jh"]
+[ext_resource type="FontVariation" uid="uid://hq7n85214yyh" path="res://scenes/ui/italics_font.tres" id="4_aq0jt"]
+[ext_resource type="FontVariation" uid="uid://dw4ejbtn66qc5" path="res://scenes/ui/bold_italics_font.tres" id="5_756lo"]
+[ext_resource type="FontVariation" uid="uid://bg4i75u8k52um" path="res://scenes/ui/bold_font.tres" id="6_0try4"]
+[ext_resource type="Script" uid="uid://yxp1fbg5j3o2" path="res://script/npc/dialog_emote.gd" id="9_0try4"]
+[ext_resource type="AudioStream" uid="uid://ci7yl8mpoqhns" path="res://assets/audio/sfx/deeper_voice.mp3" id="9_756lo"]
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_756lo"]
+script = ExtResource("9_0try4")
+metadata/_custom_type_script = "uid://yxp1fbg5j3o2"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dos7u"]
+bg_color = Color(0.337412, 0.206413, 0.618135, 1)
+skew = Vector2(0.275, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 2.0
+expand_margin_right = 10.0
+shadow_size = 3
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xqt65"]
+font = ExtResource("5_756lo")
+font_size = 40
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcpo2"]
+bg_color = Color(0.776471, 0.776471, 1, 0.270588)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.776471, 0.776471, 1, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mxih6"]
+bg_color = Color(0.768627, 0.607843, 1, 0.729412)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.677656, 0.523801, 0.999996, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ykpju"]
+bg_color = Color(0.819125, 0.701081, 1, 0.729412)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.763047, 0.669471, 1, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p8gb2"]
+bg_color = Color(0.768627, 0.607843, 1, 0.729412)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.677656, 0.523801, 0.999996, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kroa0"]
+bg_color = Color(1, 1, 1, 0.580392)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[node name="Dialog" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_t7mmw")
+script = ExtResource("2_yvdol")
+dialog_tree = ExtResource("3_756lo")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -522.0
+offset_top = -283.0
+offset_right = 522.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="DialogText" type="RichTextLabel" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -472.0
+offset_top = -93.5
+offset_right = 472.0
+offset_bottom = 93.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0.389287, 0.389287, 0.389287, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.603922)
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = 2
+theme_override_fonts/normal_font = ExtResource("3_a22jh")
+theme_override_fonts/italics_font = ExtResource("4_aq0jt")
+theme_override_fonts/bold_italics_font = ExtResource("5_756lo")
+theme_override_fonts/bold_font = ExtResource("6_0try4")
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+bbcode_enabled = true
+text = "This is an example of dialog.  It is [b]very[/b] cool. It supports [i]bbcode[/i] in [b][i]all the ways[/i][/b] and you can really [wave][color=blue]fuck[/color][/wave] with it.  1234567890
+Lorem ipsum dolor sit amet, she lorem on my ipsum til i dolor; consequently ambiguous [rainbow speed=0.5]anaphylactic aardvarks![emote type=0]"
+scroll_active = false
+custom_effects = [SubResource("RichTextEffect_756lo")]
+
+[node name="NamePlaque" type="PanelContainer" parent="Panel"]
+layout_mode = 1
+offset_left = 11.0
+offset_top = -25.0
+offset_right = 322.0
+offset_bottom = 26.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dos7u")
+
+[node name="NameText" type="Label" parent="Panel/NamePlaque"]
+layout_mode = 2
+text = "Big Long Name Johnson"
+label_settings = SubResource("LabelSettings_xqt65")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OptionsContainer" type="PanelContainer" parent="Panel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = -107.0
+offset_right = 128.0
+offset_bottom = -70.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/OptionsContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Option1" type="Button" parent="Panel/OptionsContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_0try4")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kcpo2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_mxih6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ykpju")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p8gb2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kroa0")
+text = "Option"
+
+[node name="Option2" type="Button" parent="Panel/OptionsContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_0try4")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kcpo2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_mxih6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ykpju")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p8gb2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kroa0")
+text = "Option"
+
+[node name="Option3" type="Button" parent="Panel/OptionsContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_0try4")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kcpo2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_mxih6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ykpju")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p8gb2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kroa0")
+text = "Option"
+
+[node name="Option4" type="Button" parent="Panel/OptionsContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_0try4")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kcpo2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_mxih6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ykpju")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p8gb2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kroa0")
+text = "Option"
+
+[node name="TypeTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.04
+
+[node name="TypeEffect" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("9_756lo")
+
+[connection signal="pressed" from="Panel/OptionsContainer/VBoxContainer/Option1" to="." method="_on_option_1_pressed"]
+[connection signal="pressed" from="Panel/OptionsContainer/VBoxContainer/Option2" to="." method="_on_option_2_pressed"]
+[connection signal="pressed" from="Panel/OptionsContainer/VBoxContainer/Option3" to="." method="_on_option_3_pressed"]
+[connection signal="pressed" from="Panel/OptionsContainer/VBoxContainer/Option4" to="." method="_on_option_4_pressed"]
+[connection signal="timeout" from="TypeTimer" to="." method="_on_type_timer_timeout"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://c13vk63ja8gej"]
+[gd_scene load_steps=24 format=3 uid="uid://c13vk63ja8gej"]
 
 [ext_resource type="Script" uid="uid://b0pmj253toxxx" path="res://script/ui/hotbar.gd" id="1_6hkf2"]
 [ext_resource type="Texture2D" uid="uid://nwfk4ychfvni" path="res://assets/ui/item_background.png" id="2_tyl16"]
+[ext_resource type="FontFile" uid="uid://bmljotyil3hcn" path="res://assets/res/fonts/Oxanium-Regular.ttf" id="3_6hkf2"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_m1s8h"]
 load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba1638.ctex"
@@ -58,6 +59,48 @@ load_path = "res://.godot/imported/itematlas.png-0152b8ad0f7d86ea23972de508ba163
 [sub_resource type="AtlasTexture" id="AtlasTexture_md7we"]
 atlas = SubResource("CompressedTexture2D_i2yph")
 region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="FontVariation" id="FontVariation_tyl16"]
+base_font = ExtResource("3_6hkf2")
+variation_embolden = 0.4
+spacing_glyph = 1
+
+[sub_resource type="Animation" id="Animation_6hkf2"]
+resource_name = "clock_flash"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ClockColon:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_tyl16"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ClockColon:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pikvf"]
+_data = {
+&"RESET": SubResource("Animation_tyl16"),
+&"clock_flash": SubResource("Animation_6hkf2")
+}
 
 [node name="Hotbar" type="Control"]
 layout_mode = 3
@@ -243,3 +286,87 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.478, 0.42, 1, 0.376471)
+
+[node name="Clock" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 9.0
+offset_right = 211.0
+offset_bottom = 158.0
+mouse_filter = 2
+
+[node name="Day" type="Label" parent="Clock"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -99.0
+offset_top = 6.0
+offset_right = 99.0
+offset_bottom = 55.0
+grow_horizontal = 2
+text = "Mon. 14 Spring
+Year 3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="Clock"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -19.5
+offset_right = 85.0
+offset_bottom = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ClockTime" type="Label" parent="Clock/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -15.5
+offset_right = 68.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("FontVariation_tyl16")
+theme_override_font_sizes/font_size = 30
+text = "14 00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ClockColon" type="Label" parent="Clock/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -15.5
+offset_right = 68.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("FontVariation_tyl16")
+theme_override_font_sizes/font_size = 30
+text = ":"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Clock/Panel"]
+active = false
+libraries = {
+&"": SubResource("AnimationLibrary_pikvf")
+}

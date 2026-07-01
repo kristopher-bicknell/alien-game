@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://8r4px15o2sya"]
+[gd_scene load_steps=16 format=3 uid="uid://8r4px15o2sya"]
 
 [ext_resource type="Theme" uid="uid://celckv8ng1wup" path="res://assets/res/default_menu_theme.tres" id="1_k2sdp"]
 [ext_resource type="Script" uid="uid://cuinbfjrqbu4c" path="res://script/ui/craft_window.gd" id="1_wx78o"]
@@ -18,6 +18,70 @@ region = Rect2(0, 0, 100, 100)
 font_size = 26
 font_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7glp3"]
+bg_color = Color(0.776471, 0.776471, 1, 0.270588)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.776471, 0.776471, 1, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sd5x1"]
+bg_color = Color(0.768627, 0.607843, 1, 0.729412)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.677656, 0.523801, 0.999996, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ndxu"]
+bg_color = Color(0.819125, 0.701081, 1, 0.729412)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.763047, 0.669471, 1, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vsbfc"]
+bg_color = Color(1, 1, 1, 0.580392)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.121569)
+shadow_size = 3
+shadow_offset = Vector2(1, 1)
+
 [node name="CraftWindow" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -27,7 +91,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_k2sdp")
 script = ExtResource("1_wx78o")
-station = "workstation"
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -99,7 +162,7 @@ offset_left = 516.0
 offset_top = 81.0
 offset_right = 757.0
 offset_bottom = 322.0
-color = Color(0.519857, 0.5146, 0.83, 0.654902)
+color = Color(1, 1, 1, 0.415686)
 
 [node name="ItemIcon" type="Sprite2D" parent="Background/ItemDisplayWindow"]
 visible = false
@@ -150,7 +213,7 @@ offset_right = 108.0
 offset_bottom = 26.0
 grow_horizontal = 0
 grow_vertical = 2
-color = Color(0.521569, 0.513726, 0.831373, 0.654902)
+color = Color(1, 1, 1, 0.415686)
 
 [node name="DecQuantityButton" type="Button" parent="Background/ItemDisplayWindow/StartCraftButton/QuantityBox"]
 unique_name_in_owner = true
@@ -163,6 +226,13 @@ offset_top = -20.0
 offset_right = -5.0
 offset_bottom = 20.0
 grow_vertical = 2
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0.439216)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7glp3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_sd5x1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2ndxu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sd5x1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_vsbfc")
 disabled = true
 text = "-"
 
@@ -180,6 +250,11 @@ offset_right = 49.0
 offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7glp3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_sd5x1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2ndxu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sd5x1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_vsbfc")
 disabled = true
 text = "+"
 
@@ -229,7 +304,7 @@ offset_right = 360.5
 offset_bottom = 143.0
 grow_horizontal = 2
 grow_vertical = 0
-color = Color(0.521569, 0.513726, 0.831373, 0.654902)
+color = Color(1, 1, 1, 0.415686)
 
 [node name="ParametersLabel" type="Label" parent="Background/ItemDisplayWindow/ParametersWindow"]
 layout_mode = 1
@@ -316,7 +391,7 @@ offset_right = 238.0
 offset_bottom = 156.5
 grow_horizontal = 0
 grow_vertical = 2
-color = Color(0.521569, 0.513726, 0.831373, 0.654902)
+color = Color(1, 1, 1, 0.415686)
 
 [node name="ItemName" type="Label" parent="Background/ItemDisplayWindow/IngredientsWindow"]
 layout_mode = 1
@@ -354,12 +429,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 770.0
-offset_top = 52.0
-offset_right = 1068.0
-offset_bottom = 102.0
+[node name="UpgradeButton" type="Button" parent="Background"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 16.0
+offset_top = 19.0
+offset_right = 314.0
+offset_bottom = 69.0
+grow_horizontal = 2
 focus_mode = 0
 text = "UPGRADE"
 

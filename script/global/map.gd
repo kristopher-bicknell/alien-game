@@ -6,6 +6,10 @@ var world_settings : GenerationSettings
 var noise_range : Vector2
 var surface_layer: Dictionary[Vector2i, Hexel] = {}
 var chunks = {}
+var pathfinding: AStar3D
+var pathfinding_index_of: Dictionary[Vector2i, int]
+
+var structure_at: Dictionary[Vector2i, Variant] = {}
 
 static var chunk_manager: ChunkManager
 
@@ -20,6 +24,7 @@ func set_map(all_hexels, top_hexels, chunk_id):
 		if t_hexel != null:
 			var grid_pos = t_hexel.grid_position_xz
 			surface_layer[Vector2i(grid_pos.x + (world_settings.chunk_size * chunk_id.x), grid_pos.y + (world_settings.chunk_size * chunk_id.y))] = t_hexel
+			structure_at[Vector2i(grid_pos.x + (world_settings.chunk_size * chunk_id.x), grid_pos.y + (world_settings.chunk_size * chunk_id.y))] = null
 
 
 func clear_map():
@@ -63,3 +68,41 @@ func check_tile_chunkbounds(pos: Vector3i):
 	var new_pos = pos - (Vector3i(offset.x * world_settings.chunk_size, 0, offset.y * world_settings.chunk_size))
 	return_array.append(new_pos)
 	return return_array
+
+func get_navigation(from: Vector3, to: Vector3):
+	if !pathfinding:
+		setup_navigation()
+	var starting_point = pathfinding.get_closest_point(from)
+	var ending_point = pathfinding.get_closest_point(to)
+	return pathfinding.get_point_path(starting_point, ending_point)
+
+func get_path3d(from: Vector3, to: Vector3) -> Path3D:
+	var path = Path3D.new()
+	path.curve = Curve3D.new()
+	for point in get_navigation(from, to):
+		path.curve.add_point(point)
+	var path_follow = PathFollow3D.new()
+	path_follow.rotation_mode = PathFollow3D.ROTATION_Y
+	path.add_child(path_follow) #TODO: will this work when it's passed on?
+	return path
+
+func setup_navigation():
+	pathfinding = AStar3D.new()
+	
+	#only add points that don't have something on top of them
+	for i in range(surface_layer.keys().size()):
+			#add points using grid offset (not world position) and keep track of each column's corresponding index
+		pathfinding.add_point(i, surface_layer.values()[i].world_position)
+		pathfinding_index_of[surface_layer.values()[i].grid_position_xz] = i
+		#disable the point if a structure is found
+		if structure_at[surface_layer.keys()[i]]:
+			pathfinding.set_point_disabled(i, true)
+	#can only draw edges between adjacent points, and adjacent points must a) exist, and b) not be greater than 1 apart on y-axis
+	for column in surface_layer.keys(): #column is x,z
+		if pathfinding_index_of.has(column):
+			var neighbors = get_tile_neighbors_planar(surface_layer[column])
+			for neighbor in neighbors:
+				if pathfinding_index_of.has(neighbor.grid_position_xz):
+					if neighbor.grid_position_xyz.y - surface_layer[column].grid_position_xyz.y <= 1 and neighbor.grid_position_xyz.y - surface_layer[column].grid_position_xyz.y >= -1:
+						pathfinding.connect_points(pathfinding_index_of[column], pathfinding_index_of[neighbor.grid_position_xz])
+	

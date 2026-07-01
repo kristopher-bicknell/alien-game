@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bg4i75u8k52um"]
+
+[ext_resource type="FontFile" uid="uid://bmljotyil3hcn" path="res://assets/res/fonts/Oxanium-Regular.ttf" id="1_dvufq"]
+
+[resource]
+base_font = ExtResource("1_dvufq")
+variation_embolden = 0.57
+spacing_top = 7
+spacing_bottom = 7

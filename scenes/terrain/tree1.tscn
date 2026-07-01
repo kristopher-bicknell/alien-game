@@ -1,22 +1,40 @@
-[gd_scene load_steps=16 format=3 uid="uid://be1ab2r4hbqy0"]
+[gd_scene load_steps=20 format=3 uid="uid://be1ab2r4hbqy0"]
 
 [ext_resource type="ArrayMesh" uid="uid://fq8dv00xh4im" path="res://assets/environment/tree1_base.obj" id="1_q5jtx"]
 [ext_resource type="Script" uid="uid://2ekngidht1x" path="res://script/tree.gd" id="1_y8pa0"]
 [ext_resource type="ArrayMesh" uid="uid://dwbls3wwdb8l7" path="res://assets/environment/tree_newleaves.obj" id="3_00p2j"]
-[ext_resource type="Shader" uid="uid://duxtdu2rd6a4i" path="res://assets/environment/treeleafs1.gdshader" id="3_y8pa0"]
-[ext_resource type="Texture2D" uid="uid://bv1wk1wnv6oiu" path="res://assets/environment/leafs.png" id="4_00p2j"]
+[ext_resource type="Material" uid="uid://cwredx81yxie2" path="res://assets/res/shadow_shader.tres" id="3_q2anc"]
+[ext_resource type="Shader" uid="uid://dev10yr4p2obm" path="res://assets/res/character_shader.gdshader" id="3_wuvas"]
+[ext_resource type="Shader" uid="uid://bibjbtygga60i" path="res://assets/res/grass.gdshader" id="5_y8pa0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x27g6"]
+render_priority = 0
+next_pass = ExtResource("3_q2anc")
+shader = ExtResource("3_wuvas")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/clamp_diffuse_to_max = true
+shader_parameter/cuts = 2
+shader_parameter/wrap = 0.0
+shader_parameter/steepness = 1.0
+shader_parameter/use_attenuation = true
+shader_parameter/use_specular = true
+shader_parameter/specular_strength = 1.0
+shader_parameter/specular_shininess = 16.0
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/rim_color = Color(0, 0, 0, 1)
+shader_parameter/use_rim = true
+shader_parameter/rim_width = 12.0
+shader_parameter/use_ramp = false
+shader_parameter/use_borders = false
+shader_parameter/border_width = 0.01
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y8pa0"]
 render_priority = 0
-shader = ExtResource("3_y8pa0")
-shader_parameter/alphaTexture = ExtResource("4_00p2j")
-shader_parameter/leavesColor = Color(0.817463, 0.224009, 0.772552, 1)
-shader_parameter/alphaThreshold = 0.3
-shader_parameter/offsetScale = 0.5801
-shader_parameter/fresnelStrength = 0.0840001
-shader_parameter/fresnelBlend = 1.0
-shader_parameter/fresnelColor = Color(1, 0.844616, 0.967686, 1)
-shader_parameter/deactiveGlobalVariation = false
+next_pass = ExtResource("3_q2anc")
+shader = ExtResource("5_y8pa0")
+shader_parameter/albedo = Color(0.912, 0.34, 1, 1)
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/offsetScale = 0.0001
 shader_parameter/clampTop = 0.5
 shader_parameter/clampBottom = 0.0
 
@@ -24,7 +42,7 @@ shader_parameter/clampBottom = 0.0
 height = 35.8053
 radius = 4.3501
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_y8pa0"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_00p2j"]
 height = 11.5
 radius = 10.0
 
@@ -173,6 +191,12 @@ _data = {
 &"hit": SubResource("Animation_y8pa0")
 }
 
+[sub_resource type="Gradient" id="Gradient_y8pa0"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_00p2j"]
+gradient = SubResource("Gradient_y8pa0")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y8pa0"]
 emission_shape = 1
 emission_sphere_radius = 1.0
@@ -183,23 +207,26 @@ initial_velocity_max = 30.0
 gravity = Vector3(0, -100, 0)
 scale_min = 0.3
 scale_max = 0.9
+color_ramp = SubResource("GradientTexture1D_00p2j")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00p2j"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wuvas"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
 billboard_mode = 2
 
 [sub_resource type="QuadMesh" id="QuadMesh_wuvas"]
-material = SubResource("StandardMaterial3D_00p2j")
+material = SubResource("StandardMaterial3D_wuvas")
+size = Vector2(0.5, 0.25)
 
-[node name="Tree1" type="StaticBody3D" node_paths=PackedStringArray("interaction_area", "particles", "anim_player")]
+[node name="Tree1" type="StaticBody3D" groups=["plants"]]
 script = ExtResource("1_y8pa0")
-interaction_area = NodePath("InteractionArea")
-particles = NodePath("Particles")
-anim_player = NodePath("AnimationPlayer")
 tree_type = 1
 
 [node name="Tree1Base" type="MeshInstance3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 mesh = ExtResource("1_q5jtx")
+surface_material_override/0 = SubResource("ShaderMaterial_x27g6")
 
 [node name="TreeNewleaves" type="MeshInstance3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
@@ -214,7 +241,7 @@ shape = SubResource("CylinderShape3D_77p84")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.75, 0)
-shape = SubResource("CylinderShape3D_y8pa0")
+shape = SubResource("CylinderShape3D_00p2j")
 debug_color = Color(0.653118, 0.518259, 0, 0.42)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

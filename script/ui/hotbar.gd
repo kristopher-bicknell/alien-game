@@ -16,6 +16,10 @@ func _ready():
 	slots.append(%Slot7)
 	UIManager.hotbar = self
 	set_hotbar_items()
+	
+	#this is purely visual, just makes the dots in the time flash
+	$Clock/Panel/AnimationPlayer.play("clock_flash")
+
 
 func set_hotbar_items():
 	var items = PlayerInventory.items
@@ -61,3 +65,12 @@ func check_tool(index: int):
 	else: 
 		#i dont want to make an "un-hold item" function
 		UIManager.hold_item(-1)
+
+func update_time(hour: int, minute: int):
+	%ClockTime.text = str("%02d" % hour) + " " + str("%02d" % minute)
+
+func update_day(weekday: GlobalTime.WeekDays, season: GlobalTime.Seasons, day: int):
+	var weekday_string = GlobalTime.days_as_string[weekday]
+	var season_string = GlobalTime.seasons_as_string[season]
+	
+	%Day.text = weekday_string + ". " + str(day) + " " + season_string

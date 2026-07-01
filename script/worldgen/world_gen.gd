@@ -12,6 +12,7 @@ var chunks: ChunkManager
 #UI
 @onready var label: RichTextLabel = $"../UI/Info"
 @onready var player: Player = %Scene
+@onready var main = $".."
 var threads: Array[Thread] = [Thread.new(), Thread.new(), Thread.new(), Thread.new()]
 
 
@@ -31,7 +32,7 @@ func _input(event: InputEvent):
 		call_deferred("load_world", SaveData.load_data_tostring())
 	if event.is_action_pressed("debug_generatemap"):
 		call_deferred("generate_world")
-	if event.is_action_pressed("enter_warp"):
+	if event.is_action_pressed("enter"):
 		return
 		chunks.regenerate_all_meshes()
 
@@ -45,6 +46,8 @@ func clear_chunks():
 		chunks.clear_chunks()
 		remove_child(chunks)
 
+var mother
+
 func create_flat():
 	clear_chunks()
 	make_chunkmanager()
@@ -57,6 +60,14 @@ func create_flat():
 		chunks.add_chunk(new_chunk, chunk_id)
 		new_chunk.add_to_group("chunks")
 		new_chunk.init_chunk()
+	mother = load("res://scenes/character/khan/khan_mother.tscn").instantiate()
+	add_child(mother)
+	mother.global_position = Map.surface_layer[Vector2i(0,0)].world_position
+
+func _process(delta):
+	if mother:
+		if !mother.path:
+			mother.set_target(Vector3(-225, 2, -259.808))
 
 # Randomize if no seed has been set
 func init_seed():
@@ -173,6 +184,8 @@ func generate_world():
 	var op = ObjectPlacer.new()
 	op.set_objects($Objects)
 	op.place_plants(settings)
+	
+	main.connect_plants()
 	
 	#Place spaceship
 	var is_placed = false

@@ -1,6 +1,8 @@
-[gd_scene load_steps=11 format=4 uid="uid://d1p3q2b5kqnys"]
+[gd_scene load_steps=13 format=4 uid="uid://d1p3q2b5kqnys"]
 
 [ext_resource type="Shader" uid="uid://dev10yr4p2obm" path="res://assets/res/character_shader.gdshader" id="1_bt1d6"]
+[ext_resource type="Script" uid="uid://4qks2ue2c2y5" path="res://script/npc/npc_controller.gd" id="1_svd64"]
+[ext_resource type="Texture2D" uid="uid://bkm0us6sp2th5" path="res://assets/characters/khan/mother_khan.png" id="3_oebls"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_toayd"]
 
@@ -112,6 +114,7 @@ bind/26/pose = Transform3D(0.999943, -0.000254899, -0.0106352, -0.0106353, -0.04
 render_priority = 0
 shader = ExtResource("1_bt1d6")
 shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture = ExtResource("3_oebls")
 shader_parameter/clamp_diffuse_to_max = false
 shader_parameter/cuts = 3
 shader_parameter/wrap = 0.0
@@ -120,9 +123,10 @@ shader_parameter/use_attenuation = true
 shader_parameter/use_specular = true
 shader_parameter/specular_strength = 1.0
 shader_parameter/specular_shininess = 16.0
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/rim_color = Color(1, 1, 1, 1)
 shader_parameter/use_rim = true
 shader_parameter/rim_width = 8.0
-shader_parameter/rim_color = Color(1, 1, 1, 1)
 shader_parameter/use_ramp = false
 shader_parameter/use_borders = false
 shader_parameter/border_width = 0.01
@@ -473,7 +477,10 @@ height = 26.0
 height = 15.0
 radius = 14.0
 
-[node name="khan_mother" type="StaticBody3D"]
+[node name="khan_mother" type="CharacterBody3D" node_paths=PackedStringArray("animation_tree", "_skin")]
+script = ExtResource("1_svd64")
+animation_tree = NodePath("AnimationTree")
+_skin = NodePath("metarig")
 
 [node name="metarig" type="Node3D" parent="."]
 
@@ -682,11 +689,15 @@ libraries = {
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13, 0)
 shape = SubResource("CapsuleShape3D_bt1d6")
 
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-
 [node name="TalkArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TalkArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
 shape = SubResource("CylinderShape3D_bt1d6")
 debug_color = Color(0.83408, 0.00131994, 0.936375, 0.42)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+anim_player = NodePath("../AnimationPlayer")
+
+[connection signal="body_entered" from="TalkArea" to="." method="_on_talk_area_body_entered"]
+[connection signal="body_exited" from="TalkArea" to="." method="_on_talk_area_body_exited"]

@@ -7,7 +7,7 @@ signal interact
 
 @export_group("Movement")
 @export var move_speed := 25
-@export var acceleration := 98
+@export var acceleration := 125
 @export var rotation_speed := 10
 @export var jump_impulse := 4.5
 @export var jump_hold_acceleration := 0.012
@@ -49,7 +49,7 @@ func _input(event: InputEvent) -> void:
 	if GlobalInfo.control_mode < 2:
 		if Input.is_action_just_pressed("interact"):
 			WarpManager.overworld_pos = global_position
-			interact.emit()
+			get_tree().call_group("plants", "hit")
 	
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -66,6 +66,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if hit:
 					hit.chunk.remove_hexel(hit)
 					can_place = false
+					#this is poor man's debounce
 					place_remove_timer.start()
 					#remove_block.emit(ray_cast.get_ray_hit())
 			if Input.is_action_just_pressed("right_click"):
@@ -77,17 +78,17 @@ func _unhandled_input(event: InputEvent) -> void:
 					#add_block.emit(ray_cast.get_ray_hit())
 
 var starting_jump: bool = false
+var is_sprint: bool = false
 var jump_hold_duration: float = 0.16
 var jump_hold_elapsed: float = 0.0
-
-func _process(delta: float) -> void:
-	$"../jump_hold_elapsed".text = "Hold elapsed: " + str(jump_hold_elapsed) + " \nY-velocity: " + str(velocity.y)
 
 func _physics_process(delta: float) -> void:
 	if GlobalInfo.control_mode < 1:
 		_camera_pivot.rotation.x += _camera_input_direction.y * delta
 		_camera_pivot.rotation.x = clamp(_camera_pivot.rotation.x, -PI/6.0, PI/3.0) #limit rotation
 		_camera_pivot.rotation.y -= _camera_input_direction.x * delta
+		
+		GlobalInfo.camera_rotation = _camera_pivot.rotation.y
 		
 		_camera_input_direction = Vector2.ZERO
 		
@@ -103,7 +104,7 @@ func _physics_process(delta: float) -> void:
 		var y_velocity := velocity.y
 		velocity.y = 0.0
 		var used_speed = move_speed
-		var is_sprint: bool = false
+		#can only *begin* sprinting if not jumping, but can continue sprinting into a jump
 		if Input.is_action_pressed("sprint") and is_on_floor():
 			used_speed = move_speed * 2
 			is_sprint = true
@@ -129,6 +130,8 @@ func _physics_process(delta: float) -> void:
 			jump_hold_elapsed = 0.0
 		
 		move_and_slide()
+		GlobalInfo.player_position = global_position
+		GlobalInfo.player_rotation = _skin.global_rotation.y
 		
 		#store last moved direction
 		if move_direction.length() > 0.2:

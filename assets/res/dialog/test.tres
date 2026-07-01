@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="DialogTree" load_steps=9 format=3 uid="uid://g3sd6rxa27px"]
+
+[ext_resource type="Script" uid="uid://bcnxlswl0c12x" path="res://script/ui/dialog/dialog_bit.gd" id="1_rvt2i"]
+[ext_resource type="Script" uid="uid://deiodb4rx6jvc" path="res://script/ui/dialog/dialog_tree.gd" id="2_r3wnc"]
+
+[sub_resource type="Resource" id="Resource_dos7u"]
+script = ExtResource("1_rvt2i")
+text = "This is an example of dialog.  It is [b]very[/b] cool. It supports [i]bbcode[/i] in [b][i]all the ways[/i][/b] and you can really [wave][color=blue]fuck[/color][/wave] with it. Lorem ipsum dolor sit amet, she lorem on my ipsum til i dolor; consequently ambiguous [rainbow speed=0.5]anaphylactic aardvarks!"
+responses = Dictionary[String, int]({})
+next = 1
+metadata/_custom_type_script = "uid://bcnxlswl0c12x"
+
+[sub_resource type="Resource" id="Resource_0try4"]
+script = ExtResource("1_rvt2i")
+text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?.,\":;-+=~<>[]{}|/\\"
+responses = Dictionary[String, int]({
+"No": 2,
+"Yes": 3
+})
+next = -1
+metadata/_custom_type_script = "uid://bcnxlswl0c12x"
+
+[sub_resource type="Resource" id="Resource_kcpo2"]
+script = ExtResource("1_rvt2i")
+text = "What a shame."
+responses = Dictionary[String, int]({})
+next = 4
+metadata/_custom_type_script = "uid://bcnxlswl0c12x"
+
+[sub_resource type="Resource" id="Resource_mxih6"]
+script = ExtResource("1_rvt2i")
+text = "Great! I'm glad you know that."
+responses = Dictionary[String, int]({})
+next = 4
+metadata/_custom_type_script = "uid://bcnxlswl0c12x"
+
+[sub_resource type="Resource" id="Resource_aq0jt"]
+script = ExtResource("1_rvt2i")
+text = "This text is long. Like, [i]really really[/i] long. If you want to skip it, you should hold down whatever button the programmer assigned to that activity. In the meantime, I will continue to talk. I will continue forever, potentially. Maybe I'll never stop!"
+responses = Dictionary[String, int]({})
+next = 5
+metadata/_custom_type_script = "uid://bcnxlswl0c12x"
+
+[sub_resource type="Resource" id="Resource_756lo"]
+script = ExtResource("1_rvt2i")
+text = "This is the last text entry. Goodbye! [emote type=3] The emote should fire before this text appeared. Did it?"
+responses = Dictionary[String, int]({})
+next = -1
+metadata/_custom_type_script = "uid://bcnxlswl0c12x"
+
+[resource]
+script = ExtResource("2_r3wnc")
+dialog_bits = Array[ExtResource("1_rvt2i")]([SubResource("Resource_dos7u"), SubResource("Resource_0try4"), SubResource("Resource_kcpo2"), SubResource("Resource_mxih6"), SubResource("Resource_aq0jt"), SubResource("Resource_756lo")])
+speaker = ""
+metadata/_custom_type_script = "uid://deiodb4rx6jvc"

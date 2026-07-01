@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://b32feu5b5q0dm"]
+
+[ext_resource type="PackedScene" uid="uid://cv454d6osgroc" path="res://assets/characters/hoppington/frogman.glb" id="1_m7yh2"]
+[ext_resource type="Shader" uid="uid://dev10yr4p2obm" path="res://assets/res/character_shader.gdshader" id="2_u3gfa"]
+[ext_resource type="Texture2D" uid="uid://c5e8t7hm3e3oa" path="res://assets/characters/hoppington/frogman_frogman_skin.png" id="3_k57xj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7yh2"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u3gfa"]
+render_priority = 0
+shader = ExtResource("2_u3gfa")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture = ExtResource("3_k57xj")
+shader_parameter/clamp_diffuse_to_max = true
+shader_parameter/cuts = 2
+shader_parameter/wrap = 0.0
+shader_parameter/steepness = 1.0
+shader_parameter/use_attenuation = true
+shader_parameter/use_specular = true
+shader_parameter/specular_strength = 1.0
+shader_parameter/specular_shininess = 16.0
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/rim_color = Color(0, 0, 0, 1)
+shader_parameter/use_rim = true
+shader_parameter/rim_width = 12.0
+shader_parameter/use_ramp = false
+shader_parameter/use_borders = false
+shader_parameter/border_width = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k57xj"]
+shading_mode = 0
+
+[node name="frogman" instance=ExtResource("1_m7yh2")]
+
+[node name="outline" parent="metarig/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_m7yh2")
+
+[node name="skin" parent="metarig/Skeleton3D" index="1"]
+surface_material_override/0 = SubResource("ShaderMaterial_u3gfa")
+surface_material_override/1 = SubResource("StandardMaterial3D_k57xj")

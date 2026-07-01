@@ -115,15 +115,17 @@ func set_displays():
 		icons[i].set_display(items[i])
 
 func validate_inventory():
+	#prevents items from having empty values without being actually empty
 	for i in range(items.size()):
-		if items[i].type == -1 or items[i].num <= 0:
-			items[i].type = -1
-			items[i].num = 0
+		#my is_empty() check actually fixes this for me, so if I call it and disregard the return then I get it fixed
+		#I dont know if this is a real issue
+		items[i].is_empty()
 
 func _exit_tree():
 	PlayerInventory.items = items
 
 func _highlight_over_button(state: bool, index: int):
+	if !icons[index]: return
 	if !state or swap_mode: #disable on swap mode, so the UI is cleaner
 		%ItemDescriptionPanel.hide()
 		return
@@ -131,3 +133,7 @@ func _highlight_over_button(state: bool, index: int):
 	var item_data = Item.item_data[items[index].type]
 	%ItemDescriptionPanel.show()
 	%ItemDescriptionText.text = "[b]" + item_data["name"] + "[/b]\n" + item_data["description"]
+
+
+func _on_exit_button_pressed() -> void:
+	UIManager.cull_ui()

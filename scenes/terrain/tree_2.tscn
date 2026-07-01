@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://2ekngidht1x" path="res://script/tree.gd" id="1_fcxxm"]
 [ext_resource type="ArrayMesh" uid="uid://mglh08o7btk5" path="res://assets/environment/tree2_base.obj" id="1_xi3w1"]
 [ext_resource type="ArrayMesh" uid="uid://cvkhbnbqugmba" path="res://assets/environment/tree2_leafs.obj" id="2_fcxxm"]
+[ext_resource type="Material" uid="uid://cwredx81yxie2" path="res://assets/res/shadow_shader.tres" id="3_44vyj"]
+[ext_resource type="Shader" uid="uid://bibjbtygga60i" path="res://assets/res/grass.gdshader" id="4_firxy"]
+[ext_resource type="Shader" uid="uid://dev10yr4p2obm" path="res://assets/res/character_shader.gdshader" id="4_vcjs2"]
 
 [sub_resource type="Gradient" id="Gradient_firxy"]
 colors = PackedColorArray(0.315664, 0.585127, 0.727022, 1, 0.440572, 0.770695, 0.838565, 1)
@@ -16,24 +19,37 @@ cellular_return_type = 0
 color_ramp = SubResource("Gradient_firxy")
 noise = SubResource("FastNoiseLite_1p20y")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fcxxm"]
-albedo_texture = SubResource("NoiseTexture2D_44vyj")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4y8h"]
+render_priority = 0
+next_pass = ExtResource("3_44vyj")
+shader = ExtResource("4_vcjs2")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture = SubResource("NoiseTexture2D_44vyj")
+shader_parameter/clamp_diffuse_to_max = true
+shader_parameter/cuts = 2
+shader_parameter/wrap = 0.0
+shader_parameter/steepness = 1.0
+shader_parameter/use_attenuation = true
+shader_parameter/use_specular = true
+shader_parameter/specular_strength = 1.0
+shader_parameter/specular_shininess = 16.0
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/rim_color = Color(0, 0, 0, 1)
+shader_parameter/use_rim = true
+shader_parameter/rim_width = 12.0
+shader_parameter/use_ramp = false
+shader_parameter/use_borders = false
+shader_parameter/border_width = 0.01
 
-[sub_resource type="Gradient" id="Gradient_fcxxm"]
-offsets = PackedFloat32Array(0, 0.994652)
-colors = PackedColorArray(0.361286, 0.876397, 0.680357, 1, 0.674376, 0.96678, 0.876308, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_firxy"]
-noise_type = 2
-frequency = 0.0225
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1p20y"]
-color_ramp = SubResource("Gradient_fcxxm")
-noise = SubResource("FastNoiseLite_firxy")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_firxy"]
-albedo_color = Color(0.361286, 0.876397, 0.680357, 1)
-albedo_texture = SubResource("NoiseTexture2D_1p20y")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1p20y"]
+render_priority = 0
+next_pass = ExtResource("3_44vyj")
+shader = ExtResource("4_firxy")
+shader_parameter/albedo = Color(0.34, 1, 0.637, 1)
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/offsetScale = 0.0001
+shader_parameter/clampTop = 0.359
+shader_parameter/clampBottom = 0.0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_fcxxm"]
 height = 35.8053
@@ -198,20 +214,17 @@ billboard_mode = 2
 [sub_resource type="QuadMesh" id="QuadMesh_44vyj"]
 material = SubResource("StandardMaterial3D_00p2j")
 
-[node name="tree2" type="StaticBody3D" node_paths=PackedStringArray("interaction_area", "particles", "anim_player")]
+[node name="tree2" type="StaticBody3D" groups=["plants"]]
 script = ExtResource("1_fcxxm")
-interaction_area = NodePath("InteractionArea")
-particles = NodePath("Particles")
-anim_player = NodePath("AnimationPlayer")
 tree_type = 2
 
 [node name="Tree2Base" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_xi3w1")
-surface_material_override/0 = SubResource("StandardMaterial3D_fcxxm")
+surface_material_override/0 = SubResource("ShaderMaterial_o4y8h")
 
 [node name="Tree2Leafs" type="MeshInstance3D" parent="."]
 mesh = ExtResource("2_fcxxm")
-surface_material_override/0 = SubResource("StandardMaterial3D_firxy")
+surface_material_override/0 = SubResource("ShaderMaterial_1p20y")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.9026, 0)

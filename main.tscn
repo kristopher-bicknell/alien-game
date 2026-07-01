@@ -10,10 +10,10 @@
 [ext_resource type="FastNoiseLite" uid="uid://b2cn8ba6rls7n" path="res://assets/res/terrainnoise.tres" id="6_kek77"]
 [ext_resource type="PackedScene" uid="uid://tnl4leesxb0n" path="res://scenes/building/furnace.tscn" id="8_efxa6"]
 [ext_resource type="PackedScene" uid="uid://c13vk63ja8gej" path="res://scenes/ui/hotbar.tscn" id="8_w48qg"]
-[ext_resource type="PackedScene" uid="uid://be1ab2r4hbqy0" path="res://scenes/terrain/tree1.tscn" id="9_4c57u"]
-[ext_resource type="PackedScene" uid="uid://cq2ayidlq8pnc" path="res://scenes/terrain/tree_2.tscn" id="10_efxa6"]
 [ext_resource type="PackedScene" uid="uid://d004x8gdkrmdg" path="res://scenes/building/khan_home.tscn" id="11_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://5s7nqsk4h1r4" path="res://scenes/building/workbench.tscn" id="12_dg77c"]
+[ext_resource type="PackedScene" uid="uid://dyw7r0joh2feg" path="res://scenes/ui/minimap.tscn" id="14_w48qg"]
+[ext_resource type="Script" uid="uid://e4p4wngpyty5" path="res://script/time_manager.gd" id="15_vivmo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
 albedo_texture = ExtResource("4_kek77")
@@ -28,12 +28,12 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 8
-max_height = 32
+radius = 64
+max_height = 64
 ground_to_air_ratio = 0.5
 num_caves = 0
 chunk_size = 8
-large_plant_freq = 0.0
+large_plant_freq = 0.01
 small_plant_freq = 0.01
 noise = ExtResource("4_5vw27")
 terrain_noise = ExtResource("6_kek77")
@@ -41,7 +41,7 @@ climate_noise = ExtResource("3_272bh")
 wet_noise = SubResource("FastNoiseLite_5vw27")
 stone_noise = SubResource("FastNoiseLite_kek77")
 hexel_size = 5.0
-hexel_height = 2.0
+hexel_height = 4.0
 shading = -1
 material = SubResource("StandardMaterial3D_4c57u")
 draw_bottom = true
@@ -49,7 +49,9 @@ solid_first_layer = true
 metadata/_custom_type_script = "uid://bf7oc7st1txej"
 
 [sub_resource type="Environment" id="Environment_lquwl"]
-tonemap_mode = 3
+ambient_light_color = Color(1, 1, 1, 1)
+tonemap_mode = 2
+tonemap_white = 0.5
 glow_enabled = true
 glow_intensity = 0.3
 glow_strength = 0.5
@@ -160,7 +162,17 @@ metadata/_custom_type_script = "uid://ci6r5r3hlrwjq"
 
 [node name="Objects" type="Node3D" parent="WorldGen"]
 
+[node name="TimeManager" type="Node" parent="."]
+script = ExtResource("15_vivmo")
+metadata/_custom_type_script = "uid://e4p4wngpyty5"
+
 [node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Minimap" parent="UI" instance=ExtResource("14_w48qg")]
+offset_left = 1197.0
+offset_top = 9.0
+offset_right = 1357.0
+offset_bottom = 169.0
 
 [node name="Info" type="RichTextLabel" parent="UI"]
 offset_left = 8.0
@@ -186,6 +198,7 @@ offset_bottom = 636.0
 [node name="Hotbar" parent="UI" instance=ExtResource("8_w48qg")]
 
 [node name="debug_noteforme" type="Label" parent="UI"]
+visible = false
 offset_left = 869.0
 offset_top = 395.0
 offset_right = 1132.0
@@ -217,6 +230,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="SpawnPoint/SpawnPlatform"]
 transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0, 0, 0)
+visible = false
 mesh = SubResource("BoxMesh_kek77")
 skeleton = NodePath("../..")
 
@@ -230,21 +244,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0)
 unique_name_in_owner = true
 
 [node name="Debug" type="Node3D" parent="."]
-
-[node name="Tree1" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 258, -73)
-
-[node name="tree2" parent="Debug" groups=["plants"] instance=ExtResource("10_efxa6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 255, 83)
-
-[node name="Tree1_2" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 258, -73)
-
-[node name="Tree1_3" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 258, -73)
-
-[node name="Tree1_4" parent="Debug" groups=["plants"] instance=ExtResource("9_4c57u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 258, -73)
 
 [node name="KhanHome" parent="Debug" instance=ExtResource("11_ycdy4")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -49, 255, 34)

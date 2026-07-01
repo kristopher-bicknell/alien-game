@@ -14,13 +14,6 @@ func _ready():
 func _on_button_mouse_entered() -> void:
 	highlight.emit(true, index)
 
-	#if disabled: return
-	#if item == null: return
-	#$PopupPanel.show()
-	#cache item data and then construct the desciption box
-	#var item_data = Item.item_data[item.type]
-	#$PopupPanel/RichTextLabel.text = item_data["name"] + "\n" + item_data["description"]
-
 func _on_button_mouse_exited() -> void:
 	highlight.emit(false, index)
 

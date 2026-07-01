@@ -42,6 +42,7 @@ func create_dict():
 func reset_geometry():
 	var new_mesh = MeshAlgorithm.remesh(hexels_dict)
 	mesh = new_mesh.commit()
+	Map.set_map(hexels_dict.values(), HexelGenerator.get_surface_hexels(hexels_dict), chunk_id)
 	_reset_collider()
 
 func _reset_collider():

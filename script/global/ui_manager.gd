@@ -8,7 +8,8 @@ signal player_hold(item: int)
 
 const ui_screens = {
 	"inventory": "res://scenes/ui/inventory.tscn",
-	"craft": "res://scenes/ui/craft_window.tscn"
+	"craft": "res://scenes/ui/craft_window.tscn",
+	"dialog": "res://scenes/ui/dialog.tscn"
 }
 
 func _ready():
@@ -25,6 +26,8 @@ func load_ui(screen: String, extra = null, origin = null):
 			new_screen.building = extra
 			new_screen.building_ref = origin
 			new_screen.load_ui()
+		if extra is DialogTree:
+			new_screen.setup(extra, origin)
 		hotbar.visible = false
 		hotbar.enabled = false
 
@@ -39,3 +42,11 @@ func call_current_ui(function: String):
 
 func hold_item(item: int):
 	player_hold.emit(item)
+
+static func strip_bbcode(source:String) -> String:
+	var regex = RegEx.new()
+	regex.compile("\\[.+?\\]")
+	return regex.sub(source, "", true)
+
+static func emote_character(emotion: int):
+	print("emote: " + str(emotion))

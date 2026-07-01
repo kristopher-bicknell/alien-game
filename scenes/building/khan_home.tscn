@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://d004x8gdkrmdg"]
+[gd_scene load_steps=11 format=3 uid="uid://d004x8gdkrmdg"]
 
 [ext_resource type="ArrayMesh" uid="uid://dny80cu5lrpm8" path="res://assets/buildings/khan/khan_home.obj" id="1_7fk6i"]
 [ext_resource type="Script" uid="uid://bk38agw6mkqd7" path="res://script/building/enterable_building.gd" id="1_gyucg"]
 [ext_resource type="Script" uid="uid://bkk14h8v1arr" path="res://script/building/building_data.gd" id="2_7j38y"]
 [ext_resource type="Texture2D" uid="uid://c0vmxrfakkrx5" path="res://assets/buildings/khan/khan_home_texture.png" id="2_gyucg"]
-[ext_resource type="Texture2D" uid="uid://bpyb3m1gmwwdy" path="res://assets/buildings/khan/khan_home_normal.png" id="3_7j38y"]
+[ext_resource type="Shader" uid="uid://b8x4ax8tyy7i7" path="res://assets/res/building_shader.gdshader" id="4_gyucg"]
+[ext_resource type="Material" uid="uid://cc47kytf1mmuy" path="res://assets/res/thick_outline_shader.tres" id="4_r5cvb"]
 
 [sub_resource type="Resource" id="Resource_r5cvb"]
 script = ExtResource("2_7j38y")
@@ -12,12 +13,13 @@ size = 2
 preview_mesh = ExtResource("1_7fk6i")
 metadata/_custom_type_script = "uid://bkk14h8v1arr"
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r5cvb"]
-transparency = 1
-depth_draw_mode = 1
-albedo_texture = ExtResource("2_gyucg")
-normal_enabled = true
-normal_texture = ExtResource("3_7j38y")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7j38y"]
+render_priority = 0
+next_pass = ExtResource("4_r5cvb")
+shader = ExtResource("4_gyucg")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture = ExtResource("2_gyucg")
+shader_parameter/rim_color = Color(1, 1, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nwyyb"]
 size = Vector3(52, 75, 47)
@@ -36,7 +38,7 @@ building_name = "khan home"
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_7fk6i")
-surface_material_override/0 = SubResource("StandardMaterial3D_r5cvb")
+surface_material_override/0 = SubResource("ShaderMaterial_7j38y")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 37, 0)

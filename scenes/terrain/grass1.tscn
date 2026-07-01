@@ -1,0 +1,175 @@
+[gd_scene load_steps=18 format=3 uid="uid://crbtjgbw6mte3"]
+
+[ext_resource type="Script" uid="uid://d2fbmt32i8mmo" path="res://script/building/bush.gd" id="1_td8dy"]
+[ext_resource type="ArrayMesh" uid="uid://b53wb6tv1v3di" path="res://assets/environment/grass1.obj" id="2_ouko2"]
+[ext_resource type="Material" uid="uid://cwredx81yxie2" path="res://assets/res/shadow_shader.tres" id="3_e632l"]
+[ext_resource type="Shader" uid="uid://bibjbtygga60i" path="res://assets/res/grass.gdshader" id="3_ouko2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_up73h"]
+render_priority = 0
+next_pass = ExtResource("3_e632l")
+shader = ExtResource("3_ouko2")
+shader_parameter/albedo = Color(0.4, 1, 0.49, 1)
+shader_parameter/rim_color = Color(0, 0, 0, 1)
+shader_parameter/offsetScale = 0.0
+shader_parameter/clampTop = 1.0
+shader_parameter/clampBottom = 0.0
+
+[sub_resource type="Animation" id="Animation_qwwm7"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3wxw3"]
+resource_name = "destroy"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.2, 0.2, 0.2)]
+}
+
+[sub_resource type="Animation" id="Animation_td8dy"]
+resource_name = "sway"
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_ikgab"]
+resource_name = "wave"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.26, 0.44),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.146608, 0, 0), Vector3(0.0715585, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.12, 0.44),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.02, 1.02, 1.02), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3wxw3"]
+_data = {
+&"RESET": SubResource("Animation_qwwm7"),
+&"destroy": SubResource("Animation_3wxw3"),
+&"sway": SubResource("Animation_td8dy"),
+&"wave": SubResource("Animation_ikgab")
+}
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0mktr"]
+height = 7.5
+radius = 1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ewjud"]
+height = 9.0
+radius = 6.0
+
+[sub_resource type="Gradient" id="Gradient_hnim2"]
+offsets = PackedFloat32Array(0, 0.943299)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mucwy"]
+gradient = SubResource("Gradient_hnim2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_45qcd"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 8.0
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+color_ramp = SubResource("GradientTexture1D_mucwy")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yx32i"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_nu4d5"]
+lightmap_size_hint = Vector2i(4, 4)
+material = SubResource("StandardMaterial3D_yx32i")
+size = Vector2(0.25, 0.25)
+
+[node name="StaticBody3D" type="StaticBody3D" node_paths=PackedStringArray("wave_area")]
+script = ExtResource("1_td8dy")
+wave_area = NodePath("WaveArea")
+is_grass = true
+metadata/_custom_type_script = "uid://d2fbmt32i8mmo"
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_ouko2")
+surface_material_override/0 = SubResource("ShaderMaterial_up73h")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3wxw3")
+}
+autoplay = "sway"
+
+[node name="WaveArea" type="Area3D" parent="."]
+
+[node name="WaveArea" type="CollisionShape3D" parent="WaveArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75, 0)
+shape = SubResource("CylinderShape3D_0mktr")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="InteractArea" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+shape = SubResource("CylinderShape3D_ewjud")
+debug_color = Color(0.809118, 0.346618, 0.585495, 0.42)
+
+[node name="Particles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_45qcd")
+draw_pass_1 = SubResource("QuadMesh_nu4d5")

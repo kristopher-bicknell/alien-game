@@ -12,6 +12,9 @@ enum ControlMode{
 }
 
 static var control_mode: ControlMode = ControlMode.DEFAULT
+static var player_rotation: float
+static var camera_rotation: float
+static var player_position: Vector3
 
 enum HairTypes {BUZZ, BUNS, MOHAWK, BRAT}
 

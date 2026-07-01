@@ -99,7 +99,7 @@ func move_in_direction(direction: Vector2i):
 var building_goal_angle: float = 0
 
 func _process(delta: float):
-	global_rotation.y = lerp_angle(rotation.y, goal_angle, 10 * delta)
+	rotation.y = lerp_angle(rotation.y, goal_angle, 10 * delta)
 	%PreviewTiles.global_rotation.y = lerp_angle(%PreviewTiles.global_rotation.y, building_goal_angle, 40 * delta)
 
 func setup_overlay():

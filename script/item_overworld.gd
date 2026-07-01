@@ -1,5 +1,5 @@
 class_name ItemOverworld
-extends RigidBody3D
+extends Area3D
 
 const TEXTURE_SIZE = 100
 var item: int
@@ -21,6 +21,7 @@ func setup():
 
 static func get_material(item_for_material) -> StandardMaterial3D:
 	var material = StandardMaterial3D.new()
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	#really roundabout way of using the item_texture_atlas as, well, a texture atlas but for a 3d material
 	var image = GlobalInfo.get_overworld_itemtexture(Item.item_data[item_for_material].texture_overworld)
 	material.albedo_texture = ImageTexture.create_from_image(image)
@@ -28,7 +29,6 @@ static func get_material(item_for_material) -> StandardMaterial3D:
 	#or am i fine with them being, as the kids say, "chopped"
 	#if I want to do that then I will probably want to write a shader, and i dont want to right now.
 	return material
-
 
 func _on_pickup_area_body_entered(body: Node3D) -> void:
 	if body is Player:

@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://hq7n85214yyh"]
+
+[ext_resource type="FontFile" uid="uid://bmljotyil3hcn" path="res://assets/res/fonts/Oxanium-Regular.ttf" id="1_os67t"]
+
+[resource]
+base_font = ExtResource("1_os67t")
+variation_transform = Transform2D(1, 0.295, 0, 1, 0, 0)
+spacing_top = 7
+spacing_bottom = 7
