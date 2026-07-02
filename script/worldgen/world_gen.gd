@@ -60,25 +60,17 @@ func create_flat():
 		chunks.add_chunk(new_chunk, chunk_id)
 		new_chunk.add_to_group("chunks")
 		new_chunk.init_chunk()
-	mother = load("res://scenes/character/khan/khan_mother.tscn").instantiate()
-	add_child(mother)
-	mother.global_position = Map.surface_layer[Vector2i(0,0)].world_position
-
-func _process(delta):
-	if mother:
-		if !mother.path:
-			mother.set_target(Vector3(-225, 2, -259.808))
+	#mother = load("res://scenes/character/khan/khan_mother.tscn").instantiate()
+	#add_child(mother)
+	#mother.global_position = Map.surface_layer[Vector2i(0,0)].world_position
 
 # Randomize if no seed has been set
 func init_seed():
 	if settings.map_seed == 0 or settings.map_seed == null:
-		settings.noise.seed = randi()
-		settings.climate_noise.seed = randi()
-		settings.terrain_noise.seed = randi()
-	else:
-		settings.noise.seed = settings.map_seed
-		settings.climate_noise.seed = settings.map_seed
-		settings.terrain_noise.seed = settings.map_seed 
+		settings.map_seed = randi()
+	settings.noise.seed = settings.map_seed
+	settings.climate_noise.seed = settings.map_seed
+	settings.terrain_noise.seed = settings.map_seed 
 
 func load_world(chunks_dict: Dictionary[Vector2, Dictionary]):
 	clear_chunks()

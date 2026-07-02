@@ -19,6 +19,10 @@ func _process(delta: float):
 func _input(event: InputEvent):
 	if event.is_action_pressed("enter"):
 		create_minimap()
+	if event.is_action_pressed("zoom_in"):
+		%Map.scale = Vector2(clamp(%Map.scale.x + 0.05, 0.25, 1), clamp(%Map.scale.y + 0.05, 0.25, 1))
+	if event.is_action_pressed("zoom_out"):
+		%Map.scale =  Vector2(clamp(%Map.scale.x - 0.05, 0.25, 1), clamp(%Map.scale.y - 0.05, 0.25, 1))
 
 func create_minimap():
 	if Map.surface_layer.is_empty(): return

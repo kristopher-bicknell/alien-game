@@ -3,7 +3,7 @@ class_name GenerationSettings
 
 @export_category("Map")
 @export var map_seed : int
-@export_range(0, 64, 1) var radius: int = 5
+@export var radius: int = 5
 @export_range(1, 128, 1) var max_height: int = 3
 @export_range(0.0, 1.0) var ground_to_air_ratio : float = 0.5
 #@export var debug : bool = false

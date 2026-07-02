@@ -1,149 +1,63 @@
+//THIS SHADER MUST BE APPLIED TO A QUAD (MeshInstance) WITH A SIZE OF (2, 2)
+//Extra Cull Margin on the quad should be turned up all the way!
+
 shader_type spatial;
+render_mode unshaded;
 
-uniform sampler2D depth_texture: hint_depth_texture;
+uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
+uniform sampler2D DEPTH_TEXTURE: hint_depth_texture, filter_linear_mipmap;
 
-#define USE_RIM 1
+uniform int outline_mode : hint_range(1, 3, 1) = 3;
+uniform float outline_intensity : hint_range(0, 5) = 1;
+uniform bool _round = false;
+uniform float outline_bias : hint_range(-10, 10) = 0;
 
-#define USE_PIXELART 1
-#define USE_SMOOTH_PIXELART 1
-
-#define USE_ALPHA 1
-#define USE_DISABLE_CULL 1
-
-#define USE_SUBSURFACESCATTERING 1
-
-render_mode 
-	#if USE_DISABLE_CULL
-		cull_disabled;
-	#else
-		cull_back;
-	#endif
-
-group_uniforms Toon;
-uniform float     ToonRampOffset:     hint_range(0.0, 1.0) = 0.5;
-uniform float     ToonRampSmoothness: hint_range(0.0, 1.0) = 0.05;
-uniform vec3      ToonRampTinting:    source_color;
-
-#if USE_RIM
-	group_uniforms Rim;
-	uniform float     RimPower:           hint_range(0.0, 10.0) = 1.0;
-	uniform float     RimCutOff:          hint_range(0.0, 1.0) = 0.5;
-	uniform float     RimSmoothness:      hint_range(0.0, 1.0) = 0.05;
-	uniform float     RimLightBrightness: hint_range(0.0, 50.0) = 20.0;
-#endif
-
-#if USE_SUBSURFACESCATTERING
-	group_uniforms SubsurfaceScattering;
-	uniform float     SubSurfDistortion:  hint_range(0.0, 5.0) = 1.0;
-	uniform vec3      SubSurfTint:        source_color;
-	uniform float     SubSurfBrightness:  hint_range(0.0, 10.0) = 3.0;
-	uniform float     SubSurfCutoff:      hint_range(0.0, 1.0) = 0.5;
-	uniform float     SubSurfSmoothness:  hint_range(0.0, 1.0) = 0.05;
-	uniform sampler2D SubSurfTexture:  source_color, hint_default_white;
-	
-#endif
-
-group_uniforms Texture;
-#if (USE_SMOOTH_PIXELART || !USE_PIXELART)
-	uniform sampler2D Texture:            source_color, filter_linear_mipmap_anisotropic;
-#else 
-	uniform sampler2D Texture:            source_color, filter_nearest_mipmap_anisotropic;
-#endif
-
-#if USE_RIM
-	float fresnel(float amount, vec3 normal, vec3 view) {
-		return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
-	}
-#endif
-
-#if USE_SMOOTH_PIXELART
-	vec4 texture_point_smooth(sampler2D smp, vec2 uv, vec2 pixel_size) {
-		vec2 ddx = dFdx(uv);
-		vec2 ddy = dFdy(uv);
-		vec2 lxy = sqrt(ddx * ddx + ddy * ddy);
-		
-		vec2 uv_pixels = uv / pixel_size;
-		
-		vec2 uv_pixels_floor = round(uv_pixels) - vec2(0.5f);
-		vec2 uv_dxy_pixels = uv_pixels - uv_pixels_floor;
-		
-		uv_dxy_pixels = clamp((uv_dxy_pixels - vec2(0.5f)) * pixel_size / lxy + vec2(0.5f), 0.0f, 1.0f);
-		
-		uv = uv_pixels_floor * pixel_size;
-		
-		return textureGrad(smp, uv + uv_dxy_pixels * pixel_size, ddx, ddy);
-	}
-#endif
+uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 void vertex() {
-  POSITION = vec4(VERTEX.xy, 1.0, 1.0);
+	POSITION = vec4(VERTEX, 1.0);
 }
 
 void fragment() {
-	
-	float depth = texture(depth_texture, SCREEN_UV).x;
-	  vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
-	  vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
-	  view.xyz /= view.w;
-	  float linear_depth = -view.z;
+	ALBEDO = outline_color.rgb;
 
-	  vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
-	  vec3 world_position = world.xyz / world.w;
+	vec2 screen_size = vec2(textureSize(SCREEN_TEXTURE, 1));
 
-	vec4 textureColor;
-	
-	#if USE_SMOOTH_PIXELART
-		vec2 tex_size = 1.0f / vec2(textureSize(Texture, 0));
-		textureColor = texture_point_smooth(Texture, UV, tex_size);
-	#else
-		textureColor = texture(Texture, UV);
-	#endif
-		ALBEDO = textureColor.rgb;
+	float px = 0.5/screen_size.x;
+	float py = 0.5/screen_size.y;
 
-	#if USE_ALPHA
-		ALPHA = textureColor.a;
-		ALPHA_SCISSOR_THRESHOLD = 0.5;
-	#endif
+	float d = texture(DEPTH_TEXTURE, SCREEN_UV).x;
+	float du = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(0.0, py)).x;
+	float dd = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(0.0, -py)).x;
+	float dr = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(px, 0.0)).x;
+	float dl = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(-px, 0.0)).x;
+
+	if (outline_mode == 1){
+		ALPHA = 0.0 + abs(abs(d)-abs(du)) + abs(abs(d)-abs(dd)) + abs(abs(d)-abs(dl)) + abs(abs(d)-abs(dr));
+
+		ALPHA *= 1000.0*outline_intensity;
+	} else if (outline_mode == 2) {
+		ALPHA = 0.0 + abs(abs(abs(d)-abs(du)) - abs(abs(d)-abs(dd))) + abs(abs(abs(d)-abs(dl)) - abs(abs(d)-abs(dr)));
+
+		ALPHA *= 3.0*50000.0*outline_intensity;
+	} else if (outline_mode == 3) {
+		float dq = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(-px, py)).x;
+		float de = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(px, py)).x;
+		float dz = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(-px, -py)).x;
+		float dc = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(px, -py)).x;
+
+		ALPHA = 0.0 + abs(abs(abs(d)-abs(du)) - abs(abs(d)-abs(dd))) + abs(abs(abs(d)-abs(dl)) - abs(abs(d)-abs(dr))) + abs(abs(abs(d)-abs(dq)) - abs(abs(d)-abs(dc))) + abs(abs(abs(d)-abs(dz)) - abs(abs(d)-abs(de)));
+
+		ALPHA *= 50000.0*outline_intensity;
+	}
+
+	ALPHA += outline_bias;
+
+	if (_round) {
+		ALPHA = round(ALPHA);
+	}
+
+	ALPHA *= outline_color.a;
 }
 
-void light() {
-	// Diffuse Shading
-	float d =  dot(NORMAL,LIGHT) * 0.5 + 0.5;
-	float toonRamp = smoothstep(ToonRampOffset, ToonRampOffset + ToonRampSmoothness, d);
-	
-	// Shadows
-	toonRamp *= ATTENUATION;
-	
-	vec3 toonRampOutput = LIGHT_COLOR * toonRamp;
-	vec3 ambientLightOutput = ALBEDO * ToonRampTinting;
-	DIFFUSE_LIGHT += clamp((toonRampOutput - ambientLightOutput), vec3(0.0), vec3(1.0));
-	
-	
-	#if USE_RIM
-		float fresnel = fresnel(RimPower, NORMAL, VIEW);
-		float d2 = dot(NORMAL, LIGHT);
-		d2 *= fresnel;
-		d2 = smoothstep(RimCutOff, RimCutOff + RimSmoothness, d2);
-		
-		vec3 rimOutput =  d2 * RimLightBrightness * ALBEDO;
-		
-		DIFFUSE_LIGHT += rimOutput;
-	#endif
-	
-	
-	
-	#if USE_SUBSURFACESCATTERING
-		float subSurfBack = dot(VIEW, -(LIGHT + NORMAL * SubSurfDistortion));
-		float subSurfFront = dot(VIEW, LIGHT - NORMAL * SubSurfDistortion);
-		subSurfBack = max(subSurfBack, 0.0);
-		subSurfFront = max(subSurfFront, 0.0);
-		
-		float subSurfScattering = smoothstep(SubSurfCutoff, SubSurfCutoff + SubSurfSmoothness, subSurfBack + subSurfFront); 
-		
-		vec3 subSurfColor = SubSurfTint * texture(SubSurfTexture, UV).rgb;
-		DIFFUSE_LIGHT += subSurfScattering * SubSurfBrightness * subSurfColor;
-	#endif         
-          
-	
-	SPECULAR_LIGHT = ambientLightOutput;
-}
+//Written by Warren Jennings

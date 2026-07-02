@@ -29,11 +29,11 @@ void light() {
 	//break up the shadows into bands
 	float light = max(dot(NORMAL, LIGHT), 0.0) * ATTENUATION;
 	light = round(light * 3.0) / 3.0;
-	
+
 	vec3 diffuse = vec3(light) * LIGHT_COLOR / PI;
-	
+
 	DIFFUSE_LIGHT += diffuse;
-	
+
 	//rim lighting
 	float rim = fresnel(NORMAL, VIEW);
 	rim = step(0.7, rim);
@@ -46,7 +46,7 @@ void vertex() {
 	uvOffset /= 2.0;
 	vec4 off = inverse(MODELVIEW_MATRIX) * vec4(uvOffset,1.0,0.0);
 	off = vec4(normalize(off.xyz),0.0) * offsetScale;
-	
+
 	vec3 world_pos = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	float contribution = 1.0;
 	vec3 world_pos_eff = world_pos * contribution;

@@ -1,22 +1,30 @@
-[gd_scene load_steps=34 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=41 format=3 uid="uid://cxknqhnxe0l78"]
 
 [ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://ci6r5r3hlrwjq" path="res://script/worldgen/world_gen.gd" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://bf7oc7st1txej" path="res://script/worldgen/generation_settings.gd" id="3_1bvp3"]
 [ext_resource type="FastNoiseLite" uid="uid://c2igtwsp81xmn" path="res://assets/res/climatenoise.tres" id="3_272bh"]
+[ext_resource type="Material" uid="uid://cc47kytf1mmuy" path="res://assets/res/thick_outline_shader.tres" id="4_2cqfq"]
 [ext_resource type="FastNoiseLite" uid="uid://bgc7ugo4i8pq7" path="res://assets/res/mainnoise.tres" id="4_5vw27"]
 [ext_resource type="Texture2D" uid="uid://donh8kaip6kwi" path="res://assets/environment/terrainatlas.png" id="4_kek77"]
+[ext_resource type="Shader" uid="uid://b8x4ax8tyy7i7" path="res://assets/res/building_shader.gdshader" id="4_vivmo"]
 [ext_resource type="FastNoiseLite" uid="uid://b2cn8ba6rls7n" path="res://assets/res/terrainnoise.tres" id="6_kek77"]
 [ext_resource type="PackedScene" uid="uid://tnl4leesxb0n" path="res://scenes/building/furnace.tscn" id="8_efxa6"]
 [ext_resource type="PackedScene" uid="uid://c13vk63ja8gej" path="res://scenes/ui/hotbar.tscn" id="8_w48qg"]
 [ext_resource type="PackedScene" uid="uid://d004x8gdkrmdg" path="res://scenes/building/khan_home.tscn" id="11_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://5s7nqsk4h1r4" path="res://scenes/building/workbench.tscn" id="12_dg77c"]
+[ext_resource type="Shader" uid="uid://c6qcp4fh0d4rs" path="res://assets/res/clouds.gdshader" id="13_yaehf"]
 [ext_resource type="PackedScene" uid="uid://dyw7r0joh2feg" path="res://scenes/ui/minimap.tscn" id="14_w48qg"]
 [ext_resource type="Script" uid="uid://e4p4wngpyty5" path="res://script/time_manager.gd" id="15_vivmo"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
-albedo_texture = ExtResource("4_kek77")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2cqfq"]
+render_priority = 0
+next_pass = ExtResource("4_2cqfq")
+shader = ExtResource("4_vivmo")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture = ExtResource("4_kek77")
+shader_parameter/rim_color = Color(0, 0, 0, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kek77"]
 frequency = 0.0066
@@ -28,10 +36,10 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 64
-max_height = 64
+radius = 256
+max_height = 3
 ground_to_air_ratio = 0.5
-num_caves = 0
+num_caves = 8
 chunk_size = 8
 large_plant_freq = 0.01
 small_plant_freq = 0.01
@@ -43,12 +51,38 @@ stone_noise = SubResource("FastNoiseLite_kek77")
 hexel_size = 5.0
 hexel_height = 4.0
 shading = -1
-material = SubResource("StandardMaterial3D_4c57u")
+material = SubResource("ShaderMaterial_2cqfq")
 draw_bottom = true
 solid_first_layer = true
 metadata/_custom_type_script = "uid://bf7oc7st1txej"
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_074og"]
+noise_type = 2
+frequency = 0.036
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cegan"]
+seamless = true
+noise = SubResource("FastNoiseLite_074og")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_82xsv"]
+shader = ExtResource("13_yaehf")
+shader_parameter/sky_texture = SubResource("NoiseTexture2D_cegan")
+shader_parameter/power = 0.5
+shader_parameter/scale = 0.5
+shader_parameter/speed = 0.005
+shader_parameter/density = 0.1
+shader_parameter/sky_color_a = Color(0.5, 0.8, 1, 1)
+shader_parameter/sky_color_b = Color(0.3, 0.5, 1, 1)
+shader_parameter/ground_color_a = Color(1, 0.8, 0.5, 1)
+shader_parameter/ground_color_b = Color(1, 0.5, 0.3, 1)
+
+[sub_resource type="Sky" id="Sky_getpj"]
+sky_material = SubResource("ShaderMaterial_82xsv")
+
 [sub_resource type="Environment" id="Environment_lquwl"]
+background_mode = 2
+sky = SubResource("Sky_getpj")
 ambient_light_color = Color(1, 1, 1, 1)
 tonemap_mode = 2
 tonemap_white = 0.5

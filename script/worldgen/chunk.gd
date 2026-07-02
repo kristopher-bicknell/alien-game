@@ -153,3 +153,4 @@ func hexel_at_point(hd) -> Hexel:
 func _on_body_entered(body: Node3D):
 	if body is Player:
 		print("player collided with chunk ", chunk_id)
+		
