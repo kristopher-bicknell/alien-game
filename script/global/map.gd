@@ -26,6 +26,25 @@ func set_map(all_hexels, top_hexels, chunk_id):
 			surface_layer[Vector2i(grid_pos.x + (world_settings.chunk_size * chunk_id.x), grid_pos.y + (world_settings.chunk_size * chunk_id.y))] = t_hexel
 			structure_at[Vector2i(grid_pos.x + (world_settings.chunk_size * chunk_id.x), grid_pos.y + (world_settings.chunk_size * chunk_id.y))] = null
 
+func chunk_proximity(chunk_id: Vector2i):
+	var lower_bounds = chunk_id - Vector2i(world_settings.render_distance, world_settings.render_distance)
+	var upper_bounds = chunk_id + Vector2i(world_settings.render_distance, world_settings.render_distance)
+	for id in chunks.keys():
+		if id < lower_bounds or id > upper_bounds:
+			if chunks[id]:
+				SaveData.save_chunkdata(chunks[id])
+				chunks[id].queue_free()
+				chunks.erase(id)
+	var chunks_to_create = {}
+	for y in range(lower_bounds.y, upper_bounds.y):
+		for x in range(lower_bounds.x, upper_bounds.x):
+			if !chunks.has(Vector2i(x,y)):
+				var data = SaveData.load_chunkdata(Vector2i(x,y))
+				if data:
+					chunks_to_create[Vector2i(x,y)] = data
+	get_tree().call_group("worldgen", "load_world", chunks_to_create)
+	
+	
 
 func clear_map():
 	map_as_dict.clear()

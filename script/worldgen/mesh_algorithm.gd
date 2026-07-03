@@ -33,7 +33,7 @@ static func remesh(map: Dictionary[Vector3i, Hexel]):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for v_index in range(verts.size()):
 		surface.set_uv(uvs[v_index])
-		surface.set_smooth_group(Map.world_settings.shading)
+		surface.set_smooth_group(-1)
 		surface.add_vertex(verts[v_index])
 
 	for i in indices:

@@ -56,14 +56,16 @@ func create_building(building: String, base_hexel: Hexel, chunk_id: Vector2i, ch
 	new_building.initialize()
 
 func place_plants(settings):
-	for hexel in Map.surface_layer.values():
-		if settings.wet_noise.get_noise_2dv(hexel.grid_position_xz) > 0 && randf() < settings.large_plant_freq:
+	for coordinate in Map.surface_layer.keys():
+		var new_plant
+		if settings.wet_noise.get_noise_2dv(coordinate) > 0 && randf() < settings.large_plant_freq:
 			#place large plant
-			var new_large_plant = large_plants.values().pick_random().instantiate()
-			objects.add_child(new_large_plant)
-			new_large_plant.initialize(hexel.world_position)
-		elif settings.wet_noise.get_noise_2dv(hexel.grid_position_xz) > 0 && randf() < settings.small_plant_freq:
+			new_plant = large_plants.values().pick_random().instantiate()
+		elif settings.wet_noise.get_noise_2dv(coordinate) > 0 && randf() < settings.small_plant_freq:
 			#place small plant
-			var new_small_plant = small_plants.values().pick_random().instantiate()
-			objects.add_child(new_small_plant)
-			new_small_plant.initialize(hexel.world_position)
+			new_plant = small_plants.values().pick_random().instantiate()
+		if new_plant:
+			var chunk_id = Vector2i( coordinate.x / settings.chunk_size, coordinate.y / settings.chunk_size )
+			var local_coord = Vector2i(coordinate.x - (settings.chunk_size * chunk_id.x), coordinate.y - (settings.chunk_size * chunk_id.y))
+			Map.chunks[chunk_id].add_object(new_plant, Map.surface_layer[coordinate].grid_position_xyz)
+			new_plant.initialize(Map.surface_layer[coordinate].world_position)

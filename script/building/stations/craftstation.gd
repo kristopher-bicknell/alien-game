@@ -10,6 +10,10 @@ var is_processing: bool = false
 var item: int
 var number_crafting: int
 
+static var station_name_ref = [
+	"workbench", "furnace", "anvil"
+]
+
 func _ready():
 	super()
 	timer.one_shot = true

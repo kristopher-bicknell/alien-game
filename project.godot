@@ -46,6 +46,7 @@ buildings=""
 plants=""
 chunks=""
 interior_scene="marks that a scene is the interior"
+worldgen=""
 
 [input]
 

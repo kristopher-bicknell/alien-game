@@ -21,6 +21,7 @@ func _ready() -> void:
 	Map.clear_map()
 	Map.world_settings = settings
 	init_seed()
+	self.add_to_group("worldgen")
 	#var children = chunks.get_children() + get_children()
 	#for c in children:
 	#	c.free()
@@ -73,20 +74,21 @@ func init_seed():
 	settings.terrain_noise.seed = settings.map_seed 
 
 func load_world(chunks_dict: Dictionary[Vector2, Dictionary]):
-	clear_chunks()
-	make_chunkmanager()
-	print("Finished loading from file")
-	
+	#clear_chunks()
+	#make_chunkmanager()
+	#print("Finished loading from file")
+	if chunks_dict.is_empty(): return
+	print("Data not empty, creating chunks from files")
 	var hexels: Dictionary[Vector2, Array] = {}
 	var keys_as_array = chunks_dict.keys()
 	for i in range(keys_as_array.size()):
-		#$"../CanvasLayer/debug_noteforme".text = "Generating chunk " + str(chunk_id) + "..."
 		##chunk map data can be generated in thread?
 		var id = keys_as_array[i]
+		print("Mapping chunk " + str(id))
 		hexels[Vector2(id.x, id.y)] = GridMapper.generate_map_from_save(chunks_dict[id], id)
 		#mapper_thread.start(GridMapper.generate_map_from_save.bind(chunks_dict[chunk_id], chunk_id, settings))
+	print("Finished mapping from save data")
 	#make terrain geometry
-	print("finished mapping")
 	var hg = HexelGenerator.new()
 	#create terrain gen threads
 	var interval = {"Start of Generation!" : Time.get_ticks_msec()}
@@ -95,6 +97,7 @@ func load_world(chunks_dict: Dictionary[Vector2, Dictionary]):
 	for i in range(hexels_keys_as_array.size()):
 		if threads[i % threads.size()].is_started():
 			threads[i % threads.size()].wait_to_finish()
+		print("Thread " + str(i) + " started working on chunk " + str(hexels_keys_as_array[i]))
 		threads[i % threads.size()].start(threaded_chunkloading.bind(hexels[hexels_keys_as_array[i]], hexels_keys_as_array[i], hg, interval))
 	for thread in threads:
 		thread.wait_to_finish()
@@ -124,17 +127,11 @@ func threaded_chunkloading(hexels: Array[Hexel], chunk_id, hg: HexelGenerator, i
 	loaded_chunks.append(chunk)
 	#return chunks
 
-##handle threads
-func threaded_mapping(function: Callable, data: Array[Dictionary], thread_index: int):
-	var return_data = {}
-	#data array contains dictionaries of type [chunk_id, chunks_dict[chunk_id], or just one entry in chunks_dict
-	for chunk_dict in data:
-		pass
-
 ## Start of world_generation, time each step
 func generate_world():
 	init_seed()
 	var starttime = Time.get_ticks_msec()
+	print("Start generating at ", Time.get_ticks_msec())
 	var interval = {"Start of Generation!" : starttime}
 	#handle chunk manager
 	clear_chunks()
@@ -146,6 +143,7 @@ func generate_world():
 		for z in range(floor(-settings.radius / settings.chunk_size), floor(settings.radius / settings.chunk_size)):
 			hexels[Vector2i(x,z)] = GridMapper.calculate_map_positions(Vector2i(x,z))
 	interval["Calculate Map Positions -- "] = Time.get_ticks_msec()
+	print("Finished mapping positions at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
 	
 	#generate cave
 	var caves = CaveGenerator.new()
@@ -163,6 +161,7 @@ func generate_world():
 					removed += 1
 	#print("Caves removed ", removed)
 	caves.finished_caves()
+	print("Finished caves at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
 	
 	#make terrain geometry
 	for chunk_id in hexels.keys():
@@ -171,32 +170,36 @@ func generate_world():
 		new_chunk.add_to_group("chunks")
 		new_chunk.init_chunk()
 	interval["Create Hexel Mesh -- "] = Time.get_ticks_msec()
+	print("Finished meshing at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
 
 	## Place trees, spaceship, buildings, so on
 	var op = ObjectPlacer.new()
 	op.set_objects($Objects)
 	op.place_plants(settings)
+	print("Finished placing objects at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
 	
 	main.connect_plants()
-	
 	#Place spaceship
 	var is_placed = false
 	#op.call_deferred("create_building", "spaceship", Map.surface_layer[Vector2i.ZERO], Vector2i.ZERO)
 	#return
 	var attempts = 0
-	while !is_placed:
-		var chunk_id = chunks.chunks.keys().pick_random()
-		var hexel_xz = chunks.chunks[chunk_id].hexels_dict.values().pick_random().grid_position_xz
-		var hexel = Map.surface_layer[hexel_xz]
-		if hexel.type == HexelData.hexel_type.DIRT or hexel.type == HexelData.hexel_type.GRASS or hexel.type == HexelData.hexel_type.SAND or attempts > 5:
-			print("suitable tile at ", hexel.grid_position_xyz)
-			op.create_building("spaceship", hexel, chunk_id, chunks)
-			chunks.get_chunk(chunk_id).reset_geometry()
-			is_placed = true
-			print("spaceship placed")
-		else:
-			attempts += 1
-	print_generation_results(starttime, interval)
+	#while !is_placed:
+	#	var chunk_id = chunks.chunks.keys().pick_random()
+	#	var hexel_xz = chunks.chunks[chunk_id].hexels_dict.values().pick_random().grid_position_xz
+	#	var hexel = Map.surface_layer[hexel_xz]
+	#	if hexel.type == HexelData.hexel_type.DIRT or hexel.type == HexelData.hexel_type.GRASS or hexel.type == HexelData.hexel_type.SAND or attempts > 5:
+	#		print("suitable tile at ", hexel.grid_position_xyz)
+	#		op.create_building("spaceship", hexel, chunk_id, chunks)
+	#		chunks.get_chunk(chunk_id).reset_geometry()
+	#		is_placed = true
+	#		print("spaceship placed")
+	#	else:
+	#		attempts += 1
+	#print_generation_results(starttime, interval)
+	print("Generation finished at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
+	#SaveData.save_loaded_chunks()
+	
 	#interaction_tracker.init()
 	#Debugger.draw_hexel_dictionary(Map.surface_layer)
 

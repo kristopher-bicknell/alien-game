@@ -47,6 +47,10 @@ static func generate_hexel(pos, chunk_id) -> Hexel:
 	new.grid_position_xyz = Vector3i(pos.x, pos.y, pos.z)
 	new.grid_position_xz = Vector2i(pos.x, pos.z)
 	#new.neighbors = Map.get_tile_neighbors_planar(new)
+	if pos.y == 0:
+		new.type = HexelData.hexel_type.BEDROCK
+	else:
+		new.type = HexelData.hexel_type.TEST
 	return new
 
 static func tile_to_world(pos, chunk_id) -> Vector3:

@@ -151,12 +151,14 @@ libraries = {
 autoplay = "sway"
 
 [node name="WaveArea" type="Area3D" parent="."]
+monitorable = false
 
 [node name="WaveArea" type="CollisionShape3D" parent="WaveArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75, 0)
 shape = SubResource("CylinderShape3D_0mktr")
 
 [node name="InteractionArea" type="Area3D" parent="."]
+monitorable = false
 
 [node name="InteractArea" type="CollisionShape3D" parent="InteractionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)

@@ -29,3 +29,6 @@ func _wave_exited(body: Node3D):
 	if hp <= 0: return
 	if body is Player:
 		anim_player.play("wave")
+		if particles:
+			particles.restart()
+			particles.emitting = true

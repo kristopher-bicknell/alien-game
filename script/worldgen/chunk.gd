@@ -7,9 +7,13 @@ var hexels_dict: Dictionary[Vector3i, Hexel]
 var hexel_layers: Dictionary[int, Array] = {}
 @onready var collider = CollisionShape3D.new()
 @onready var area_collider = CollisionShape3D.new()
+@onready var objects = Node3D.new()
 var chunk_neighbors: Dictionary[String, Chunk]
 
+var objects_dict = {}
+
 func init_chunk():
+	add_child(objects)
 	#why the FUCK does this keep happening dude
 	var temp_hexels: Array[Hexel] = []
 	for hexel in hexels:
@@ -153,4 +157,8 @@ func hexel_at_point(hd) -> Hexel:
 func _on_body_entered(body: Node3D):
 	if body is Player:
 		print("player collided with chunk ", chunk_id)
-		
+		#Map.chunk_proximity(chunk_id)
+
+func add_object(object, origin: Vector3i):
+	objects_dict[Vector2i(origin.x, origin.z)] = object
+	objects.add_child(object)

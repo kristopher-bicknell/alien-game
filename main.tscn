@@ -1,11 +1,10 @@
-[gd_scene load_steps=41 format=3 uid="uid://cxknqhnxe0l78"]
+[gd_scene load_steps=40 format=3 uid="uid://cxknqhnxe0l78"]
 
 [ext_resource type="PackedScene" uid="uid://c6v28wohfr7sn" path="res://scenes/character/character.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cnxsvvi1xvaqd" path="res://script/main.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://ci6r5r3hlrwjq" path="res://script/worldgen/world_gen.gd" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://bf7oc7st1txej" path="res://script/worldgen/generation_settings.gd" id="3_1bvp3"]
 [ext_resource type="FastNoiseLite" uid="uid://c2igtwsp81xmn" path="res://assets/res/climatenoise.tres" id="3_272bh"]
-[ext_resource type="Material" uid="uid://cc47kytf1mmuy" path="res://assets/res/thick_outline_shader.tres" id="4_2cqfq"]
 [ext_resource type="FastNoiseLite" uid="uid://bgc7ugo4i8pq7" path="res://assets/res/mainnoise.tres" id="4_5vw27"]
 [ext_resource type="Texture2D" uid="uid://donh8kaip6kwi" path="res://assets/environment/terrainatlas.png" id="4_kek77"]
 [ext_resource type="Shader" uid="uid://b8x4ax8tyy7i7" path="res://assets/res/building_shader.gdshader" id="4_vivmo"]
@@ -20,7 +19,6 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2cqfq"]
 render_priority = 0
-next_pass = ExtResource("4_2cqfq")
 shader = ExtResource("4_vivmo")
 shader_parameter/albedo = Color(1, 1, 1, 1)
 shader_parameter/albedo_texture = ExtResource("4_kek77")
@@ -36,13 +34,13 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 256
-max_height = 3
+radius = 8
+max_height = 16
 ground_to_air_ratio = 0.5
-num_caves = 8
-chunk_size = 8
+num_caves = 0
 large_plant_freq = 0.01
-small_plant_freq = 0.01
+small_plant_freq = 0.0
+render_distance = 2
 noise = ExtResource("4_5vw27")
 terrain_noise = ExtResource("6_kek77")
 climate_noise = ExtResource("3_272bh")
@@ -50,7 +48,6 @@ wet_noise = SubResource("FastNoiseLite_5vw27")
 stone_noise = SubResource("FastNoiseLite_kek77")
 hexel_size = 5.0
 hexel_height = 4.0
-shading = -1
 material = SubResource("ShaderMaterial_2cqfq")
 draw_bottom = true
 solid_first_layer = true
@@ -189,7 +186,7 @@ font_size = 127
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_lquwl")
 
-[node name="WorldGen" type="Node" parent="."]
+[node name="WorldGen" type="Node" parent="." groups=["worldgen"]]
 script = ExtResource("2_h2yge")
 settings = SubResource("Resource_lquwl")
 metadata/_custom_type_script = "uid://ci6r5r3hlrwjq"
@@ -209,6 +206,7 @@ offset_right = 1357.0
 offset_bottom = 169.0
 
 [node name="Info" type="RichTextLabel" parent="UI"]
+visible = false
 offset_left = 8.0
 offset_top = 10.0
 offset_right = 427.0
