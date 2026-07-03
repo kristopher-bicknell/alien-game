@@ -34,11 +34,11 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 8
-max_height = 16
+radius = 32
+max_height = 8
 ground_to_air_ratio = 0.5
 num_caves = 0
-large_plant_freq = 0.01
+large_plant_freq = 0.0
 small_plant_freq = 0.0
 render_distance = 2
 noise = ExtResource("4_5vw27")
@@ -229,17 +229,9 @@ offset_bottom = 636.0
 
 [node name="Hotbar" parent="UI" instance=ExtResource("8_w48qg")]
 
-[node name="debug_noteforme" type="Label" parent="UI"]
-visible = false
-offset_left = 869.0
-offset_top = 395.0
-offset_right = 1132.0
-offset_bottom = 522.0
-text = "[9] Generate new map
-[0] Clear map data
-[-] Save current map
-[=] Load map from file
-[\\] Create flat world"
+[node name="debug_numchunks" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
@@ -339,7 +331,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 256, -22)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1000, 0)
 
 [node name="jump_hold_elapsed" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 586.0
+offset_top = 377.0
+offset_right = 626.0
+offset_bottom = 400.0
 
 [connection signal="body_entered" from="DeathPlane" to="." method="_on_death_plane_body_entered"]

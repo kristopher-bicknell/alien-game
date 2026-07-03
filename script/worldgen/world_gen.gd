@@ -32,7 +32,9 @@ func _input(event: InputEvent):
 	if event.is_action_pressed("debug_reset"):
 		call_deferred("load_world", SaveData.load_data_tostring())
 	if event.is_action_pressed("debug_generatemap"):
-		call_deferred("generate_world")
+		var thread = Thread.new()
+		thread.start(generate_world)
+		#call_deferred("generate_world")
 	if event.is_action_pressed("enter"):
 		return
 		chunks.regenerate_all_meshes()
@@ -40,7 +42,7 @@ func _input(event: InputEvent):
 func make_chunkmanager():
 	chunks = ChunkManager.new()
 	Map.chunk_manager = chunks
-	add_child(chunks)
+	call_deferred("add_child", chunks)
 
 func clear_chunks():
 	if chunks:
@@ -146,44 +148,50 @@ func generate_world():
 	print("Finished mapping positions at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
 	
 	#generate cave
-	var caves = CaveGenerator.new()
-	chunks.add_child(caves)
-	for i in range(settings.num_caves):
-		var pos = hexels.values().pick_random().pick_random().world_position
-		caves.generate_cave(pos)
-	#mark tiles in cave as air
-	var removed: int = 0
-	for chunk in hexels.values():
-		for hexel in chunk:
-			if hexel.world_position.y > 0:
-				if caves.is_point_in_cave(hexel.world_position):
-					hexel.type = HexelData.hexel_type.AIR
-					removed += 1
-	#print("Caves removed ", removed)
-	caves.finished_caves()
-	print("Finished caves at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
+	if settings.num_caves > 0:
+		var caves = CaveGenerator.new()
+		chunks.add_child(caves)
+		for i in range(settings.num_caves):
+			var pos = hexels.values().pick_random().pick_random().world_position
+			caves.generate_cave(pos)
+		#mark tiles in cave as air
+		var removed: int = 0
+		for chunk in hexels.values():
+			for hexel in chunk:
+				if hexel.world_position.y > 0:
+					if caves.is_point_in_cave(hexel.world_position):
+						hexel.type = HexelData.hexel_type.AIR
+						removed += 1
+		#print("Caves removed ", removed)
+		caves.finished_caves()
+		print("Finished caves at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
 	
-	#make terrain geometry
-	for chunk_id in hexels.keys():
-		var new_chunk = HexelGenerator.generate_chunk(hexels[chunk_id], interval, chunk_id)
-		chunks.add_chunk(new_chunk, chunk_id)
-		new_chunk.add_to_group("chunks")
-		new_chunk.init_chunk()
-	interval["Create Hexel Mesh -- "] = Time.get_ticks_msec()
-	print("Finished meshing at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
+	var threaded = []
+	for i in range(4):
+		threaded.append(Thread.new())
+	#sanity check
+	print("Total chunks: " + str(hexels.keys().size()))
+	
+	#split up chunk data into completely separate arrays, so that it won't race condition and devour the same chunk twice
+	var threaded_chunks = [{}, {}, {}, {}]
+	for i in range(hexels.keys().size()):
+		threaded_chunks[i % 4][hexels.keys()[i]] = hexels[hexels.keys()[i]]
+	
+	for i in range(threaded.size()):
+		threaded[i].start(threaded_chunkgen.bind(chunks, threaded_chunks[i]))
 
 	## Place trees, spaceship, buildings, so on
-	var op = ObjectPlacer.new()
-	op.set_objects($Objects)
-	op.place_plants(settings)
-	print("Finished placing objects at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
+	#var op = ObjectPlacer.new()
+	#op.set_objects($Objects)
+	#op.place_plants(settings)
+	#print("Finished placing objects at " + str(Time.get_ticks_msec()) + " (" + str((Time.get_ticks_msec() - starttime) * 0.001) + ")")
 	
-	main.connect_plants()
+	#main.connect_plants()
 	#Place spaceship
-	var is_placed = false
+	#var is_placed = false
 	#op.call_deferred("create_building", "spaceship", Map.surface_layer[Vector2i.ZERO], Vector2i.ZERO)
 	#return
-	var attempts = 0
+#	var attempts = 0
 	#while !is_placed:
 	#	var chunk_id = chunks.chunks.keys().pick_random()
 	#	var hexel_xz = chunks.chunks[chunk_id].hexels_dict.values().pick_random().grid_position_xz
@@ -202,6 +210,17 @@ func generate_world():
 	
 	#interaction_tracker.init()
 	#Debugger.draw_hexel_dictionary(Map.surface_layer)
+
+func threaded_chunkgen(chunks: ChunkManager, chunks_load):
+	var boundary = Vector2i(-Map.world_settings.render_distance, Map.world_settings.render_distance)
+	for chunk_id in chunks_load.keys():
+		#after this function finishes, the chunk data will be saved to a file
+		var new_chunk_data = HexelGenerator.generate_chunk(chunks_load[chunk_id], {}, chunk_id)
+		if !((chunk_id.x < boundary.x or chunk_id.x > boundary.y) or (chunk_id.y < boundary.x or chunk_id.y > boundary.y)):
+			var new_chunk = HexelGenerator.build_chunkdata(new_chunk_data[0], new_chunk_data[1], new_chunk_data[2], new_chunk_data[3])
+			chunks.add_chunk(new_chunk, chunk_id)
+			new_chunk.call_deferred("add_to_group", "chunks")
+			new_chunk.init_chunk()
 
 func _exit_tree():
 	for thread in threads:

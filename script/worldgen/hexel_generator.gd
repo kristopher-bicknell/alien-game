@@ -12,7 +12,7 @@ static func load_chunk(map: Array[Hexel], interval, chunk_id):
 		map_dict[hexel.grid_position_xyz] = hexel
 	return build_chunkdata(map, interval, chunk_id, map_dict)
 
-static func generate_chunk_flat(map: Array[Hexel], interval, chunk_id) -> Chunk:
+static func generate_chunk_flat(map: Array[Hexel], interval, chunk_id):
 	var map_dict : Dictionary[Vector3i, Hexel] = {}
 	var fixed_id = Vector2i(chunk_id.y, chunk_id.x)
 	for hexel in map:
@@ -20,21 +20,27 @@ static func generate_chunk_flat(map: Array[Hexel], interval, chunk_id) -> Chunk:
 	var process_vector = process_hexels_flat(map, map_dict)
 	return build_chunkdata(map, interval, fixed_id, map_dict)
 
-static func generate_chunk(map : Array[Hexel], interval, chunk_id) -> Chunk:
+static func generate_chunk(map : Array[Hexel], interval, chunk_id) -> Array:
 	var map_dict : Dictionary[Vector3i, Hexel] = {}
 	var fixed_id = Vector2i(chunk_id.y, chunk_id.x)
 	for hexel in map:
 		map_dict[hexel.grid_position_xyz] = hexel
 	
-	var process_vector = process_hexels(map, map_dict)
-	print("Correction passes: ", process_vector.x, ". Total hexels removed: ", process_vector.y)
-	interval["Processing Hexels total -- "] = Time.get_ticks_msec()
-
-	interval["Build hexels -- "] = Time.get_ticks_msec()
-	return build_chunkdata(map, interval, fixed_id, map_dict)
+	process_hexels(map, map_dict)
+	#AT THIS POINT, the chunk data can be saved to a file. if it is not needed, it can be disregarded.
+	#I cannot be bugged to redo this without the savedata requiring a Chunk object, the fact that
+	#it works at all is a fucking miracle. Loaded chunks will be created twice. sue me.
+	var new_chunk = Chunk.new()
+	new_chunk.hexels_dict = map_dict
+	new_chunk.chunk_id = fixed_id
+	SaveData.save_chunkdata(new_chunk)
+	new_chunk.queue_free()
+	
+	return [map, interval, fixed_id, map_dict]
 
 static func build_chunkdata(map, interval, chunk_id, map_dict) -> Chunk:
 	var mesh = MeshAlgorithm.remesh(map_dict)
+	print("remesh chunk " + str(chunk_id) + " finished at " + str(Time.get_ticks_msec()))
 	var chunk = prepared_chunk(mesh, map, chunk_id)
 	Map.set_map(map, get_surface_hexels(map_dict), chunk_id)
 	return chunk
@@ -74,31 +80,13 @@ static func process_hexels_flat(map, map_dict):
 		else:
 			hexel.type = HexelData.hexel_type.BEDROCK
 
-static func process_hexels(map, map_dict) -> Vector2i:
-	# Prepare counters
-	var passes = 0
-	var total_removed = 0
-	
+static func process_hexels(map, map_dict):
 	#shape terrain
 	for hexel in map:
 		assign_type(hexel, map_dict)
 		if hexel.grid_position_xyz.y >= get_height(Vector2(hexel.world_position.x, hexel.world_position.z)):
 			hexel.type = HexelData.hexel_type.AIR
-			total_removed += 1
-	while passes < 20:
-		var removed = 0
-		for i in range(map.size()):
-			var hexel = map[i]
-			if hexel.type != 0:
-				if shape_geometry(hexel, map_dict):
-					removed += 1
-		if removed < 1:
-			break
-		total_removed += removed
-		passes += 1
-	
 	create_ore(map_dict)
-	return Vector2i(passes, total_removed)
 
 static func get_height(location:Vector2) -> int:
 	var noise_height = (sqrt(Map.world_settings.noise.get_noise_2dv(location) + 1.0) - 1.0) + (pow((clampf(Map.world_settings.terrain_noise.get_noise_2dv(location), 0.25, 1.0)), 2.0))

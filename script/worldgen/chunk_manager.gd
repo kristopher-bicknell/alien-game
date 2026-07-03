@@ -26,10 +26,11 @@ func add_chunk(new_chunk: Chunk, chunk_id: Vector2i):
 	new_chunk.chunk_id = chunk_id
 	chunks[new_chunk.chunk_id] = new_chunk
 	Map.chunks[new_chunk.chunk_id] = new_chunk
-	add_child(new_chunk)
+	call_deferred("add_child", new_chunk)
 	set_chunk_neighbors()
 
 func set_chunk_neighbors():
+	return
 	for chunk_id in chunks.keys():
 		if chunks.has(chunk_id + neighbor_ref["west"]):
 			chunks[chunk_id].chunk_neighbors["west"] = chunks[chunk_id + neighbor_ref["west"]]
@@ -46,7 +47,7 @@ func get_chunk(chunk_id: Vector2i) -> Chunk:
 	return null
 
 static func get_border_mesh():
-	return border_mesh
+	return load("res://assets/environment/terrain/chunkborder.obj")
 
 func clear_chunks():
 	for chunk in chunks.values():

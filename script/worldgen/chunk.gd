@@ -5,15 +5,16 @@ class_name Chunk
 var hexels : Array[Hexel]
 var hexels_dict: Dictionary[Vector3i, Hexel]
 var hexel_layers: Dictionary[int, Array] = {}
-@onready var collider = CollisionShape3D.new()
-@onready var area_collider = CollisionShape3D.new()
-@onready var objects = Node3D.new()
+var collider: CollisionShape3D
+var area_collider: CollisionShape3D
+var objects: Node3D
 var chunk_neighbors: Dictionary[String, Chunk]
 
 var objects_dict = {}
 
 func init_chunk():
-	add_child(objects)
+	objects = Node3D.new()
+	call_deferred("add_child", objects)
 	#why the FUCK does this keep happening dude
 	var temp_hexels: Array[Hexel] = []
 	for hexel in hexels:
@@ -23,7 +24,7 @@ func init_chunk():
 	hexels = temp_hexels
 	create_dict()
 	generate_collider()
-	add_to_group("hexels")
+	call_deferred("add_to_group", "hexels")
 	fill_pos_dict()
 
 func init_chunk_flat():
@@ -56,16 +57,18 @@ func _reset_collider():
 func generate_collider():
 	var body = StaticBody3D.new()
 	var shape = mesh.create_trimesh_shape()
+	collider = CollisionShape3D.new()
 	collider.shape = shape
-	add_child(body)
-	body.add_child(collider)
+	call_deferred("add_child", body)
+	body.call_deferred("add_child", collider)
 	#handle the Area3D here
 	var area = Area3D.new()
 	var area_shape = ChunkManager.get_border_mesh().create_trimesh_shape()
+	area_collider = CollisionShape3D.new()
 	area_collider.shape = area_shape
 	area_collider.position = hexels_dict[Vector3i(0,0,0)].world_position
-	add_child(area)
-	area.add_child(area_collider)
+	call_deferred("add_child", area)
+	area.call_deferred("add_child", area_collider)
 	area.body_entered.connect(_on_body_entered)
 
 ##Given a hexel, removes all hexels above it in the column. Also copies that same hexel up to the point
