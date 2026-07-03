@@ -34,8 +34,8 @@ frequency = 0.0029
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("3_1bvp3")
 map_seed = 0
-radius = 32
-max_height = 8
+radius = 256
+max_height = 128
 ground_to_air_ratio = 0.5
 num_caves = 0
 large_plant_freq = 0.0
@@ -229,10 +229,6 @@ offset_bottom = 636.0
 
 [node name="Hotbar" parent="UI" instance=ExtResource("8_w48qg")]
 
-[node name="debug_numchunks" type="Label" parent="UI"]
-offset_right = 40.0
-offset_bottom = 23.0
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
 
@@ -247,7 +243,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -344, 0)
 shape = SubResource("WorldBoundaryShape3D_lquwl")
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 276, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 481, 0)
 
 [node name="SpawnPlatform" type="StaticBody3D" parent="SpawnPoint"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)

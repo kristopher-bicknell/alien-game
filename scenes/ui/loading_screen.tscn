@@ -1,0 +1,145 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcwebfii4e3h5"]
+
+[ext_resource type="Script" uid="uid://cgi6njciuppgr" path="res://script/ui/loading_screen.gd" id="1_rqdcv"]
+[ext_resource type="LabelSettings" uid="uid://jo35jjb1aulc" path="res://assets/res/menu_heading.tres" id="2_5fj0j"]
+[ext_resource type="FontFile" uid="uid://bmljotyil3hcn" path="res://assets/res/fonts/Oxanium-Regular.ttf" id="3_s2kth"]
+
+[node name="LoadingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rqdcv")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1366, 768)
+layout_mode = 0
+offset_right = 1366.0
+offset_bottom = 760.0
+color = Color(0.65834, 0.65834, 0.65834, 1)
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -562.0
+offset_top = 13.0
+offset_right = 562.0
+offset_bottom = 101.0
+grow_horizontal = 2
+text = "CREATING WORLD..."
+label_settings = ExtResource("2_5fj0j")
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -406.0
+offset_top = -85.0
+offset_right = 406.0
+offset_bottom = 328.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/normal_font = ExtResource("3_s2kth")
+theme_override_font_sizes/normal_font_size = 28
+scroll_following = true
+
+[node name="Label2" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 372.0
+offset_top = 96.0
+offset_right = 491.0
+offset_bottom = 119.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Current phase: "
+
+[node name="Label3" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 558.0
+offset_top = 98.0
+offset_right = 962.0
+offset_bottom = 139.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Init seed"
+horizontal_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 0
+offset_left = 1105.0
+offset_top = 214.0
+offset_right = 1338.0
+offset_bottom = 713.0
+
+[node name="MappingProgress" type="ProgressBar" parent="ColorRect"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 169.0
+offset_right = 255.0
+offset_bottom = 196.0
+max_value = 4096.0
+
+[node name="Label" type="Label" parent="ColorRect/MappingProgress"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -61.0
+offset_top = -28.0
+offset_right = 61.0
+offset_bottom = -5.0
+grow_horizontal = 2
+text = "Chunk mapping"
+horizontal_alignment = 1
+
+[node name="GenProgress" type="ProgressBar" parent="ColorRect"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 250.0
+offset_right = 255.0
+offset_bottom = 277.0
+max_value = 4096.0
+
+[node name="Label" type="Label" parent="ColorRect/GenProgress"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -61.0
+offset_top = -28.0
+offset_right = 61.0
+offset_bottom = -5.0
+grow_horizontal = 2
+text = "Chunk generation"
+horizontal_alignment = 1
+
+[node name="LoadedProgress" type="ProgressBar" parent="ColorRect"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 332.0
+offset_right = 255.0
+offset_bottom = 359.0
+max_value = 25.0
+
+[node name="Label" type="Label" parent="ColorRect/LoadedProgress"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -61.0
+offset_top = -28.0
+offset_right = 61.0
+offset_bottom = -5.0
+grow_horizontal = 2
+text = "Chunks loaded"
+horizontal_alignment = 1

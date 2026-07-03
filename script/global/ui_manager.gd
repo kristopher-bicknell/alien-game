@@ -15,6 +15,11 @@ const ui_screens = {
 func _ready():
 	root = get_tree().root
 
+func hide_hud():
+	GlobalInfo.control_mode = GlobalInfo.ControlMode.MENU
+	hotbar.visible = false
+	hotbar.enabled = false
+
 func load_ui(screen: String, extra = null, origin = null):
 	if ui_screens.has(screen):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

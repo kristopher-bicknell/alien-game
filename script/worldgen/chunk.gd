@@ -69,7 +69,7 @@ func generate_collider():
 	area_collider.position = hexels_dict[Vector3i(0,0,0)].world_position
 	call_deferred("add_child", area)
 	area.call_deferred("add_child", area_collider)
-	area.body_entered.connect(_on_body_entered)
+	area.call_deferred("connect", "body_entered", _on_body_entered)
 
 ##Given a hexel, removes all hexels above it in the column. Also copies that same hexel up to the point
 func flatten_to(flatten_pos: Vector3i): 

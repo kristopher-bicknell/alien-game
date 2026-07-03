@@ -125,7 +125,7 @@ func _exit_tree():
 	PlayerInventory.items = items
 
 func _highlight_over_button(state: bool, index: int):
-	if !icons[index]: return
+	if is_queued_for_deletion(): return
 	if !state or swap_mode: #disable on swap mode, so the UI is cleaner
 		%ItemDescriptionPanel.hide()
 		return
